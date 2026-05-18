@@ -103,6 +103,17 @@ h1 {
   font-size: 24px;
 }
 
+.hero-export {
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 760;
+  padding: 10px 12px;
+}
+
 .stats-grid,
 .workspace-grid,
 .actions,
@@ -711,6 +722,86 @@ h1 {
   border-top-color: #7d8a82;
 }
 
+.assistant-panel {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid rgba(19, 43, 31, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(18, 36, 25, 0.06);
+}
+
+.assistant-panel h2 {
+  margin-bottom: 6px;
+  font-size: 22px;
+}
+
+.assistant-panel p {
+  margin-bottom: 0;
+  color: #607168;
+  line-height: 1.55;
+}
+
+.assistant-chat {
+  display: grid;
+  gap: 10px;
+}
+
+.suggested-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggested-questions button {
+  border: 1px solid #ccd8d0;
+  border-radius: 999px;
+  background: #fff;
+  color: #43564b;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 760;
+  padding: 8px 11px;
+}
+
+.assistant-chat form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.assistant-chat input {
+  min-width: 0;
+  border: 1px solid #ccd8d0;
+  border-radius: 8px;
+  background: #fff;
+  color: #22342a;
+  padding: 11px 12px;
+}
+
+.assistant-chat form button {
+  border: 1px solid #1f7a4d;
+  border-radius: 8px;
+  background: #1f7a4d;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 760;
+  padding: 11px 16px;
+}
+
+.assistant-answer {
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid #dce7df;
+  border-radius: 8px;
+  background: #f7faf8;
+  color: #26372d;
+  line-height: 1.55;
+}
+
 .table-panel {
   margin-top: 16px;
   overflow: hidden;
@@ -984,6 +1075,7 @@ td.neutral {
   .actions,
   .timeline-grid,
   .concerns-grid,
+  .assistant-panel,
   .table-tools {
     grid-template-columns: 1fr;
   }
@@ -1037,6 +1129,10 @@ td.neutral {
   .modal-grid {
     grid-template-columns: 1fr;
   }
+
+  .assistant-chat form {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media print {
@@ -1052,6 +1148,7 @@ td.neutral {
   .control-strip,
   .sparkline-button,
   .export-actions,
+  .assistant-panel,
   .ghost-button {
     display: none;
   }
