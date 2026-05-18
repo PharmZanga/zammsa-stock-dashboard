@@ -26,6 +26,13 @@ const quickRanges = [
   { label: "Year to date", start: 0, end: 2 },
 ];
 
+const suggestedQuestions = [
+  "What are the biggest risks?",
+  "Which programmes are under pressure?",
+  "How many stockouts are there?",
+  "What should management do next?",
+];
+
 function classify(mos) {
   if (mos === null || mos === undefined) return { label: "Data gap", tone: "neutral", rank: 4 };
   if (mos <= 0.1) return { label: "Stockout", tone: "red", rank: 0 };
@@ -60,6 +67,10 @@ function reportIndexFromDate(value) {
 function csvCell(value) {
   const text = String(value ?? "");
   return `"${text.replaceAll("\"", "\"\"")}"`;
+}
+
+function topItems(items, count = 5) {
+  return items.slice(0, count).map((item) => `${item.code} ${item.item}`).join("; ");
 }
 
 function Stat({ label, value, tone, sub, active, onClick }) {
@@ -184,6 +195,8 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [activeConcern, setActiveConcern] = useState("");
   const [selectedCommodity, setSelectedCommodity] = useState(null);
+  const [assistantQuestion, setAssistantQuestion] = useState("");
+  const [assistantAnswer, setAssistantAnswer] = useState("Ask about stockouts, programme pressure, overstock, data gaps, or recommended actions. I will answer from the loaded ZAMMSA report data.");
 
   const start = Math.min(rangeStart, rangeEnd);
   const end = Math.max(rangeStart, rangeEnd);
@@ -294,6 +307,60 @@ function App() {
     window.print();
   }
 
+  function answerQuestion(question) {
+    const text = question.trim();
+    if (!text) return;
+    const lower = text.toLowerCase();
+    const latestRows = commodityHistory
+      .map((item) => ({ ...item, status: classify(item.mos[end]) }))
+      .filter((item) => item.present[end]);
+    const stockouts = latestRows.filter((item) => item.status.tone === "red");
+    const nearCritical = latestRows.filter((item) => item.status.tone === "amber");
+    const overstock = latestRows.filter((item) => item.status.tone === "blue");
+    const dataGaps = latestRows.filter((item) => item.status.tone === "neutral");
+    const programme = categories.find((category) => lower.includes(category.toLowerCase()));
+
+    if (programme) {
+      const programmeRows = latestRows.filter((item) => item.category === programme);
+      const pressure = programmeRows.filter((item) => ["red", "amber"].includes(item.status.tone));
+      setAssistantAnswer(`${programme} has ${pressure.length} commodities in stockout or near-critical status in ${selectedMeta.label}. Priority examples: ${topItems(pressure) || "none in the public drilldown"}.`);
+      return;
+    }
+
+    if (lower.includes("stockout") || lower.includes("out of stock") || lower.includes("critical")) {
+      setAssistantAnswer(`There are ${stockouts.length} stockout commodities in ${selectedMeta.label}. The first priorities in the public drilldown are: ${topItems(stockouts)}.`);
+      return;
+    }
+
+    if (lower.includes("near") || lower.includes("low stock")) {
+      setAssistantAnswer(`There are ${nearCritical.length} near-critical commodities below 1 MOS. These should be reviewed before they become stockouts: ${topItems(nearCritical)}.`);
+      return;
+    }
+
+    if (lower.includes("overstock") || lower.includes("expiry") || lower.includes("excess")) {
+      setAssistantAnswer(`There are ${overstock.length} overstocked commodities above 24 MOS. Review expiry risk, redistribution options, and forecast assumptions. Examples: ${topItems(overstock)}.`);
+      return;
+    }
+
+    if (lower.includes("data") || lower.includes("ami") || lower.includes("tbd")) {
+      setAssistantAnswer(`There are ${dataGaps.length} rows with missing AMI or TBD MOS in ${selectedMeta.label}. These rows need data-quality follow-up before MOS-based decisions can be fully trusted.`);
+      return;
+    }
+
+    if (lower.includes("programme") || lower.includes("pressure")) {
+      const topProgrammes = categoryRisks.slice(0, 5).map((item) => `${item.label} (${item.value})`).join(", ");
+      setAssistantAnswer(`The highest programme pressure areas in ${selectedMeta.label} are ${topProgrammes}. Click a programme bar to filter the full dashboard to that area.`);
+      return;
+    }
+
+    if (lower.includes("action") || lower.includes("recommend") || lower.includes("management")) {
+      setAssistantAnswer(`Recommended management focus: resolve persistent stockouts, review near-critical items for urgent procurement or redistribution, check extreme overstock for expiry/storage risk, and clean AMI/TBD data gaps so MOS can be trusted.`);
+      return;
+    }
+
+    setAssistantAnswer(`For ${selectedMeta.label}: ${kpiTrend.critical} stockouts, ${kpiTrend.near} near-critical items, ${kpiTrend.over} overstocked items, and ${kpiTrend.gaps} data gaps. Try asking about a programme, stockouts, overstock, or recommended actions.`);
+  }
+
   return (
     <main className="app-shell">
       <section className="hero">
@@ -307,6 +374,7 @@ function App() {
           <strong>{reports[start].short} - {reports[end].short}</strong>
           <small>{selectedTrend.total.toLocaleString()} extracted commodity rows in the latest selected report.</small>
           <small>Data status: static report extracts, updated {selectedMeta.label}</small>
+          <button className="hero-export" type="button" onClick={exportCsv}>Export current CSV</button>
         </div>
       </section>
 
@@ -406,6 +474,32 @@ function App() {
               <b>{concern.action}</b>
             </button>
           ))}
+        </div>
+      </section>
+
+      <section className="assistant-panel">
+        <div>
+          <p className="eyebrow dark">Ask ZAMMSA Copilot</p>
+          <h2>Questions answered from this dashboard</h2>
+          <p>This public version uses the loaded report data only. It does not send data to an external AI service.</p>
+        </div>
+        <div className="assistant-chat">
+          <div className="suggested-questions">
+            {suggestedQuestions.map((question) => (
+              <button type="button" key={question} onClick={() => {
+                setAssistantQuestion(question);
+                answerQuestion(question);
+              }}>{question}</button>
+            ))}
+          </div>
+          <form onSubmit={(event) => {
+            event.preventDefault();
+            answerQuestion(assistantQuestion);
+          }}>
+            <input value={assistantQuestion} onChange={(event) => setAssistantQuestion(event.target.value)} placeholder="Ask about stockouts, TB, malaria, overstock, or data gaps" />
+            <button type="submit">Ask</button>
+          </form>
+          <div className="assistant-answer">{assistantAnswer}</div>
         </div>
       </section>
 
