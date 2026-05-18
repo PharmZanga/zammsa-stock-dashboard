@@ -18,6 +18,14 @@ const concernFilters = {
   "Volatile reporting base": { status: "neutral", query: "", category: "all" },
 };
 
+const quickRanges = [
+  { label: "All reports", start: 0, end: 2 },
+  { label: "Latest report", start: 2, end: 2 },
+  { label: "Last 30 days", start: 1, end: 2 },
+  { label: "April 2026", start: 1, end: 2 },
+  { label: "Year to date", start: 0, end: 2 },
+];
+
 function classify(mos) {
   if (mos === null || mos === undefined) return { label: "Data gap", tone: "neutral", rank: 4 };
   if (mos <= 0.1) return { label: "Stockout", tone: "red", rank: 0 };
@@ -42,6 +50,16 @@ function pct(current, previous) {
 function metricValue(point, status) {
   const metric = STATUS_META[status]?.metric;
   return metric ? point[metric] : point.total - point.critical - point.near - point.over - point.gaps;
+}
+
+function reportIndexFromDate(value) {
+  const exact = reports.findIndex((report) => report.key === value);
+  return exact >= 0 ? exact : reports.length - 1;
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replaceAll("\"", "\"\"")}"`;
 }
 
 function Stat({ label, value, tone, sub, active, onClick }) {
@@ -170,10 +188,34 @@ function App() {
   const start = Math.min(rangeStart, rangeEnd);
   const end = Math.max(rangeStart, rangeEnd);
   const selectedReport = reports[end].key;
+  const selectedMeta = reports[end];
   const selectedTrend = trend[end];
-  const previousTrend = trend[end - 1];
-  const filteredTrend = trend.slice(start, end + 1);
   const categoryRisks = programmePressure[selectedReport] || [];
+  const hasSliceFilter = categoryFilter !== "all" || query.trim();
+
+  const filteredTrend = useMemo(() => {
+    const q = query.toLowerCase();
+    if (!hasSliceFilter) return trend.slice(start, end + 1);
+    return reports.slice(start, end + 1).map((report, offset) => {
+      const reportIndex = start + offset;
+      const rows = commodityHistory
+        .filter((item) => item.present[reportIndex])
+        .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
+        .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q));
+      const counts = rows.reduce((acc, item) => {
+        const status = classify(item.mos[reportIndex]).tone;
+        if (status === "red") acc.critical += 1;
+        if (status === "amber") acc.near += 1;
+        if (status === "blue") acc.over += 1;
+        if (status === "neutral") acc.gaps += 1;
+        return acc;
+      }, { critical: 0, near: 0, over: 0, gaps: 0 });
+      return { ...report, total: rows.length, ...counts };
+    });
+  }, [categoryFilter, end, hasSliceFilter, query, start]);
+
+  const kpiTrend = filteredTrend.at(-1) || selectedTrend;
+  const previousTrend = filteredTrend.length > 1 ? filteredTrend.at(-2) : trend[end - 1];
 
   const filteredConcerns = useMemo(() => {
     if (statusFilter === "all" && categoryFilter === "all" && !query) return managementConcerns;
@@ -198,6 +240,16 @@ function App() {
       .slice(0, 160);
   }, [end, query, statusFilter, categoryFilter]);
 
+  const exportRows = useMemo(() => drilldown.map((item) => ({
+    code: item.code,
+    commodity: item.item,
+    category: item.category,
+    marchMos: item.present[0] ? formatMos(item.mos[0]) : "-",
+    april15Mos: item.present[1] ? formatMos(item.mos[1]) : "-",
+    april30Mos: item.present[2] ? formatMos(item.mos[2]) : "-",
+    status: item.status.label,
+  })), [drilldown]);
+
   function setStatus(status) {
     setStatusFilter((current) => (current === status ? "all" : status));
     setActiveConcern("");
@@ -218,6 +270,30 @@ function App() {
     setActiveConcern("");
   }
 
+  function applyQuickRange(range) {
+    setRangeStart(range.start);
+    setRangeEnd(range.end);
+  }
+
+  function exportCsv() {
+    const headers = ["Code", "Commodity", "Category", "31 Mar MOS", "15 Apr MOS", "30 Apr MOS", "Latest status"];
+    const lines = [
+      headers.map(csvCell).join(","),
+      ...exportRows.map((row) => [row.code, row.commodity, row.category, row.marchMos, row.april15Mos, row.april30Mos, row.status].map(csvCell).join(",")),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `zammsa-dashboard-${selectedReport}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportPdf() {
+    window.print();
+  }
+
   return (
     <main className="app-shell">
       <section className="hero">
@@ -230,6 +306,7 @@ function App() {
           <span>Analysis window</span>
           <strong>{reports[start].short} - {reports[end].short}</strong>
           <small>{selectedTrend.total.toLocaleString()} extracted commodity rows in the latest selected report.</small>
+          <small>Data status: static report extracts, updated {selectedMeta.label}</small>
         </div>
       </section>
 
@@ -239,16 +316,23 @@ function App() {
           <button className={view === "historic" ? "active" : ""} type="button" onClick={() => setView("historic")}>Trend view</button>
         </div>
         <div className="range-control">
-          <label>From <span>{reports[start].short}</span><input type="range" min="0" max={reports.length - 1} value={rangeStart} onChange={(event) => setRangeStart(Number(event.target.value))} /></label>
-          <label>To <span>{reports[end].short}</span><input type="range" min="0" max={reports.length - 1} value={rangeEnd} onChange={(event) => setRangeEnd(Number(event.target.value))} /></label>
+          <label>From <span>{reports[start].short}</span><input type="date" min={reports[0].key} max={reports.at(-1).key} value={reports[rangeStart].key} onChange={(event) => setRangeStart(reportIndexFromDate(event.target.value))} /></label>
+          <label>To <span>{reports[end].short}</span><input type="date" min={reports[0].key} max={reports.at(-1).key} value={reports[rangeEnd].key} onChange={(event) => setRangeEnd(reportIndexFromDate(event.target.value))} /></label>
+          <label>Fine tune <span>{reports[start].short}</span><input type="range" min="0" max={reports.length - 1} value={rangeStart} onChange={(event) => setRangeStart(Number(event.target.value))} /></label>
+          <label>Fine tune <span>{reports[end].short}</span><input type="range" min="0" max={reports.length - 1} value={rangeEnd} onChange={(event) => setRangeEnd(Number(event.target.value))} /></label>
+        </div>
+        <div className="quick-ranges" aria-label="Quick date ranges">
+          {quickRanges.map((range) => (
+            <button className={start === range.start && end === range.end ? "active" : ""} type="button" key={range.label} onClick={() => applyQuickRange(range)}>{range.label}</button>
+          ))}
         </div>
       </section>
 
       <section className="stats-grid">
-        <Stat label="Critical stockouts" value={selectedTrend.critical} tone="red" sub={`${pct(selectedTrend.critical, previousTrend?.critical)} vs prior report`} active={statusFilter === "red"} onClick={() => setStatus("red")} />
-        <Stat label="Near-critical" value={selectedTrend.near} tone="amber" sub="More than 0.1 and below 1 MOS" active={statusFilter === "amber"} onClick={() => setStatus("amber")} />
-        <Stat label="Overstocked" value={selectedTrend.over} tone="blue" sub="Above 24 months of stock" active={statusFilter === "blue"} onClick={() => setStatus("blue")} />
-        <Stat label="AMI/TBD gaps" value={selectedTrend.gaps} tone="green" sub="Rows requiring data-quality follow-up" active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
+        <Stat label="Critical stockouts" value={kpiTrend.critical} tone="red" sub={`${pct(kpiTrend.critical, previousTrend?.critical)} vs prior report${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "red"} onClick={() => setStatus("red")} />
+        <Stat label="Near-critical" value={kpiTrend.near} tone="amber" sub={`More than 0.1 and below 1 MOS${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "amber"} onClick={() => setStatus("amber")} />
+        <Stat label="Overstocked" value={kpiTrend.over} tone="blue" sub={`Above 24 months of stock${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "blue"} onClick={() => setStatus("blue")} />
+        <Stat label="AMI/TBD gaps" value={kpiTrend.gaps} tone="green" sub={`Rows requiring data-quality follow-up${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
       </section>
 
       <section className="trend-panel">
@@ -296,6 +380,7 @@ function App() {
           <div className="filter-state">
             <span>Status: <b>{statusFilter === "all" ? "All" : STATUS_META[statusFilter].label}</b></span>
             <span>Programme: <b>{categoryFilter === "all" ? "All" : categoryFilter}</b></span>
+            <span>Data status: <b>Static extracts</b></span>
             <span>Rows shown: <b>{drilldown.length}</b></span>
           </div>
           <button className="ghost-button" type="button" onClick={resetFilters}>Clear filters</button>
@@ -325,6 +410,16 @@ function App() {
       </section>
 
       <section className="table-panel">
+        <div className="table-headline">
+          <div>
+            <h2>Commodity drilldown</h2>
+            <p>Exports use the current dashboard filters.</p>
+          </div>
+          <div className="export-actions">
+            <button type="button" onClick={exportCsv}>Export CSV</button>
+            <button type="button" onClick={exportPdf}>Export PDF</button>
+          </div>
+        </div>
         <div className="table-tools">
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search code, commodity, category, or concern evidence" />
           <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
