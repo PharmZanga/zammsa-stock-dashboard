@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Family Planning DQA Dashboard | Q1 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--blue:#0C447C;--blue2:#185FA5;--gold:#d9a441;--green:#177245;--red:#b42318;--orange:#b76e00;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#657084;--line:#d9e2ef}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:28px 34px} header h1{margin:0;font-size:28px} header p{margin:8px 0 0;color:#dcecff}
+    .wrap{max-width:1280px;margin:0 auto;padding:24px}.notice{background:#fff8e6;border-left:5px solid var(--gold);padding:14px 16px;border-radius:10px;margin-bottom:18px;color:#5a3b00}
+    .grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(6,minmax(140px,1fr))}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 14px rgba(12,68,124,.06)}
+    .kpi-label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.kpi-value{font-size:32px;font-weight:700;margin-top:8px}.kpi-note{font-size:12px;color:var(--muted);margin-top:4px}
+    .two{grid-template-columns:1fr 1fr}.three{grid-template-columns:1.15fr 1fr 1fr} h2{font-size:18px;margin:0 0 14px;color:var(--blue)} h3{font-size:15px;margin:0 0 10px;color:var(--blue)}
+    table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left} th{color:var(--muted);font-size:11px;text-transform:uppercase}.pill{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;display:inline-block}.bad{background:#fdecec;color:var(--red)}.warn{background:#fff4df;color:var(--orange)}.ok{background:#e7f7ee;color:var(--green)}
+    .actions li{margin-bottom:8px}.footer{font-size:12px;color:var(--muted);margin-top:20px}.chart{height:300px}.smallchart{height:245px}.updatebox{background:#eef6ff;border:1px solid #cbe2ff;border-radius:12px;padding:14px;margin-bottom:18px}.updatebox code{background:#fff;padding:2px 5px;border-radius:4px}
+    @media(max-width:900px){.kpis,.two,.three{grid-template-columns:1fr}.chart,.smallchart{height:260px}}
+  </style>
+</head>
+<body>
+<header><h1>Family Planning DQA — eLMIS Verification Dashboard</h1><p>Q1 2026 SRMNH Data Quality Assessment | Daily-updatable GitHub Pages dashboard</p></header>
+<main class="wrap">
+  <div class="notice"><strong>Coverage caveat:</strong> Expected scope was 6 provinces, 3 districts per province and 10 facilities per district. The current uploaded dataset contains 21 valid facility records across 5 provinces. Add new records to update this dashboard.</div>
+  <div class="updatebox"><strong>Daily update workflow:</strong> replace the data values inside <code>fp-dqa/index.html</code> or upload a refreshed generated HTML file to this folder. GitHub Pages will publish the change automatically after commit.</div>
+  <section class="grid kpis">
+    <div class="card"><div class="kpi-label">Facilities assessed</div><div class="kpi-value">21</div><div class="kpi-note">5 provinces</div></div>
+    <div class="card"><div class="kpi-label">eLMIS functional</div><div class="kpi-value" style="color:var(--green)">81%</div><div class="kpi-note">17 of 21</div></div>
+    <div class="card"><div class="kpi-label">Total discrepancies</div><div class="kpi-value" style="color:var(--red)">80</div><div class="kpi-note">all commodities</div></div>
+    <div class="card"><div class="kpi-label">Stockout events</div><div class="kpi-value" style="color:var(--orange)">30</div><div class="kpi-note">pharmacy level</div></div>
+    <div class="card"><div class="kpi-label">Follow-up required</div><div class="kpi-value" style="color:var(--red)">100%</div><div class="kpi-note">all assessed facilities</div></div>
+    <div class="card"><div class="kpi-label">FEFO compliance</div><div class="kpi-value" style="color:var(--orange)">29%</div><div class="kpi-note">6 of 21</div></div>
+  </section>
+  <section class="grid two" style="margin-top:16px">
+    <div class="card"><h2>Province Performance Overview</h2><table><thead><tr><th>Province</th><th>Facilities</th><th>eLMIS Active</th><th>Discrepancies</th><th>Stockouts</th><th>Status</th></tr></thead><tbody id="provRows"></tbody></table></div>
+    <div class="card"><h2>Key Root Causes</h2><div class="smallchart"><canvas id="rootChart"></canvas></div></div>
+  </section>
+  <section class="grid two" style="margin-top:16px">
+    <div class="card"><h2>Commodity Stockout Profile</h2><div class="chart"><canvas id="stockChart"></canvas></div></div>
+    <div class="card"><h2>FP Register vs DHIS2 Discrepancy Trend</h2><div class="chart"><canvas id="dhisChart"></canvas></div></div>
+  </section>
+  <section class="grid three" style="margin-top:16px">
+    <div class="card"><h2>Facility Detail</h2><table><thead><tr><th>Province</th><th>District</th><th>Facility</th><th>eLMIS</th><th>Disc.</th><th>Stockouts</th></tr></thead><tbody id="facRows"></tbody></table></div>
+    <div class="card"><h2>Storage Compliance</h2><ul class="actions"><li>Dedicated storeroom: <strong>21/21</strong></li><li>Lockable doors: <strong>21/21</strong></li><li>Functional A/C: <strong>21/21</strong></li><li>Temperature chart updated: <strong>20/21</strong></li><li>Functional thermometer: <strong>19/21</strong></li><li>FEFO followed: <strong style="color:var(--red)">6/21</strong></li></ul></div>
+    <div class="card"><h2>Priority Corrective Actions</h2><ol class="actions"><li>Resolve unit-of-issue mismatch for Sayana/DMPA-SC and other affected FP commodities.</li><li>Mentor facilities with SCC vs eLMIS discrepancies and inactive eLMIS FE.</li><li>Reconcile FP register, DHIS2, SCC and eLMIS monthly before submission.</li><li>Enforce FEFO and expiry review during routine stock management.</li><li>Track daily updates using this dashboard and flag facilities requiring follow-up.</li></ol></div>
+  </section>
+  <p class="footer">Prepared for SRMNH FP DQA review. Repository path: /fp-dqa/index.html. Last updated: 19 May 2026.</p>
+</main>
+<script>
+const provinces=[['Northern',8,'6/8 (75%)',43,16,'High risk'],['Copperbelt',7,'6/7 (86%)',20,4,'Moderate'],['Southern',2,'2/2 (100%)',9,1,'Moderate'],['North-Western',2,'1/2 (50%)',6,3,'Moderate'],['Eastern',2,'2/2 (100%)',2,6,'Low discrepancy']];
+const facilities=[['Northern','Mbala','Tulemane Urban Clinic','Yes',4,2],['Northern','Kasama','Police RHC','Yes',5,3],['Northern','Kasama','Chisanga RHC','Yes',5,0],['Northern','Kasama','Location UHC','Yes',6,5],['Northern','Kasama','Chanda Mukulu RHC','Yes',6,1],['Northern','Mbala','Isofu RHC','No',6,2],['Northern','Kasama','Nkole Mfumu RHC','Yes',5,2],['Northern','Mbala','Kaka RHC','No',6,1],['Copperbelt','Chingola','Kasompe UHC','Yes',3,0],['Copperbelt','Chingola','Musenga HP','Yes',2,1],['Copperbelt','Chingola','Shimulala HP','No',2,0],['Copperbelt','Ndola','Chipokota UHC','Yes',5,0],['Copperbelt','Chingola','Lulamba UHC','Yes',0,2],['Copperbelt','Ndola','Rail Surgery UHC','Yes',3,1],['Copperbelt','Kitwe','Chimwemwe Urban Clinic','Yes',5,0],['Southern','Livingstone','Maramba UHC','Yes',4,0],['Southern','Livingstone','Libuyu UHC','Yes',5,1],['Eastern','Petauke','Petauke Urban Clinic','Yes',0,2],['Eastern','Petauke','Prison HP','Yes',2,4],['North-Western','Mushindamo','Kasapa Mini Hospital','Yes',6,2],['North-Western','Mufumbwe','Kashima RHC','No',0,1]];
+document.getElementById('provRows').innerHTML=provinces.map(p=>`<tr><td><strong>${p[0]}</strong></td><td>${p[1]}</td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td><td><span class="pill ${p[5]=='High risk'?'bad':p[5].startsWith('Low')?'ok':'warn'}">${p[5]}</span></td></tr>`).join('');
+document.getElementById('facRows').innerHTML=facilities.map(f=>`<tr><td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td><span class="pill ${f[3]=='Yes'?'ok':'bad'}">${f[3]}</span></td><td>${f[4]}</td><td>${f[5]}</td></tr>`).join('');
+const opts={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}};
+new Chart(document.getElementById('stockChart'),{type:'bar',data:{labels:['Implanon','Jadelle','DMPA-SC','DMPA-IM','COCs','IUCD'],datasets:[{label:'Pharmacy stockout',data:[8,11,7,11,4,9],backgroundColor:'#185FA5'},{label:'Facility stockout',data:[5,7,3,7,1,6],backgroundColor:'#b42318'}]},options:opts});
+new Chart(document.getElementById('dhisChart'),{type:'bar',data:{labels:['Implanon','Jadelle','DMPA-SC','DMPA-IM','COCs','IUCD'],datasets:[{label:'Jan',data:[13,8,19,17,15,5],backgroundColor:'#0C447C'},{label:'Feb',data:[12,9,16,15,14,5],backgroundColor:'#5ba3e0'},{label:'Mar',data:[14,10,18,17,15,8],backgroundColor:'#d9a441'}]},options:opts});
+new Chart(document.getElementById('rootChart'),{type:'bar',data:{labels:['DHIS2 inconsistency','UOM mismatch','Ordering errors','Incomplete SCC','Stock card not updated','Poor documentation'],datasets:[{label:'Facilities/count',data:[13,12,7,6,6,5],backgroundColor:'#185FA5'}]},options:{...opts,indexAxis:'y'}});
+</script>
+</body>
+</html>
