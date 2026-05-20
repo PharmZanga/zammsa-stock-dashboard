@@ -73,6 +73,22 @@ function topItems(items, count = 5) {
   return items.slice(0, count).map((item) => `${item.code} ${item.item}`).join("; ");
 }
 
+function StockStatusTicker() {
+  const message = "MoS <=0.5: Emergency action | 0.5-2 MoS: Understocked | 2-4 MoS: According to Plan | 4-12 MoS: Overstock - review redistribution | >=12 MoS: Excess Overstock - review expiry and procurement risk | Weekly focus: stockouts, newly unavailable commodities, recovered commodities, and programme pressure.";
+
+  return (
+    <section className="stock-status-ticker" aria-label="Moving stock status interpretation ticker">
+      <span className="ticker-label">MoS Status</span>
+      <div className="ticker-window">
+        <div className="ticker-track">
+          <span>{message}</span>
+          <span aria-hidden="true">{message}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Stat({ label, value, tone, sub, active, onClick }) {
   return (
     <button className={`stat stat-${tone} ${active ? "active" : ""}`} type="button" onClick={onClick}>
@@ -377,6 +393,8 @@ function App() {
           <button className="hero-export" type="button" onClick={exportCsv}>Export current CSV</button>
         </div>
       </section>
+
+      <StockStatusTicker />
 
       <section className="control-strip">
         <div className="mode-tabs">
