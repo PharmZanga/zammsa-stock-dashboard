@@ -115,6 +115,14 @@ function countDataQuality(rows, reportIndex) {
   }, { amiMissing: 0, tbdMos: 0 });
 }
 
+function matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter) {
+  const amiMissing = item.ami[reportIndex] === null || item.ami[reportIndex] === undefined;
+  const tbdMos = (item.comments[reportIndex] || "").toUpperCase().includes("TBD") || item.mos[reportIndex] === null || item.mos[reportIndex] === undefined;
+  const amiMatches = amiFilter === "all" || (amiFilter === "missing" ? amiMissing : !amiMissing);
+  const tbdMatches = tbdFilter === "all" || (tbdFilter === "tbd" ? tbdMos : !tbdMos);
+  return amiMatches && tbdMatches;
+}
+
 const fullCommodityHistory = buildFullCommodityHistory(stockHistory);
 
 function Stat({ label, value, tone, sub, active, onClick }) {
@@ -253,6 +261,8 @@ function App() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [amiFilter, setAmiFilter] = useState("all");
+  const [tbdFilter, setTbdFilter] = useState("all");
   const [activeConcern, setActiveConcern] = useState("");
   const [selectedCommodity, setSelectedCommodity] = useState(null);
   const [assistantQuestion, setAssistantQuestion] = useState("");
@@ -265,7 +275,7 @@ function App() {
   const selectedMeta = reports[end];
   const selectedTrend = trend[end];
   const categoryRisks = programmePressure[selectedReport] || [];
-  const hasSliceFilter = categoryFilter !== "all" || query.trim();
+  const hasSliceFilter = categoryFilter !== "all" || amiFilter !== "all" || tbdFilter !== "all" || query.trim();
   const weeklyProgrammes = [...new Set(weeklyAvailability.reports.map((report) => report.programme))];
   const weeklyReports = weeklyAvailability.reports.filter((report) => report.programme === weeklyProgramme);
   const latestWeekly = weeklyReports.at(-1) || weeklyAvailability.reports.at(-1);
@@ -282,6 +292,7 @@ function App() {
       const rows = fullCommodityHistory
         .filter((item) => item.present[reportIndex])
         .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
+        .filter((item) => matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter))
         .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q));
       const counts = rows.reduce((acc, item) => {
         const status = classify(item.mos[reportIndex]).tone;
@@ -293,21 +304,22 @@ function App() {
       }, { critical: 0, near: 0, over: 0, gaps: 0 });
       return { ...report, total: rows.length, ...counts, ...countDataQuality(rows, reportIndex) };
     });
-  }, [categoryFilter, end, hasSliceFilter, query, start]);
+  }, [amiFilter, categoryFilter, end, hasSliceFilter, query, start, tbdFilter]);
 
   const kpiTrend = filteredTrend.at(-1) || selectedTrend;
   const previousTrend = filteredTrend.length > 1 ? filteredTrend.at(-2) : trend[end - 1];
 
   const filteredConcerns = useMemo(() => {
-    if (statusFilter === "all" && categoryFilter === "all" && !query) return managementConcerns;
+    if (statusFilter === "all" && categoryFilter === "all" && amiFilter === "all" && tbdFilter === "all" && !query) return managementConcerns;
     return managementConcerns.filter((concern) => {
       const filter = concernFilters[concern.title] || {};
       const statusMatches = statusFilter === "all" || filter.status === statusFilter || concern.tone === statusFilter;
       const categoryMatches = categoryFilter === "all" || concern.programme.includes(categoryFilter) || filter.category === categoryFilter;
       const queryMatches = !query || `${concern.title} ${concern.programme} ${concern.evidence}`.toLowerCase().includes(query.toLowerCase());
-      return statusMatches && categoryMatches && queryMatches;
+      const dataQualityMatches = (amiFilter === "all" && tbdFilter === "all") || concern.title === "AMI and TBD gaps" || concern.tone === "neutral";
+      return statusMatches && categoryMatches && queryMatches && dataQualityMatches;
     });
-  }, [statusFilter, categoryFilter, query]);
+  }, [statusFilter, categoryFilter, amiFilter, tbdFilter, query]);
 
   const drilldown = useMemo(() => {
     const q = query.toLowerCase();
@@ -317,9 +329,10 @@ function App() {
       .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q))
       .filter((item) => statusFilter === "all" || item.status.tone === statusFilter)
       .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
+      .filter((item) => matchesDataQualityFilters(item, end, amiFilter, tbdFilter))
       .sort((a, b) => a.status.rank - b.status.rank || (a.mos[end] ?? 99999) - (b.mos[end] ?? 99999))
       .slice(0, 160);
-  }, [end, query, statusFilter, categoryFilter]);
+  }, [amiFilter, end, query, statusFilter, categoryFilter, tbdFilter]);
 
   const exportRows = useMemo(() => drilldown.map((item) => ({
     code: item.code,
@@ -345,7 +358,19 @@ function App() {
   function resetFilters() {
     setStatusFilter("all");
     setCategoryFilter("all");
+    setAmiFilter("all");
+    setTbdFilter("all");
     setQuery("");
+    setActiveConcern("");
+  }
+
+  function filterMissingAmi() {
+    setAmiFilter((current) => (current === "missing" ? "all" : "missing"));
+    setActiveConcern("");
+  }
+
+  function filterTbdMos() {
+    setTbdFilter((current) => (current === "tbd" ? "all" : "tbd"));
     setActiveConcern("");
   }
 
@@ -491,8 +516,8 @@ function App() {
         <Stat label="Critical stockouts" value={kpiTrend.critical} tone="red" sub={`${pct(kpiTrend.critical, previousTrend?.critical)} vs prior report${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "red"} onClick={() => setStatus("red")} />
         <Stat label="Near-critical" value={kpiTrend.near} tone="amber" sub={`More than 0.1 and below 1 MOS${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "amber"} onClick={() => setStatus("amber")} />
         <Stat label="Overstocked" value={kpiTrend.over} tone="blue" sub={`Above 24 months of stock${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "blue"} onClick={() => setStatus("blue")} />
-        <Stat label="Missing AMI" value={kpiTrend.amiMissing ?? kpiTrend.gaps} tone="green" sub={`Rows needing AMI completion${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
-        <Stat label="TBD MOS" value={kpiTrend.tbdMos ?? kpiTrend.gaps} tone="purple" sub={`Rows where MOS cannot yet be trusted${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
+        <Stat label="Missing AMI" value={kpiTrend.amiMissing ?? kpiTrend.gaps} tone="green" sub={`Rows needing AMI completion${hasSliceFilter ? " in filtered slice" : ""}`} active={amiFilter === "missing"} onClick={filterMissingAmi} />
+        <Stat label="TBD MOS" value={kpiTrend.tbdMos ?? kpiTrend.gaps} tone="purple" sub={`Rows where MOS cannot yet be trusted${hasSliceFilter ? " in filtered slice" : ""}`} active={tbdFilter === "tbd"} onClick={filterTbdMos} />
       </section>
 
       <section className="trend-panel">
@@ -588,6 +613,8 @@ function App() {
           <div className="filter-state">
             <span>Status: <b>{statusFilter === "all" ? "All" : STATUS_META[statusFilter].label}</b></span>
             <span>Programme: <b>{categoryFilter === "all" ? "All" : categoryFilter}</b></span>
+            <span>AMI: <b>{amiFilter === "all" ? "All" : amiFilter === "missing" ? "Missing only" : "Present only"}</b></span>
+            <span>MOS/TBD: <b>{tbdFilter === "all" ? "All" : tbdFilter === "tbd" ? "TBD only" : "Confirmed only"}</b></span>
             <span>Data status: <b>Static extracts</b></span>
             <span>Rows shown: <b>{drilldown.length}</b></span>
           </div>
@@ -663,6 +690,16 @@ function App() {
             <option value="blue">Overstock</option>
             <option value="green">Adequate</option>
             <option value="neutral">Data gap</option>
+          </select>
+          <select value={amiFilter} onChange={(event) => setAmiFilter(event.target.value)} aria-label="Filter by AMI status">
+            <option value="all">All AMI</option>
+            <option value="missing">Missing AMI only</option>
+            <option value="present">AMI present only</option>
+          </select>
+          <select value={tbdFilter} onChange={(event) => setTbdFilter(event.target.value)} aria-label="Filter by MOS TBD status">
+            <option value="all">All MOS</option>
+            <option value="tbd">TBD MOS only</option>
+            <option value="confirmed">MOS confirmed only</option>
           </select>
           <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
             <option value="all">All categories</option>
