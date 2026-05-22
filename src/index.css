@@ -124,7 +124,7 @@ h1 {
 }
 
 .stats-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .workspace-grid {
@@ -191,6 +191,10 @@ h1 {
 
 .stat-green strong {
   color: #1f7a4d;
+}
+
+.stat-purple strong {
+  color: #6d4aa2;
 }
 
 .panel {

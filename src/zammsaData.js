@@ -29,7 +29,9 @@ export const trend = [
     "critical": 31,
     "near": 68,
     "over": 19,
-    "gaps": 210
+    "gaps": 210,
+    "amiMissing": 209,
+    "tbdMos": 210
   },
   {
     "key": "2026-04-15",
@@ -39,7 +41,9 @@ export const trend = [
     "critical": 81,
     "near": 79,
     "over": 31,
-    "gaps": 123
+    "gaps": 123,
+    "amiMissing": 120,
+    "tbdMos": 123
   },
   {
     "key": "2026-04-30",
@@ -49,7 +53,9 @@ export const trend = [
     "critical": 56,
     "near": 72,
     "over": 34,
-    "gaps": 169
+    "gaps": 169,
+    "amiMissing": 167,
+    "tbdMos": 169
   },
   {
     "key": "2026-05-15",
@@ -59,7 +65,9 @@ export const trend = [
     "critical": 58,
     "near": 76,
     "over": 31,
-    "gaps": 284
+    "gaps": 284,
+    "amiMissing": 284,
+    "tbdMos": 284
   }
 ];
 export const programmePressure = {
@@ -301,8 +309,8 @@ export const managementConcerns = [
     "severity": "Data Quality",
     "tone": "neutral",
     "programme": "Reporting quality",
-    "evidence": "169 latest rows have missing AMI or TBD MOS, limiting confidence in stock status calculations.",
-    "action": "Assign ownership for missing AMI values and track completion as part of the next reporting cycle."
+    "evidence": "Latest data-quality split: 284 rows have missing AMI and 284 rows have TBD MOS. These overlap in the 15 May extract, so treat them as linked work queues rather than additive totals.",
+    "action": "Assign ownership for AMI completion and require TBD MOS confirmation in the next reporting cycle."
   },
   {
     "title": "Volatile reporting base",

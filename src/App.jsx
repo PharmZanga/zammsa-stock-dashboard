@@ -90,6 +90,8 @@ function buildFullCommodityHistory(rows) {
         item: row.item,
         category: row.category,
         mos: Array(reports.length).fill(null),
+        ami: Array(reports.length).fill(null),
+        comments: Array(reports.length).fill(""),
         present: Array(reports.length).fill(false),
       });
     }
@@ -97,10 +99,20 @@ function buildFullCommodityHistory(rows) {
     const reportIndex = reports.findIndex((report) => report.key === row.reportDate);
     if (reportIndex >= 0) {
       entry.mos[reportIndex] = row.mos;
+      entry.ami[reportIndex] = row.ami;
+      entry.comments[reportIndex] = row.comment || "";
       entry.present[reportIndex] = true;
     }
   });
   return [...grouped.values()];
+}
+
+function countDataQuality(rows, reportIndex) {
+  return rows.reduce((acc, item) => {
+    if (item.ami[reportIndex] === null || item.ami[reportIndex] === undefined) acc.amiMissing += 1;
+    if ((item.comments[reportIndex] || "").toUpperCase().includes("TBD") || item.mos[reportIndex] === null || item.mos[reportIndex] === undefined) acc.tbdMos += 1;
+    return acc;
+  }, { amiMissing: 0, tbdMos: 0 });
 }
 
 const fullCommodityHistory = buildFullCommodityHistory(stockHistory);
@@ -279,7 +291,7 @@ function App() {
         if (status === "neutral") acc.gaps += 1;
         return acc;
       }, { critical: 0, near: 0, over: 0, gaps: 0 });
-      return { ...report, total: rows.length, ...counts };
+      return { ...report, total: rows.length, ...counts, ...countDataQuality(rows, reportIndex) };
     });
   }, [categoryFilter, end, hasSliceFilter, query, start]);
 
@@ -372,6 +384,7 @@ function App() {
     const nearCritical = latestRows.filter((item) => item.status.tone === "amber");
     const overstock = latestRows.filter((item) => item.status.tone === "blue");
     const dataGaps = latestRows.filter((item) => item.status.tone === "neutral");
+    const dataQuality = countDataQuality(latestRows, end);
     const programme = categories.find((category) => lower.includes(category.toLowerCase()));
     const emmsFirst = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-01");
     const emmsSecond = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-08");
@@ -421,7 +434,7 @@ function App() {
     }
 
     if (lower.includes("data") || lower.includes("ami") || lower.includes("tbd")) {
-      setAssistantAnswer(`There are ${dataGaps.length} rows with missing AMI or TBD MOS in ${selectedMeta.label}. These rows need data-quality follow-up before MOS-based decisions can be fully trusted.`);
+      setAssistantAnswer(`${selectedMeta.label} has ${dataQuality.amiMissing} rows with missing AMI and ${dataQuality.tbdMos} rows with TBD MOS. These can overlap, so use them as two data-quality work queues rather than adding them together. ${dataGaps.length} rows cannot be classified by MOS until corrected.`);
       return;
     }
 
@@ -436,7 +449,7 @@ function App() {
       return;
     }
 
-    setAssistantAnswer(`For ${selectedMeta.label}: ${kpiTrend.critical} stockouts, ${kpiTrend.near} near-critical items, ${kpiTrend.over} overstocked items, and ${kpiTrend.gaps} data gaps. Try asking about a programme, stockouts, overstock, or recommended actions.`);
+    setAssistantAnswer(`For ${selectedMeta.label}: ${kpiTrend.critical} stockouts, ${kpiTrend.near} near-critical items, ${kpiTrend.over} overstocked items, ${kpiTrend.amiMissing ?? kpiTrend.gaps} missing AMI rows, and ${kpiTrend.tbdMos ?? kpiTrend.gaps} TBD MOS rows. Try asking about a programme, stockouts, overstock, or recommended actions.`);
   }
 
   return (
@@ -478,7 +491,8 @@ function App() {
         <Stat label="Critical stockouts" value={kpiTrend.critical} tone="red" sub={`${pct(kpiTrend.critical, previousTrend?.critical)} vs prior report${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "red"} onClick={() => setStatus("red")} />
         <Stat label="Near-critical" value={kpiTrend.near} tone="amber" sub={`More than 0.1 and below 1 MOS${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "amber"} onClick={() => setStatus("amber")} />
         <Stat label="Overstocked" value={kpiTrend.over} tone="blue" sub={`Above 24 months of stock${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "blue"} onClick={() => setStatus("blue")} />
-        <Stat label="AMI/TBD gaps" value={kpiTrend.gaps} tone="green" sub={`Rows requiring data-quality follow-up${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
+        <Stat label="Missing AMI" value={kpiTrend.amiMissing ?? kpiTrend.gaps} tone="green" sub={`Rows needing AMI completion${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
+        <Stat label="TBD MOS" value={kpiTrend.tbdMos ?? kpiTrend.gaps} tone="purple" sub={`Rows where MOS cannot yet be trusted${hasSliceFilter ? " in filtered slice" : ""}`} active={statusFilter === "neutral"} onClick={() => setStatus("neutral")} />
       </section>
 
       <section className="trend-panel">
