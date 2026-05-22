@@ -343,6 +343,187 @@ h1 {
   color: #607168;
 }
 
+.weekly-section {
+  margin-top: 16px;
+}
+
+.weekly-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  padding: 18px 20px;
+  border: 1px solid rgba(19, 43, 31, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(18, 36, 25, 0.06);
+}
+
+.weekly-head h2 {
+  margin-bottom: 6px;
+  font-size: 22px;
+}
+
+.weekly-head p {
+  margin-bottom: 0;
+  color: #607168;
+  line-height: 1.55;
+}
+
+.weekly-head select {
+  min-width: 150px;
+  border: 1px solid #ccd8d0;
+  border-radius: 8px;
+  background: #fff;
+  color: #22342a;
+  padding: 10px 11px;
+}
+
+.weekly-grid,
+.change-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.weekly-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.weekly-trend {
+  min-height: 210px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+  margin-top: 20px;
+}
+
+.weekly-point {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.weekly-point div {
+  width: min(72px, 80%);
+  min-height: 28px;
+  border-radius: 5px 5px 0 0;
+  background: #1f7a4d;
+}
+
+.weekly-point strong {
+  color: #26372d;
+  font-size: 26px;
+}
+
+.weekly-point span,
+.weekly-point small {
+  color: #65776d;
+  font-size: 12px;
+}
+
+.availability-bars {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.availability-row {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 52px;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.availability-row span {
+  overflow: hidden;
+  color: #34443a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.availability-row b {
+  color: #54655c;
+  text-align: right;
+}
+
+.availability-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e8eee9;
+}
+
+.availability-track div {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.availability-track .red {
+  background: #d04437;
+}
+
+.availability-track .amber {
+  background: #d7891d;
+}
+
+.availability-track .green {
+  background: #1f7a4d;
+}
+
+.change-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.change-card {
+  min-height: 160px;
+  padding: 18px;
+  border: 1px solid rgba(19, 43, 31, 0.09);
+  border-top: 5px solid #d04437;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(18, 36, 25, 0.06);
+}
+
+.change-card.recovered {
+  border-top-color: #1f7a4d;
+}
+
+.change-card span {
+  color: #607168;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.change-card strong {
+  display: block;
+  margin: 6px 0 10px;
+  color: #26372d;
+  font-size: 36px;
+}
+
+.change-card p {
+  margin-bottom: 0;
+  color: #607168;
+  line-height: 1.55;
+}
+
+.change-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: #26372d;
+}
+
+.change-card small {
+  display: block;
+  color: #607168;
+}
+
 .trend-line {
   width: 100%;
   max-height: 220px;
@@ -1076,6 +1257,8 @@ td.neutral {
   .timeline-grid,
   .concerns-grid,
   .assistant-panel,
+  .weekly-grid,
+  .change-grid,
   .table-tools {
     grid-template-columns: 1fr;
   }
@@ -1102,6 +1285,15 @@ td.neutral {
   .range-control {
     min-width: 0;
     grid-template-columns: 1fr;
+  }
+
+  .weekly-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .availability-row {
+    grid-template-columns: 130px minmax(0, 1fr) 44px;
   }
 
   .quick-ranges {

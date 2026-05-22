@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
-import { categories, commodityHistory, managementConcerns, programmePressure, reports, trend } from "./zammsaData.js";
+import { categories, managementConcerns, programmePressure, reports, trend } from "./zammsaData.js";
+import { weeklyAvailability } from "./weeklyAvailability.js";
+import { stockHistory } from "./zammsaHistory.js";
 
 const STATUS_META = {
   red: { label: "Stockout", metric: "critical" },
@@ -19,16 +21,17 @@ const concernFilters = {
 };
 
 const quickRanges = [
-  { label: "All reports", start: 0, end: 2 },
-  { label: "Latest report", start: 2, end: 2 },
-  { label: "Last 30 days", start: 1, end: 2 },
+  { label: "All reports", start: 0, end: 3 },
+  { label: "Latest report", start: 3, end: 3 },
+  { label: "Last 30 days", start: 2, end: 3 },
   { label: "April 2026", start: 1, end: 2 },
-  { label: "Year to date", start: 0, end: 2 },
+  { label: "Year to date", start: 0, end: 3 },
 ];
 
 const suggestedQuestions = [
   "What are the biggest risks?",
   "Which programmes are under pressure?",
+  "What changed from 1 May to 8 May?",
   "How many stockouts are there?",
   "What should management do next?",
 ];
@@ -73,21 +76,34 @@ function topItems(items, count = 5) {
   return items.slice(0, count).map((item) => `${item.code} ${item.item}`).join("; ");
 }
 
-function StockStatusTicker() {
-  const message = "MoS <=0.5: Emergency action | 0.5-2 MoS: Understocked | 2-4 MoS: According to Plan | 4-12 MoS: Overstock - review redistribution | >=12 MoS: Excess Overstock - review expiry and procurement risk | Weekly focus: stockouts, newly unavailable commodities, recovered commodities, and programme pressure.";
-
-  return (
-    <section className="stock-status-ticker" aria-label="Moving stock status interpretation ticker">
-      <span className="ticker-label">MoS Status</span>
-      <div className="ticker-window">
-        <div className="ticker-track">
-          <span>{message}</span>
-          <span aria-hidden="true">{message}</span>
-        </div>
-      </div>
-    </section>
-  );
+function formatPercent(value) {
+  return `${(value * 100).toFixed(1)}%`;
 }
+
+function buildFullCommodityHistory(rows) {
+  const grouped = new Map();
+  rows.forEach((row) => {
+    const key = `${row.code || "-"}|${row.item}|${row.category}`;
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        code: row.code || "-",
+        item: row.item,
+        category: row.category,
+        mos: Array(reports.length).fill(null),
+        present: Array(reports.length).fill(false),
+      });
+    }
+    const entry = grouped.get(key);
+    const reportIndex = reports.findIndex((report) => report.key === row.reportDate);
+    if (reportIndex >= 0) {
+      entry.mos[reportIndex] = row.mos;
+      entry.present[reportIndex] = true;
+    }
+  });
+  return [...grouped.values()];
+}
+
+const fullCommodityHistory = buildFullCommodityHistory(stockHistory);
 
 function Stat({ label, value, tone, sub, active, onClick }) {
   return (
@@ -172,6 +188,22 @@ function RiskBars({ data, activeCategory, onCategory }) {
   );
 }
 
+function AvailabilityBars({ categories }) {
+  return (
+    <div className="availability-bars">
+      {categories.slice(0, 14).map((item) => (
+        <div className="availability-row" key={item.category}>
+          <span>{item.category}</span>
+          <div className="availability-track">
+            <div className={item.availability < 0.25 ? "red" : item.availability < 0.5 ? "amber" : "green"} style={{ width: `${item.availability * 100}%` }} />
+          </div>
+          <b>{formatPercent(item.availability)}</b>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CommodityModal({ item, onClose }) {
   if (!item) return null;
   const status = classify(item.mos.at(-1));
@@ -213,6 +245,7 @@ function App() {
   const [selectedCommodity, setSelectedCommodity] = useState(null);
   const [assistantQuestion, setAssistantQuestion] = useState("");
   const [assistantAnswer, setAssistantAnswer] = useState("Ask about stockouts, programme pressure, overstock, data gaps, or recommended actions. I will answer from the loaded ZAMMSA report data.");
+  const [weeklyProgramme, setWeeklyProgramme] = useState("EMMS");
 
   const start = Math.min(rangeStart, rangeEnd);
   const end = Math.max(rangeStart, rangeEnd);
@@ -221,13 +254,20 @@ function App() {
   const selectedTrend = trend[end];
   const categoryRisks = programmePressure[selectedReport] || [];
   const hasSliceFilter = categoryFilter !== "all" || query.trim();
+  const weeklyProgrammes = [...new Set(weeklyAvailability.reports.map((report) => report.programme))];
+  const weeklyReports = weeklyAvailability.reports.filter((report) => report.programme === weeklyProgramme);
+  const latestWeekly = weeklyReports.at(-1) || weeklyAvailability.reports.at(-1);
+  const weeklyCategoryBars = latestWeekly.categories
+    .map(([category, available, total, availability]) => ({ category, available, total, availability }))
+    .sort((a, b) => a.availability - b.availability);
+  const weeklyChange = weeklyAvailability.changesByProgramme?.[weeklyProgramme]?.at(-1) || weeklyAvailability.changes;
 
   const filteredTrend = useMemo(() => {
     const q = query.toLowerCase();
     if (!hasSliceFilter) return trend.slice(start, end + 1);
     return reports.slice(start, end + 1).map((report, offset) => {
       const reportIndex = start + offset;
-      const rows = commodityHistory
+      const rows = fullCommodityHistory
         .filter((item) => item.present[reportIndex])
         .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
         .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q));
@@ -259,7 +299,7 @@ function App() {
 
   const drilldown = useMemo(() => {
     const q = query.toLowerCase();
-    return commodityHistory
+    return fullCommodityHistory
       .map((item) => ({ ...item, status: classify(item.mos[end]) }))
       .filter((item) => item.present[end])
       .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q))
@@ -273,9 +313,7 @@ function App() {
     code: item.code,
     commodity: item.item,
     category: item.category,
-    marchMos: item.present[0] ? formatMos(item.mos[0]) : "-",
-    april15Mos: item.present[1] ? formatMos(item.mos[1]) : "-",
-    april30Mos: item.present[2] ? formatMos(item.mos[2]) : "-",
+    mos: reports.map((report, index) => item.present[index] ? formatMos(item.mos[index]) : "-"),
     status: item.status.label,
   })), [drilldown]);
 
@@ -305,10 +343,10 @@ function App() {
   }
 
   function exportCsv() {
-    const headers = ["Code", "Commodity", "Category", "31 Mar MOS", "15 Apr MOS", "30 Apr MOS", "Latest status"];
+    const headers = ["Code", "Commodity", "Category", ...reports.map((report) => `${report.short} MOS`), "Latest status"];
     const lines = [
       headers.map(csvCell).join(","),
-      ...exportRows.map((row) => [row.code, row.commodity, row.category, row.marchMos, row.april15Mos, row.april30Mos, row.status].map(csvCell).join(",")),
+      ...exportRows.map((row) => [row.code, row.commodity, row.category, ...row.mos, row.status].map(csvCell).join(",")),
     ];
     const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -327,7 +365,7 @@ function App() {
     const text = question.trim();
     if (!text) return;
     const lower = text.toLowerCase();
-    const latestRows = commodityHistory
+    const latestRows = fullCommodityHistory
       .map((item) => ({ ...item, status: classify(item.mos[end]) }))
       .filter((item) => item.present[end]);
     const stockouts = latestRows.filter((item) => item.status.tone === "red");
@@ -335,6 +373,30 @@ function App() {
     const overstock = latestRows.filter((item) => item.status.tone === "blue");
     const dataGaps = latestRows.filter((item) => item.status.tone === "neutral");
     const programme = categories.find((category) => lower.includes(category.toLowerCase()));
+    const emmsFirst = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-01");
+    const emmsSecond = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-08");
+    const emmsThird = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-15");
+    const labPrevious = weeklyAvailability.reports.find((report) => report.programme === "LAB" && report.date === "2026-05-08");
+    const labLatest = weeklyAvailability.reports.filter((report) => report.programme === "LAB").at(-1);
+
+    if (lower.includes("15 may") || lower.includes("latest week")) {
+      const latestEmms = weeklyAvailability.changesByProgramme.EMMS.at(-1);
+      const newlyUnavailable = latestEmms.newlyUnavailable.map((item) => `${item.item} (${item.category})`).join("; ");
+      setAssistantAnswer(`From 8 May to 15 May, EMMS availability moved from ${formatPercent(emmsSecond.availability)} to ${formatPercent(emmsThird.availability)}. There were ${latestEmms.newlyUnavailable.length} newly unavailable EMMS items and no recovered EMMS items. Newly unavailable: ${newlyUnavailable}. LAB moved from ${formatPercent(labPrevious.availability)} to ${formatPercent(labLatest.availability)}.`);
+      return;
+    }
+
+    if (lower.includes("what changed") || lower.includes("1 may") || lower.includes("8 may") || lower.includes("weekly")) {
+      const recovered = weeklyAvailability.changes.recovered.map((item) => `${item.item} (${item.category})`).join("; ");
+      setAssistantAnswer(`From 1 May to 8 May, EMMS availability moved from ${formatPercent(emmsFirst.availability)} to ${formatPercent(emmsSecond.availability)}. No items became newly unavailable in the matched EMMS list, and 2 recovered: ${recovered}.`);
+      return;
+    }
+
+    if (lower.includes("lab")) {
+      const lowLab = labLatest.categories.slice(0, 5).map(([category, , , availability]) => `${category} ${formatPercent(availability)}`).join(", ");
+      setAssistantAnswer(`The 8 May LAB report shows overall availability of ${formatPercent(labLatest.availability)}. Lowest LAB categories are ${lowLab}.`);
+      return;
+    }
 
     if (programme) {
       const programmeRows = latestRows.filter((item) => item.category === programme);
@@ -394,8 +456,6 @@ function App() {
         </div>
       </section>
 
-      <StockStatusTicker />
-
       <section className="control-strip">
         <div className="mode-tabs">
           <button className={view === "latest" ? "active" : ""} type="button" onClick={() => setView("latest")}>Command view</button>
@@ -429,6 +489,54 @@ function App() {
         <TrendLine points={filteredTrend} keys={["critical", "near", "over", "gaps"]} />
         <div className="legend">
           <span className="red">Critical</span><span className="amber">Near-critical</span><span className="blue">Overstock</span><span className="green">Data gaps</span>
+        </div>
+      </section>
+
+      <section className="weekly-section">
+        <div className="weekly-head">
+          <div>
+            <p className="eyebrow dark">Weekly Inventory Availability</p>
+            <h2>Submitted weekly EMMS and LAB reports</h2>
+            <p>Availability is based on the submitted Excel files for 1 May, 8 May, and 15 May. Item change lists compare the latest matched weekly submissions.</p>
+          </div>
+          <select value={weeklyProgramme} onChange={(event) => setWeeklyProgramme(event.target.value)}>
+            {weeklyProgrammes.map((programme) => <option key={programme} value={programme}>{programme}</option>)}
+          </select>
+        </div>
+        <div className="weekly-grid">
+          <div className="panel">
+            <h2>{weeklyProgramme} availability trend</h2>
+            <div className="weekly-trend">
+              {weeklyReports.map((report) => (
+                <div className="weekly-point" key={`${report.programme}-${report.date}`}>
+                  <div style={{ height: `${40 + report.availability * 100}px` }} />
+                  <strong>{formatPercent(report.availability)}</strong>
+                  <span>{report.label}</span>
+                  <small>{report.total ? `${report.available}/${report.total} available` : "Category average"}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="panel span-2">
+            <h2>Lowest category availability - {latestWeekly.label}</h2>
+            <AvailabilityBars categories={weeklyCategoryBars} />
+          </div>
+        </div>
+        <div className="change-grid">
+          <div className="change-card">
+            <span>Newly unavailable ({weeklyChange.from} to {weeklyChange.to})</span>
+            <strong>{weeklyChange.newlyUnavailable.length}</strong>
+            {weeklyChange.newlyUnavailable.length ? (
+              <ul>{weeklyChange.newlyUnavailable.map((item) => <li key={item.item}>{item.item} <small>{item.category}</small></li>)}</ul>
+            ) : <p>No matched items moved from available to unavailable between {weeklyChange.from} and {weeklyChange.to}.</p>}
+          </div>
+          <div className="change-card recovered">
+            <span>Recovered ({weeklyChange.from} to {weeklyChange.to})</span>
+            <strong>{weeklyChange.recovered.length}</strong>
+            {weeklyChange.recovered.length ? (
+              <ul>{weeklyChange.recovered.map((item) => <li key={item.item}>{item.item} <small>{item.category}</small></li>)}</ul>
+            ) : <p>No matched items recovered between {weeklyChange.from} and {weeklyChange.to}.</p>}
+          </div>
         </div>
       </section>
 
