@@ -1017,7 +1017,7 @@ h1 {
 
 .table-tools {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 170px 170px 180px 210px;
+  grid-template-columns: minmax(220px, 1fr) repeat(4, minmax(150px, 180px)) 210px;
   gap: 10px;
   padding: 14px;
   border-bottom: 1px solid rgba(19, 43, 31, 0.09);

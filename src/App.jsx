@@ -91,6 +91,7 @@ function buildFullCommodityHistory(rows) {
         category: row.category,
         mos: Array(reports.length).fill(null),
         ami: Array(reports.length).fill(null),
+        stockOnHand: Array(reports.length).fill(null),
         comments: Array(reports.length).fill(""),
         present: Array(reports.length).fill(false),
       });
@@ -100,6 +101,7 @@ function buildFullCommodityHistory(rows) {
     if (reportIndex >= 0) {
       entry.mos[reportIndex] = row.mos;
       entry.ami[reportIndex] = row.ami;
+      entry.stockOnHand[reportIndex] = row.stockOnHand;
       entry.comments[reportIndex] = row.comment || "";
       entry.present[reportIndex] = true;
     }
@@ -115,12 +117,15 @@ function countDataQuality(rows, reportIndex) {
   }, { amiMissing: 0, tbdMos: 0 });
 }
 
-function matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter) {
+function matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter, sohFilter) {
   const amiMissing = item.ami[reportIndex] === null || item.ami[reportIndex] === undefined;
   const tbdMos = (item.comments[reportIndex] || "").toUpperCase().includes("TBD") || item.mos[reportIndex] === null || item.mos[reportIndex] === undefined;
+  const soh = item.stockOnHand[reportIndex];
+  const sohMissing = soh === null || soh === undefined;
   const amiMatches = amiFilter === "all" || (amiFilter === "missing" ? amiMissing : !amiMissing);
   const tbdMatches = tbdFilter === "all" || (tbdFilter === "tbd" ? tbdMos : !tbdMos);
-  return amiMatches && tbdMatches;
+  const sohMatches = sohFilter === "all" || (sohFilter === "missing" ? sohMissing : sohFilter === "zero" ? !sohMissing && soh <= 0 : !sohMissing && soh > 0);
+  return amiMatches && tbdMatches && sohMatches;
 }
 
 const fullCommodityHistory = buildFullCommodityHistory(stockHistory);
@@ -263,6 +268,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [amiFilter, setAmiFilter] = useState("all");
   const [tbdFilter, setTbdFilter] = useState("all");
+  const [sohFilter, setSohFilter] = useState("all");
   const [activeConcern, setActiveConcern] = useState("");
   const [selectedCommodity, setSelectedCommodity] = useState(null);
   const [assistantQuestion, setAssistantQuestion] = useState("");
@@ -275,7 +281,7 @@ function App() {
   const selectedMeta = reports[end];
   const selectedTrend = trend[end];
   const categoryRisks = programmePressure[selectedReport] || [];
-  const hasSliceFilter = categoryFilter !== "all" || amiFilter !== "all" || tbdFilter !== "all" || query.trim();
+  const hasSliceFilter = categoryFilter !== "all" || amiFilter !== "all" || tbdFilter !== "all" || sohFilter !== "all" || query.trim();
   const weeklyProgrammes = [...new Set(weeklyAvailability.reports.map((report) => report.programme))];
   const weeklyReports = weeklyAvailability.reports.filter((report) => report.programme === weeklyProgramme);
   const latestWeekly = weeklyReports.at(-1) || weeklyAvailability.reports.at(-1);
@@ -292,7 +298,7 @@ function App() {
       const rows = fullCommodityHistory
         .filter((item) => item.present[reportIndex])
         .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
-        .filter((item) => matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter))
+        .filter((item) => matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter, sohFilter))
         .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q));
       const counts = rows.reduce((acc, item) => {
         const status = classify(item.mos[reportIndex]).tone;
@@ -304,22 +310,22 @@ function App() {
       }, { critical: 0, near: 0, over: 0, gaps: 0 });
       return { ...report, total: rows.length, ...counts, ...countDataQuality(rows, reportIndex) };
     });
-  }, [amiFilter, categoryFilter, end, hasSliceFilter, query, start, tbdFilter]);
+  }, [amiFilter, categoryFilter, end, hasSliceFilter, query, sohFilter, start, tbdFilter]);
 
   const kpiTrend = filteredTrend.at(-1) || selectedTrend;
   const previousTrend = filteredTrend.length > 1 ? filteredTrend.at(-2) : trend[end - 1];
 
   const filteredConcerns = useMemo(() => {
-    if (statusFilter === "all" && categoryFilter === "all" && amiFilter === "all" && tbdFilter === "all" && !query) return managementConcerns;
+    if (statusFilter === "all" && categoryFilter === "all" && amiFilter === "all" && tbdFilter === "all" && sohFilter === "all" && !query) return managementConcerns;
     return managementConcerns.filter((concern) => {
       const filter = concernFilters[concern.title] || {};
       const statusMatches = statusFilter === "all" || filter.status === statusFilter || concern.tone === statusFilter;
       const categoryMatches = categoryFilter === "all" || concern.programme.includes(categoryFilter) || filter.category === categoryFilter;
       const queryMatches = !query || `${concern.title} ${concern.programme} ${concern.evidence}`.toLowerCase().includes(query.toLowerCase());
-      const dataQualityMatches = (amiFilter === "all" && tbdFilter === "all") || concern.title === "AMI and TBD gaps" || concern.tone === "neutral";
+      const dataQualityMatches = (amiFilter === "all" && tbdFilter === "all" && sohFilter === "all") || concern.title === "AMI and TBD gaps" || concern.tone === "neutral";
       return statusMatches && categoryMatches && queryMatches && dataQualityMatches;
     });
-  }, [statusFilter, categoryFilter, amiFilter, tbdFilter, query]);
+  }, [statusFilter, categoryFilter, amiFilter, tbdFilter, sohFilter, query]);
 
   const drilldown = useMemo(() => {
     const q = query.toLowerCase();
@@ -329,10 +335,10 @@ function App() {
       .filter((item) => !q || `${item.code} ${item.item} ${item.category}`.toLowerCase().includes(q))
       .filter((item) => statusFilter === "all" || item.status.tone === statusFilter)
       .filter((item) => categoryFilter === "all" || item.category === categoryFilter)
-      .filter((item) => matchesDataQualityFilters(item, end, amiFilter, tbdFilter))
+      .filter((item) => matchesDataQualityFilters(item, end, amiFilter, tbdFilter, sohFilter))
       .sort((a, b) => a.status.rank - b.status.rank || (a.mos[end] ?? 99999) - (b.mos[end] ?? 99999))
       .slice(0, 160);
-  }, [amiFilter, end, query, statusFilter, categoryFilter, tbdFilter]);
+  }, [amiFilter, end, query, statusFilter, categoryFilter, sohFilter, tbdFilter]);
 
   const exportRows = useMemo(() => drilldown.map((item) => ({
     code: item.code,
@@ -360,6 +366,7 @@ function App() {
     setCategoryFilter("all");
     setAmiFilter("all");
     setTbdFilter("all");
+    setSohFilter("all");
     setQuery("");
     setActiveConcern("");
   }
@@ -615,6 +622,7 @@ function App() {
             <span>Programme: <b>{categoryFilter === "all" ? "All" : categoryFilter}</b></span>
             <span>AMI: <b>{amiFilter === "all" ? "All" : amiFilter === "missing" ? "Missing only" : "Present only"}</b></span>
             <span>MOS/TBD: <b>{tbdFilter === "all" ? "All" : tbdFilter === "tbd" ? "TBD only" : "Confirmed only"}</b></span>
+            <span>SOH: <b>{sohFilter === "all" ? "All" : sohFilter === "zero" ? "Zero only" : sohFilter === "available" ? "Available only" : "Missing only"}</b></span>
             <span>Data status: <b>Static extracts</b></span>
             <span>Rows shown: <b>{drilldown.length}</b></span>
           </div>
@@ -700,6 +708,12 @@ function App() {
             <option value="all">All MOS</option>
             <option value="tbd">TBD MOS only</option>
             <option value="confirmed">MOS confirmed only</option>
+          </select>
+          <select value={sohFilter} onChange={(event) => setSohFilter(event.target.value)} aria-label="Filter by stock on hand status">
+            <option value="all">All SOH</option>
+            <option value="zero">Zero SOH only</option>
+            <option value="available">SOH available only</option>
+            <option value="missing">Missing SOH only</option>
           </select>
           <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
             <option value="all">All categories</option>
