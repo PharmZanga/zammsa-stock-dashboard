@@ -1,12 +1,391 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZAMMSA Stock Status Dashboard</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ZAMMSA Central Stock Navigator and management stock status overview">
+  <title>ZAMMSA Central Stock Navigator</title>
+  <style>
+    :root {
+      --bg: #f4f6f5;
+      --surface: #ffffff;
+      --surface-muted: #eef2f0;
+      --border: #d8e0dc;
+      --text: #17251e;
+      --muted: #607168;
+      --nav: #133526;
+      --nav-active: #e3f0e9;
+      --green: #16734a;
+      --green-soft: #dff3e8;
+      --red: #b42318;
+      --red-soft: #fde7e5;
+      --amber: #9a5b00;
+      --amber-soft: #fff0cf;
+      --blue: #205e9b;
+      --blue-soft: #e4effa;
+      --gray: #65716b;
+      --gray-soft: #e8ecea;
+      --focus: #1d6f4a;
+      --sidebar: 248px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; min-width: 320px; background: var(--bg); }
+    button, input, select { font: inherit; }
+    button, select { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--focus) 24%, transparent); outline-offset: 1px; }
+    .app { min-height: 100vh; }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; width: var(--sidebar); z-index: 30;
+      display: flex; flex-direction: column; background: var(--nav); color: #fff;
+      border-right: 1px solid #0c291d;
+    }
+    .brand { padding: 22px 20px 18px; border-bottom: 1px solid rgba(255,255,255,.14); }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.4); font-weight: 800; margin-bottom: 14px; }
+    .brand strong { display: block; font-size: 17px; line-height: 1.25; }
+    .brand span { display: block; margin-top: 5px; color: #bad0c4; font-size: 12px; }
+    .nav { display: grid; gap: 6px; padding: 16px 12px; }
+    .nav button {
+      width: 100%; min-height: 42px; display: flex; align-items: center; gap: 11px;
+      border: 1px solid transparent; background: transparent; color: #dce9e2; padding: 10px 12px; text-align: left;
+    }
+    .nav button:hover { background: rgba(255,255,255,.08); }
+    .nav button.active { background: var(--nav-active); color: #173d2b; border-color: #c7ddd1; font-weight: 750; }
+    .nav-icon { width: 22px; text-align: center; font-weight: 800; }
+    .sidebar-foot { margin-top: auto; padding: 16px 20px 22px; color: #bad0c4; font-size: 12px; line-height: 1.5; border-top: 1px solid rgba(255,255,255,.14); }
+    .main { margin-left: var(--sidebar); min-width: 0; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; height: 64px; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 0 24px; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--border);
+    }
+    .topbar h1 { margin: 0; font-size: 18px; letter-spacing: 0; }
+    .topbar-meta { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+    .freshness { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; background: var(--green-soft); color: #11583a; border: 1px solid #b9ddca; }
+    .freshness::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    .menu-button { display: none; width: 38px; height: 38px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+    .content { padding: 22px 24px 36px; }
+    .view[hidden] { display: none; }
+    .page-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 18px; }
+    .eyebrow { margin: 0 0 5px; color: var(--green); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+    .page-head h2 { margin: 0; font-size: 28px; letter-spacing: 0; }
+    .page-head p:last-child { max-width: 760px; margin: 8px 0 0; color: var(--muted); line-height: 1.55; }
+    .report-chip { flex: 0 0 auto; border: 1px solid var(--border); background: var(--surface); padding: 11px 13px; font-size: 13px; color: var(--muted); }
+    .report-chip strong { color: var(--text); }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+    .metric { min-height: 118px; display: grid; align-content: space-between; border: 1px solid var(--border); background: var(--surface); padding: 16px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .metric strong { font-size: 36px; line-height: 1; }
+    .metric small { color: var(--muted); }
+    .metric.red strong { color: var(--red); } .metric.amber strong { color: var(--amber); } .metric.green strong { color: var(--green); }
+    .overview-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .8fr); gap: 14px; }
+    .panel { border: 1px solid var(--border); background: var(--surface); padding: 18px; }
+    .panel h3 { margin: 0 0 5px; font-size: 17px; }
+    .panel > p { margin: 0 0 16px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .pressure-list { display: grid; gap: 12px; }
+    .pressure-row { display: grid; grid-template-columns: minmax(150px, 1fr) 2fr 38px; align-items: center; gap: 10px; font-size: 13px; }
+    .track { height: 9px; background: var(--surface-muted); border: 1px solid var(--border); overflow: hidden; }
+    .track div { height: 100%; background: var(--red); }
+    .concern-list { display: grid; gap: 10px; }
+    .concern { border-left: 4px solid var(--red); background: #fafbfa; padding: 12px; }
+    .concern.amber { border-left-color: var(--amber); }
+    .concern.gray { border-left-color: var(--gray); }
+    .concern b { display: block; font-size: 13px; margin-bottom: 4px; }
+    .concern span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14px; border: 1px solid var(--border); background: var(--surface); }
+    .timeline div { padding: 14px; border-right: 1px solid var(--border); }
+    .timeline div:last-child { border-right: 0; }
+    .timeline span { display: block; color: var(--muted); font-size: 12px; }
+    .timeline strong { display: block; margin-top: 5px; font-size: 20px; }
+    .programme-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 12px; }
+    .programme-badge { border: 1px solid #c5d9cc; background: var(--green-soft); color: #17563a; padding: 7px 10px; border-radius: 999px; font-size: 12px; font-weight: 750; }
+    .programme-badge.risk { border-color: #efbbb6; background: var(--red-soft); color: #8f1e16; }
+    .programme-badge.active { outline: 2px solid var(--text); outline-offset: 1px; }
+    .navigator-metrics { margin-top: 12px; }
+    .controls {
+      display: grid; grid-template-columns: minmax(240px, 1fr) 190px 130px auto; gap: 10px;
+      align-items: center; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-bottom: 0;
+    }
+    .controls input, .controls select {
+      width: 100%; min-height: 40px; border: 1px solid #cbd6d0; background: #fff; color: var(--text); padding: 8px 10px;
+    }
+    .reset { min-height: 40px; border: 1px solid #a8bbb0; background: var(--surface); color: var(--text); padding: 8px 12px; font-weight: 700; }
+    .table-shell { border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
+    .table-scroll { overflow: auto; max-height: calc(100vh - 335px); min-height: 360px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+    th { position: sticky; top: 0; z-index: 5; background: #edf2ef; color: #405249; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 0; background: transparent; color: inherit; padding: 11px 12px; text-align: left; font-weight: 800; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e8eeeb; vertical-align: middle; }
+    tbody tr:hover { background: #f2f7f4; }
+    .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-weight: 700; white-space: nowrap; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .programme-tag { display: inline-block; padding: 4px 7px; border-radius: 999px; background: var(--blue-soft); color: #194f82; white-space: nowrap; font-size: 11px; font-weight: 700; }
+    .mos-pill { display: inline-block; min-width: 58px; padding: 5px 8px; border-radius: 999px; text-align: center; font-weight: 800; }
+    .mos-stockout { background: var(--red-soft); color: #8d1b14; }
+    .mos-critical { background: var(--amber-soft); color: #764500; }
+    .mos-adequate { background: var(--green-soft); color: #125b3c; }
+    .mos-tbd { background: var(--gray-soft); color: #4e5a54; }
+    .trend-up { color: var(--green); font-weight: 850; } .trend-down { color: var(--red); font-weight: 850; } .trend-flat { color: var(--gray); font-weight: 850; }
+    .empty { padding: 38px; text-align: center; color: var(--muted); }
+    .pagination { min-height: 54px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+    .page-buttons { display: flex; gap: 6px; }
+    .page-buttons button { min-width: 36px; height: 34px; border: 1px solid #bdcbc3; background: var(--surface); color: var(--text); }
+    .page-buttons button:disabled { opacity: .45; cursor: default; }
+    .weekly-strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); background: var(--surface); }
+    .weekly-strip div { padding: 18px; border-right: 1px solid var(--border); }
+    .weekly-strip div:last-child { border-right: 0; }
+    .weekly-strip span { color: var(--muted); font-size: 12px; }
+    .weekly-strip strong { display: block; margin: 7px 0 3px; font-size: 26px; color: var(--green); }
+    .weekly-strip small { color: var(--muted); }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: .25s; animation-timing-function: cubic-bezier(.19,1,.22,1); }
+    @media (max-width: 1120px) {
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .overview-grid { grid-template-columns: 1fr; }
+      .controls { grid-template-columns: minmax(220px, 1fr) repeat(2, minmax(150px, .5fr)); }
+      .controls .reset { grid-column: 1 / -1; }
+      .table-scroll { max-height: none; }
+    }
+    @media (max-width: 900px) {
+      :root { --sidebar: 270px; }
+      .sidebar { transform: translateX(-100%); transition: transform .2s ease; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .menu-button { display: inline-grid; place-items: center; }
+      .topbar { padding: 0 14px; }
+      .topbar-meta > span:not(.freshness) { display: none; }
+      .content { padding: 16px 12px 28px; }
+      .page-head { align-items: flex-start; flex-direction: column; }
+      .page-head h2 { font-size: 24px; }
+      .metric-grid, .timeline, .weekly-strip { grid-template-columns: 1fr; }
+      .timeline div, .weekly-strip div { border-right: 0; border-bottom: 1px solid var(--border); }
+      .timeline div:last-child, .weekly-strip div:last-child { border-bottom: 0; }
+      .controls { grid-template-columns: 1fr; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+      .controls .reset { grid-column: auto; }
+      .table-shell { border-top: 1px solid var(--border); }
+      .pagination { align-items: flex-start; flex-direction: column; }
+      .pressure-row { grid-template-columns: 125px 1fr 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">ZM</div>
+        <strong>ZAMMSA Supply Intelligence</strong>
+        <span>Central stock status workspace</span>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="active" data-target="overview"><span class="nav-icon">01</span> Overview</button>
+        <button data-target="navigator"><span class="nav-icon">02</span> Stock Navigator</button>
+        <button data-target="weekly"><span class="nav-icon">03</span> Weekly Availability</button>
+        <button data-target="concerns"><span class="nav-icon">04</span> Management Concerns</button>
+      </nav>
+      <div class="sidebar-foot">Source: ZAMMSA Central Stock Status reports<br>Latest central report: 15 May 2026</div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation">☰</button>
+          <h1 id="viewTitle">Central Stock Overview</h1>
+        </div>
+        <div class="topbar-meta"><span>Management review</span><span class="freshness">Updated 15 May 2026</span></div>
+      </header>
+
+      <main class="content">
+        <section class="view" id="overview">
+          <div class="page-head">
+            <div><p class="eyebrow">ZAMMSA Commodity Stock Control</p><h2>Central stock status overview</h2><p>Management-level signals from the four central stock reports, with direct access to programme-level commodity browsing.</p></div>
+            <div class="report-chip">Latest report<br><strong>15 May 2026</strong></div>
+          </div>
+          <div class="metric-grid">
+            <article class="metric"><span>Extracted commodity rows</span><strong>694</strong><small>Latest central report</small></article>
+            <article class="metric red"><span>Critical stockouts</span><strong>58</strong><small>MOS at or below 0.1</small></article>
+            <article class="metric amber"><span>Near-critical</span><strong>76</strong><small>More than 0.1 and below 1 MOS</small></article>
+            <article class="metric green"><span>Data-quality follow-up</span><strong>284</strong><small>Missing AMI and TBD MOS overlap</small></article>
+          </div>
+          <div class="overview-grid">
+            <section class="panel"><h3>Programme pressure</h3><p>Stockout and near-critical signals in the latest central report.</p><div class="pressure-list" id="overviewPressure"></div></section>
+            <section class="panel"><h3>Priority management concerns</h3><p>Evidence-led review points for the next stock meeting.</p><div class="concern-list">
+              <div class="concern"><b>Persistent stock pressure</b><span>Anti-TB, anti-malarial and selected reproductive health lines remain below two months of stock.</span></div>
+              <div class="concern amber"><b>Forecast and distribution review</b><span>Large month-to-month movements require validation against issues, receipts and redistribution activity.</span></div>
+              <div class="concern gray"><b>AMI and MOS completeness</b><span>284 latest rows require linked AMI completion and TBD MOS confirmation; totals overlap.</span></div>
+            </div></section>
+          </div>
+          <div class="timeline">
+            <div><span>31 March 2026</span><strong>521 rows</strong></div><div><span>15 April 2026</span><strong>538 rows</strong></div><div><span>30 April 2026</span><strong>539 rows</strong></div><div><span>15 May 2026</span><strong>694 rows</strong></div>
+          </div>
+        </section>
+
+        <section class="view" id="navigator" hidden>
+          <div class="page-head">
+            <div><p class="eyebrow">Programme Office Workspace</p><h2>ZAMMSA Central Stock Navigator</h2><p>Browse and filter central medicines and medical supplies stock status. MOS uses May SOH divided by AMI and is displayed to one decimal; records without a valid AMI remain TBD.</p></div>
+            <div class="report-chip">Navigator dataset<br><strong id="datasetCount"></strong></div>
+          </div>
+          <div class="programme-bar" id="programmeBar" aria-label="Filter by programme"></div>
+          <div class="metric-grid navigator-metrics">
+            <article class="metric"><span>Total items shown</span><strong id="totalMetric">0</strong><small>Current filtered result</small></article>
+            <article class="metric red"><span>Stockouts</span><strong id="stockoutMetric">0</strong><small>MOS equals 0</small></article>
+            <article class="metric amber"><span>Critical</span><strong id="criticalMetric">0</strong><small>More than 0 and below 2 MOS</small></article>
+            <article class="metric green"><span>Adequate</span><strong id="adequateMetric">0</strong><small>At least 2 MOS</small></article>
+          </div>
+          <div class="controls">
+            <input id="searchInput" type="search" placeholder="Search ordering code or item name" aria-label="Search stock items">
+            <select id="stockFilter" aria-label="Filter by stock level"><option value="all">All stock levels</option><option value="stockout">Stockout</option><option value="critical">Critical</option><option value="adequate">Adequate</option><option value="tbd">TBD</option></select>
+            <select id="pageSize" aria-label="Rows per page"><option value="30">30 rows</option><option value="60">60 rows</option><option value="all">All rows</option></select>
+            <button class="reset" id="resetButton" type="button">Reset filters</button>
+          </div>
+          <div class="table-shell">
+            <div class="table-scroll">
+              <table>
+                <thead><tr>
+                  <th><button data-sort="code">Ordering code <span></span></button></th>
+                  <th><button data-sort="name">Item name <span></span></button></th>
+                  <th><button data-sort="programme">Programme <span></span></button></th>
+                  <th><button data-sort="mos">MOS May 2026 <span></span></button></th>
+                  <th><button data-sort="soh_may">SOH May 2026 <span></span></button></th>
+                  <th><button data-sort="ami">Average monthly issue <span></span></button></th>
+                  <th><button data-sort="trend">Trend vs March <span></span></button></th>
+                </tr></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <div class="pagination"><span id="pageStatus"></span><div class="page-buttons"><button id="prevPage" type="button" aria-label="Previous page">‹</button><button id="nextPage" type="button" aria-label="Next page">›</button></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="weekly" hidden>
+          <div class="page-head"><div><p class="eyebrow">Weekly Inventory Availability</p><h2>EMMS and laboratory availability</h2><p>Weekly submitted inventory reports complement the biweekly central MOS review.</p></div></div>
+          <div class="weekly-strip"><div><span>EMMS · 1 May 2026</span><strong>45.7%</strong><small>Baseline weekly availability</small></div><div><span>EMMS · 8 May 2026</span><strong>46.1%</strong><small>Two matched items recovered</small></div><div><span>EMMS · 15 May 2026</span><strong>44.7%</strong><small>Seven newly unavailable items</small></div></div>
+          <div class="overview-grid" style="margin-top:14px"><section class="panel"><h3>Latest weekly change</h3><p>From 8 May to 15 May, EMMS availability decreased by 1.4 percentage points.</p><div class="concern-list"><div class="concern"><b>Newly unavailable</b><span>Linezolid, Delamanid, Artemether/Lumefantrine, Metronidazole, Methylprednisolone, Pethidine and disposable head covers.</span></div></div></section><section class="panel"><h3>Laboratory availability</h3><p>Category-average LAB availability moved from 51.2% on 8 May to 49.8% on 15 May.</p><div class="concern amber"><b>Lowest categories</b><span>Pipettes & Tips, Biochemistry, Acids & Alcohols, Microbiology & Parasitology, and Haematology & Blood Transfusion.</span></div></section></div>
+        </section>
+
+        <section class="view" id="concerns" hidden>
+          <div class="page-head"><div><p class="eyebrow">Management Concerns</p><h2>Action-oriented review register</h2><p>Use the Stock Navigator to verify individual items behind each concern before assigning programme actions.</p></div></div>
+          <div class="overview-grid"><section class="panel"><div class="concern-list">
+            <div class="concern"><b>Persistent stockouts and sub-two-month lines</b><span>Prioritise procurement, emergency redistribution and supplier follow-up for repeated low-MOS commodities.</span></div>
+            <div class="concern"><b>Programme risk concentration</b><span>Review Anti-TB, Anti-Malarials, Reproductive Health, Anaesthetics, IV Fluids, Laboratory Services and Renal lines by programme office.</span></div>
+            <div class="concern amber"><b>Extreme movement and forecast volatility</b><span>Validate sharp increases or decreases against receipts, issues, pipeline stock and reporting corrections.</span></div>
+            <div class="concern gray"><b>Data quality</b><span>Assign ownership for missing AMI and TBD MOS completion in the next reporting cycle.</span></div>
+          </div></section><section class="panel"><h3>Recommended meeting sequence</h3><p>1. Confirm stockout records and active pipeline.<br>2. Review critical lines below two MOS.<br>3. Validate major SOH movements since March.<br>4. Resolve AMI and TBD reporting gaps.<br>5. Record owner and due date for each action.</p><button class="reset" type="button" data-open-navigator>Open Stock Navigator</button></section></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const stockData = [{"code":"ARV0091","name":"Abacavir Sulfate +Lamivudine+Dolutegravir Tablet 60/30/5mg(180)","programme":"National ART Programme","ami":23495,"soh_may":191448,"soh_apr15":223170,"soh_apr30":204210,"soh_mar":242837},{"code":"ARV0078","name":"Dolutegravir 50mg Tablet(30)","programme":"National ART Programme","ami":21055,"soh_may":99824,"soh_apr15":121828,"soh_apr30":104980,"soh_mar":129839},{"code":"ARV0086","name":"Dolutegravir 10mg Scored Dispersible Tablets(90)","programme":"National ART Programme","ami":1563,"soh_may":18666,"soh_apr15":17413,"soh_apr30":15533,"soh_mar":6195},{"code":"ARV0089","name":"Darunavir/Ritonavir 400/50mg Tab(60)","programme":"National ART Programme","ami":1417,"soh_may":12244,"soh_apr15":18654,"soh_apr30":13800,"soh_mar":19510},{"code":"ARV0032","name":"Tenofovir/Emricitabine 300/200mg Tablet(30)","programme":"National ART Programme","ami":73367,"soh_may":24696,"soh_apr15":64426,"soh_apr30":64562,"soh_mar":91976},{"code":"ARV0024","name":"Nevirapine 50mg/5ml 100ml Suspension(1)","programme":"National ART Programme","ami":14289,"soh_may":46250,"soh_apr15":2302,"soh_apr30":60992,"soh_mar":3167},{"code":"TB0074","name":"Bedaquiline 100mg Tablet (188)","programme":"Anti-TB Medicines","ami":89,"soh_may":66,"soh_apr15":70,"soh_apr30":70,"soh_mar":70},{"code":"TB0104","name":"Linezolid 600mg Tablet (100)","programme":"Anti-TB Medicines","ami":16583,"soh_may":792,"soh_apr15":797,"soh_apr30":797,"soh_mar":797},{"code":"TB0072","name":"Moxifloxacin 400mg Tablet (100)","programme":"Anti-TB Medicines","ami":332,"soh_may":16,"soh_apr15":16,"soh_apr30":16,"soh_mar":43},{"code":"TB0112","name":"Delamanid 50mg Tablet(48)","programme":"Anti-TB Medicines","ami":6887,"soh_may":899,"soh_apr15":914,"soh_apr30":914,"soh_mar":914},{"code":"TB0051","name":"Rifampicin/Isoniazid 150/75mg Tablet(672)","programme":"Anti-TB Medicines","ami":3096,"soh_may":38536,"soh_apr15":39076,"soh_apr30":39076,"soh_mar":40039},{"code":"TB0111","name":"Rifapentine/Isoniazid 300/300mg Tablet(36)","programme":"Anti-TB Medicines","ami":14600,"soh_may":131333,"soh_apr15":141332,"soh_apr30":131333,"soh_mar":151285},{"code":"MAL0001","name":"Artemether + Lumefantrine 20/120mg 6's tab (30)","programme":"Anti-Malarials","ami":6932,"soh_may":66,"soh_apr15":236,"soh_apr30":66,"soh_mar":712},{"code":"MAL0002","name":"Artemether + Lumefantrine 20/120mg 12's tab (30)","programme":"Anti-Malarials","ami":16704,"soh_may":4305,"soh_apr15":4680,"soh_apr30":4305,"soh_mar":5832},{"code":"MAL0003","name":"Artemether + Lumefantrine 20/120mg 18's tab (30)","programme":"Anti-Malarials","ami":7045,"soh_may":60,"soh_apr15":1304,"soh_apr30":60,"soh_mar":3758},{"code":"MAL0004","name":"Artemether + Lumefantrine 20/120mg 24's tab (30)","programme":"Anti-Malarials","ami":51047,"soh_may":51463,"soh_apr15":58967,"soh_apr30":51463,"soh_mar":77086},{"code":"MAL0015","name":"Rapid Diagnostic Test for Malaria kit (25)","programme":"Anti-Malarials","ami":169589,"soh_may":235100,"soh_apr15":277775,"soh_apr30":235100,"soh_mar":145992},{"code":"RH0026","name":"Levonorgestrel 1.5mg tab (Emergency pill) (10)","programme":"Reproductive Health","ami":1260,"soh_may":43,"soh_apr15":43,"soh_apr30":43,"soh_mar":45},{"code":"RH0028","name":"Etonogestrel (Implanon) 68mg/rod implant subdermal (1)","programme":"Reproductive Health","ami":28426,"soh_may":1090,"soh_apr15":42463,"soh_apr30":17352,"soh_mar":56919},{"code":"RH0004","name":"Ethinyloestradiol/Levonorgestrel 130mg/150mcg tablet, cycle (3)","programme":"Reproductive Health","ami":62963,"soh_may":147822,"soh_apr15":219923,"soh_apr30":178264,"soh_mar":222390},{"code":"RH0002","name":"Condoms Latex Male (144)","programme":"Reproductive Health","ami":103952,"soh_may":732483,"soh_apr15":930994,"soh_apr30":942888,"soh_mar":903728},{"code":"EM1529","name":"Oxytocin IV 10IU/ml injection 1ml amp (10)","programme":"Other Essential Medicines","ami":10970,"soh_may":18706,"soh_apr15":55618,"soh_apr30":35445,"soh_mar":72245},{"code":"EM4085","name":"Anti-D Immunoglobulin for IV Injection 300mcg (RT) (1)","programme":"Other Essential Medicines","ami":12890,"soh_may":1504,"soh_apr15":1510,"soh_apr30":1510,"soh_mar":1510},{"code":"EM1583","name":"Fentanyl 100mcg/2ml injection (10)","programme":"Pain & Palliative","ami":75882,"soh_may":124962,"soh_apr15":45113,"soh_apr30":125092,"soh_mar":45873},{"code":"EM1294","name":"Morphine Sulphate Injection 10mg/ml, 1ml Amp (5)","programme":"Pain & Palliative","ami":824,"soh_may":3917,"soh_apr15":6797,"soh_apr30":5537,"soh_mar":8877},{"code":"EM0342","name":"Paracetamol syrup 120mg/5ml, 100ml bottle (1)","programme":"Pain & Palliative","ami":86873,"soh_may":788791,"soh_apr15":607070,"soh_apr30":743064,"soh_mar":622902},{"code":"EM0348","name":"Paracetamol 500mg tablet (1000)","programme":"Pain & Palliative","ami":24784,"soh_may":176438,"soh_apr15":206686,"soh_apr30":188461,"soh_mar":181309},{"code":"EM1560","name":"Isoflurane, 250ml bottle (1)","programme":"Anaesthetics","ami":1004,"soh_may":5227,"soh_apr15":5827,"soh_apr30":5527,"soh_mar":5827},{"code":"EM2901","name":"Glycopyrronium Bromide 200mcg/ml Inj (10)","programme":"Anaesthetics","ami":343,"soh_may":32,"soh_apr15":116,"soh_apr30":116,"soh_mar":255},{"code":"MS1029","name":"Larygeal Airway Masks Size 4 60-80kg (1)","programme":"Medical Supplies","ami":1717,"soh_may":310,"soh_apr15":310,"soh_apr30":310,"soh_mar":310},{"code":"MS1030","name":"Larygeal Airway Masks Size 5 >80kg (1)","programme":"Medical Supplies","ami":1717,"soh_may":530,"soh_apr15":530,"soh_apr30":530,"soh_mar":530},{"code":"EM1595","name":"Esomeprazole Sodium Powder 40mg/10ml injection (1)","programme":"Gastrointestinal","ami":37500,"soh_may":319,"soh_apr15":2318,"soh_apr30":318,"soh_mar":3242},{"code":"EM2367","name":"Aluminium hydroxide + Magnesium trisilicate 250mg/125mg /5ml suspension 100ml (1)","programme":"Gastrointestinal","ami":75168,"soh_may":1330,"soh_apr15":5647,"soh_apr30":4985,"soh_mar":10190},{"code":"EM1057","name":"Sodium Chloride (Normal Saline) 0.9%, 500ml (20)","programme":"IV Fluids","ami":102290,"soh_may":6619,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"EM3063","name":"Sodium Chloride Inj 0.9% 10ml Plastic Ampoules(20)","programme":"IV Fluids","ami":21000,"soh_may":4397,"soh_apr15":4397,"soh_apr30":4397,"soh_mar":4397},{"code":"EM1559","name":"Insulin, Intermediate acting 100IU/ml, 10ml vial (1)","programme":"Endocrine","ami":3612,"soh_may":579,"soh_apr15":1245,"soh_apr30":3439,"soh_mar":3402},{"code":"EM2050","name":"Insulin Soluble Short Acting 100iu,10ml Inj(1)","programme":"Endocrine","ami":6718,"soh_may":1000665,"soh_apr15":1926440,"soh_apr30":1925221,"soh_mar":88320},{"code":"EM0706","name":"Metformin 500mg tablet (1000)","programme":"Endocrine","ami":3963,"soh_may":75476,"soh_apr15":78088,"soh_apr30":77724,"soh_mar":79017},{"code":"CAN0236","name":"Mesna 100mg/ml Injection Solution, 4ml Amp (15)","programme":"Oncology","ami":1250,"soh_may":55,"soh_apr15":55,"soh_apr30":null,"soh_mar":55},{"code":"CAN0027","name":"Filgrastim 300mcg Injection (1)","programme":"Oncology","ami":2000,"soh_may":6800,"soh_apr15":8300,"soh_apr30":6800,"soh_mar":8300},{"code":"CAN0117","name":"Trastuzumab 440mg/20ml Injection (1)","programme":"Oncology","ami":208,"soh_may":1344,"soh_apr15":1644,"soh_apr30":1344,"soh_mar":1644},{"code":"HTK0002","name":"Determine HIV 1/2 Rapid Test Inc Chase Buffer (100)","programme":"HIV Test Kits","ami":4577,"soh_may":45138,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"HTK0015","name":"Standard Q HIV/Syphilis Combo(25)","programme":"HIV Test Kits","ami":4854,"soh_may":11767,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"HTK0016","name":"HIV 1/2 Blood based self test kit (1)","programme":"HIV Test Kits","ami":39697,"soh_may":2644,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"HTK0011","name":"Oral Quick HIV 1/2 Self Test Kit (25)","programme":"HIV Test Kits","ami":4737,"soh_may":6174,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"LAB1890","name":"Gene Xpert: (Xpert MTB/RIF Ultra), test (50)","programme":"Laboratory Services","ami":1731,"soh_may":9564,"soh_apr15":7391,"soh_apr30":6661,"soh_mar":8162},{"code":"LAB2012","name":"GeneXpert HIV-1 Qual(10)","programme":"Laboratory Services","ami":1252,"soh_may":447,"soh_apr15":79,"soh_apr30":3500,"soh_mar":93},{"code":"LAB2049","name":"Gene Xpert HIV-1 Viral Load(10)","programme":"Laboratory Services","ami":1190,"soh_may":1250,"soh_apr15":null,"soh_apr30":2044,"soh_mar":163},{"code":"LAB7995","name":"GeneXpert : (XPERT MTB/XDR) Cartridges (10)","programme":"Laboratory Services","ami":240,"soh_may":1014,"soh_apr15":542,"soh_apr30":null,"soh_mar":578},{"code":"RN0032","name":"Fresenius: Bi-Bag 5008 650g (1)","programme":"Renal","ami":2327,"soh_may":8746,"soh_apr15":6628,"soh_apr30":9227,"soh_mar":9336},{"code":"RN0044","name":"Fresenius: Dialysis Fistula Needle 15G (1)","programme":"Renal","ami":881,"soh_may":3975,"soh_apr15":4025,"soh_apr30":4025,"soh_mar":4390},{"code":"RN0059","name":"Fresenius: FX60 Dialysers (1)","programme":"Renal","ami":618,"soh_may":3617,"soh_apr15":1017,"soh_apr30":3963,"soh_mar":1751},{"code":"RN0073","name":"Fresenius: PROHD and Set M (1)","programme":"Renal","ami":2928,"soh_may":6827,"soh_apr15":8427,"soh_apr30":8427,"soh_mar":9806},{"code":"RN0087","name":"Nipro: AV Blood Line Set (Blood Tubing Set) (1)","programme":"Renal","ami":883,"soh_may":4037,"soh_apr15":325,"soh_apr30":4541,"soh_mar":917},{"code":"MS2836","name":"Sodium Hypochlorite Solution 3.5%w/v,750ml(1)","programme":"Medical Supplies","ami":75332,"soh_may":71243,"soh_apr15":130181,"soh_apr30":93523,"soh_mar":136313},{"code":"MS0022","name":"Cannulae I.V Short Sterile Disposable 20G (50)","programme":"Medical Supplies","ami":1715,"soh_may":27644,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"MS2868","name":"Hypodermic Needle 23G(100)","programme":"Medical Supplies","ami":5529,"soh_may":30869,"soh_apr15":null,"soh_apr30":null,"soh_mar":null},{"code":"MS2618","name":"Disposable Surgical Face Mask (10)","programme":"Medical Supplies","ami":2150,"soh_may":70,"soh_apr15":70,"soh_apr30":70,"soh_mar":70}];
+    const state = { programme: null, stock: "all", search: "", pageSize: 30, page: 1, sortKey: "mos", sortDirection: "asc" };
+    const titles = { overview: "Central Stock Overview", navigator: "ZAMMSA Central Stock Navigator", weekly: "Weekly Inventory Availability", concerns: "Management Concerns" };
+    const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+
+    function mosFor(item) {
+      if (item.ami === null || item.ami === 0 || item.soh_may === null) return null;
+      return Math.round((item.soh_may / item.ami) * 10) / 10;
+    }
+    function stockLevel(item) {
+      const mos = mosFor(item);
+      if (mos === null) return "tbd";
+      if (mos === 0) return "stockout";
+      if (mos < 2) return "critical";
+      return "adequate";
+    }
+    function trendFor(item) {
+      if (item.soh_mar === null || item.soh_mar === 0 || item.soh_may === null) return { value: 0, label: "→", className: "trend-flat", text: "No comparable baseline" };
+      const value = (item.soh_may - item.soh_mar) / item.soh_mar;
+      if (value > .05) return { value, label: "↑", className: "trend-up", text: "+" + Math.round(value * 100) + "%" };
+      if (value < -.05) return { value, label: "↓", className: "trend-down", text: Math.round(value * 100) + "%" };
+      return { value, label: "→", className: "trend-flat", text: Math.round(value * 100) + "%" };
+    }
+    function formatValue(value) { return value === null || value === undefined ? "TBD" : number.format(value); }
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]); }
+    function mosMarkup(item) {
+      const mos = mosFor(item); const level = stockLevel(item);
+      return '<span class="mos-pill mos-' + level + '">' + (mos === null ? "TBD" : number.format(mos)) + '</span>';
+    }
+    function filteredRows() {
+      const query = state.search.toLowerCase();
+      return stockData.filter(item => !state.programme || item.programme === state.programme)
+        .filter(item => state.stock === "all" || stockLevel(item) === state.stock)
+        .filter(item => !query || (item.code + " " + item.name).toLowerCase().includes(query));
+    }
+    function sortRows(rows) {
+      return [...rows].sort((a, b) => {
+        let av; let bv;
+        if (state.sortKey === "mos") { av = mosFor(a); bv = mosFor(b); }
+        else if (state.sortKey === "trend") { av = trendFor(a).value; bv = trendFor(b).value; }
+        else { av = a[state.sortKey]; bv = b[state.sortKey]; }
+        if (av === null || av === undefined) return 1;
+        if (bv === null || bv === undefined) return -1;
+        const result = typeof av === "string" ? av.localeCompare(bv) : av - bv;
+        return state.sortDirection === "asc" ? result : -result;
+      });
+    }
+    function renderProgrammes() {
+      const programmes = [...new Set(stockData.map(item => item.programme))].sort();
+      document.getElementById("programmeBar").innerHTML = programmes.map(programme => {
+        const rows = stockData.filter(item => item.programme === programme);
+        const risk = rows.some(item => ["stockout", "critical"].includes(stockLevel(item)));
+        return '<button class="programme-badge ' + (risk ? "risk " : "") + (state.programme === programme ? "active" : "") + '" data-programme="' + escapeHtml(programme) + '">' + escapeHtml(programme) + ' · ' + rows.length + '</button>';
+      }).join("");
+      document.querySelectorAll("[data-programme]").forEach(button => button.addEventListener("click", () => { state.programme = state.programme === button.dataset.programme ? null : button.dataset.programme; state.page = 1; render(); }));
+    }
+    function renderMetrics(rows) {
+      const levels = rows.reduce((acc, item) => { acc[stockLevel(item)] += 1; return acc; }, { stockout: 0, critical: 0, adequate: 0, tbd: 0 });
+      document.getElementById("totalMetric").textContent = rows.length;
+      document.getElementById("stockoutMetric").textContent = levels.stockout;
+      document.getElementById("criticalMetric").textContent = levels.critical;
+      document.getElementById("adequateMetric").textContent = levels.adequate;
+    }
+    function renderTable() {
+      const filtered = filteredRows(); renderMetrics(filtered);
+      const sorted = sortRows(filtered);
+      const pageSize = state.pageSize === "all" ? sorted.length || 1 : state.pageSize;
+      const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
+      state.page = Math.min(state.page, totalPages);
+      const start = (state.page - 1) * pageSize;
+      const pageRows = sorted.slice(start, start + pageSize);
+      document.getElementById("tableBody").innerHTML = pageRows.length ? pageRows.map(item => {
+        const trend = trendFor(item);
+        return '<tr><td class="code">' + escapeHtml(item.code) + '</td><td>' + escapeHtml(item.name) + '</td><td><span class="programme-tag">' + escapeHtml(item.programme) + '</span></td><td>' + mosMarkup(item) + '</td><td class="num">' + formatValue(item.soh_may) + '</td><td class="num">' + formatValue(item.ami) + '</td><td class="' + trend.className + '" title="' + trend.text + '">' + trend.label + ' ' + trend.text + '</td></tr>';
+      }).join("") : '<tr><td class="empty" colspan="7">No items match the current filters.</td></tr>';
+      const first = sorted.length ? start + 1 : 0; const last = Math.min(start + pageSize, sorted.length);
+      document.getElementById("pageStatus").textContent = "Showing " + first + "–" + last + " of " + sorted.length + " items · Page " + state.page + " of " + totalPages;
+      document.getElementById("prevPage").disabled = state.page <= 1;
+      document.getElementById("nextPage").disabled = state.page >= totalPages;
+      document.querySelectorAll("th button").forEach(button => { button.querySelector("span").textContent = button.dataset.sort === state.sortKey ? (state.sortDirection === "asc" ? "↑" : "↓") : ""; });
+    }
+    function renderOverviewPressure() {
+      const counts = new Map();
+      stockData.forEach(item => { if (["stockout", "critical"].includes(stockLevel(item))) counts.set(item.programme, (counts.get(item.programme) || 0) + 1); });
+      const rows = [...counts].sort((a, b) => b[1] - a[1]).slice(0, 8); const max = Math.max(...rows.map(row => row[1]), 1);
+      document.getElementById("overviewPressure").innerHTML = rows.map(([programme, count]) => '<div class="pressure-row"><span>' + escapeHtml(programme) + '</span><div class="track"><div style="width:' + (count / max * 100) + '%"></div></div><b>' + count + '</b></div>').join("");
+    }
+    function render() { renderProgrammes(); renderTable(); }
+    function openView(id) {
+      const change = () => {
+        document.querySelectorAll(".view").forEach(view => view.hidden = view.id !== id);
+        document.querySelectorAll(".nav button").forEach(button => button.classList.toggle("active", button.dataset.target === id));
+        document.getElementById("viewTitle").textContent = titles[id];
+        document.getElementById("sidebar").classList.remove("open");
+      };
+      if (document.startViewTransition) document.startViewTransition(change); else change();
+    }
+
+    document.querySelectorAll(".nav button").forEach(button => button.addEventListener("click", () => openView(button.dataset.target)));
+    document.querySelectorAll("[data-open-navigator]").forEach(button => button.addEventListener("click", () => openView("navigator")));
+    document.getElementById("menuButton").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("open"));
+    document.getElementById("searchInput").addEventListener("input", event => { state.search = event.target.value; state.page = 1; renderTable(); });
+    document.getElementById("stockFilter").addEventListener("change", event => { state.stock = event.target.value; state.page = 1; renderTable(); });
+    document.getElementById("pageSize").addEventListener("change", event => { state.pageSize = event.target.value === "all" ? "all" : Number(event.target.value); state.page = 1; renderTable(); });
+    document.getElementById("resetButton").addEventListener("click", () => { Object.assign(state, { programme: null, stock: "all", search: "", pageSize: 30, page: 1, sortKey: "mos", sortDirection: "asc" }); document.getElementById("searchInput").value = ""; document.getElementById("stockFilter").value = "all"; document.getElementById("pageSize").value = "30"; render(); });
+    document.getElementById("prevPage").addEventListener("click", () => { state.page -= 1; renderTable(); });
+    document.getElementById("nextPage").addEventListener("click", () => { state.page += 1; renderTable(); });
+    document.querySelectorAll("th button").forEach(button => button.addEventListener("click", () => { const key = button.dataset.sort; if (state.sortKey === key) state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc"; else { state.sortKey = key; state.sortDirection = "asc"; } state.page = 1; renderTable(); }));
+
+    document.getElementById("datasetCount").textContent = stockData.length + " priority items";
+    renderOverviewPressure();
+    render();
+  </script>
+</body>
 </html>
