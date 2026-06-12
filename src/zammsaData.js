@@ -18,6 +18,11 @@ export const reports = [
     "key": "2026-05-15",
     "label": "15 May 2026",
     "short": "15 May"
+  },
+  {
+    "key": "2026-05-31",
+    "label": "31 May 2026",
+    "short": "31 May"
   }
 ];
 export const trend = [
@@ -68,6 +73,18 @@ export const trend = [
     "gaps": 284,
     "amiMissing": 284,
     "tbdMos": 284
+  },
+  {
+    "key": "2026-05-31",
+    "label": "31 May 2026",
+    "short": "31 May",
+    "total": 722,
+    "critical": 49,
+    "near": 78,
+    "over": 31,
+    "gaps": 324,
+    "amiMissing": 319,
+    "tbdMos": 324
   }
 ];
 export const programmePressure = {
@@ -248,6 +265,58 @@ export const programmePressure = {
       "value": 3,
       "tone": "red"
     }
+  ],
+  "2026-05-31": [
+    {
+      "label": "Essential Medicines",
+      "value": 38,
+      "tone": "red"
+    },
+    {
+      "label": "Anaesthetics",
+      "value": 19,
+      "tone": "red"
+    },
+    {
+      "label": "Laboratory",
+      "value": 13,
+      "tone": "red"
+    },
+    {
+      "label": "Anti-TB",
+      "value": 10,
+      "tone": "red"
+    },
+    {
+      "label": "Medical/Surgical",
+      "value": 9,
+      "tone": "red"
+    },
+    {
+      "label": "PPE",
+      "value": 6,
+      "tone": "red"
+    },
+    {
+      "label": "Renal",
+      "value": 5,
+      "tone": "amber"
+    },
+    {
+      "label": "Ophthalmic",
+      "value": 4,
+      "tone": "red"
+    },
+    {
+      "label": "Reproductive Health",
+      "value": 4,
+      "tone": "red"
+    },
+    {
+      "label": "Cardiovascular",
+      "value": 3,
+      "tone": "red"
+    }
   ]
 };
 export const categories = [
@@ -293,7 +362,7 @@ export const managementConcerns = [
     "severity": "High",
     "tone": "red",
     "programme": "Anaesthetics, Laboratory, Anti-TB, Cardiovascular, Anti-malarials",
-    "evidence": "Latest programme pressure on 15 May 2026 is concentrated in Essential Medicines (29), Laboratory (24), Anaesthetics (22), Anti-TB (10), Renal (7).",
+    "evidence": "Latest programme pressure on 31 May 2026 is concentrated in Essential Medicines (38), Anaesthetics (19), Laboratory (13), Anti-TB (10), Medical/Surgical (9).",
     "action": "Use programme-level review meetings to separate procurement delays, distribution issues, and forecasting gaps."
   },
   {
@@ -309,7 +378,7 @@ export const managementConcerns = [
     "severity": "Data Quality",
     "tone": "neutral",
     "programme": "Reporting quality",
-    "evidence": "Latest data-quality split: 284 rows have missing AMI and 284 rows have TBD MOS. These overlap in the 15 May extract, so treat them as linked work queues rather than additive totals.",
+    "evidence": "Latest data-quality split: 319 rows have missing AMI and 324 rows have TBD MOS. These may overlap, so treat them as linked work queues rather than additive totals.",
     "action": "Assign ownership for AMI completion and require TBD MOS confirmation in the next reporting cycle."
   },
   {
