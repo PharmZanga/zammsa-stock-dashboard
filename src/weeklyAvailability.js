@@ -1383,53 +1383,707 @@ export const weeklyAvailability = {
           0.0
         ]
       ]
+    },
+    {
+      "date": "2026-06-13",
+      "label": "13 June 2026",
+      "programme": "EMMS",
+      "available": 209,
+      "total": 477,
+      "unavailable": 268,
+      "availability": 0.438155,
+      "categories": [
+        [
+          "MEDICINES USED IN DIARRHOEA",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "CONDOMS",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "NUTRITIONAL PRODUCTS",
+          5,
+          5,
+          1.0
+        ],
+        [
+          "ANTIMALARIAL",
+          6,
+          7,
+          0.86
+        ],
+        [
+          "MEDICINES AFFECTING THE BLOOD",
+          4,
+          6,
+          0.83
+        ],
+        [
+          "MEDICINES ACTING ON THE RESPIRATORY TRACT",
+          4,
+          5,
+          0.8
+        ],
+        [
+          "RENAL",
+          38,
+          53,
+          0.716981
+        ],
+        [
+          "VITAMINS AND MINERALS",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES",
+          16,
+          24,
+          0.67
+        ],
+        [
+          "MEDICINES FOR PAIN AND PALLIATIVE CARE",
+          8,
+          12,
+          0.67
+        ],
+        [
+          "ANTIRETROVIRAL THERAPY MEDICINES",
+          10,
+          16,
+          0.63
+        ],
+        [
+          "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE",
+          10,
+          18,
+          0.58
+        ],
+        [
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS",
+          9,
+          16,
+          0.56
+        ],
+        [
+          "DENTAL",
+          5,
+          9,
+          0.56
+        ],
+        [
+          "DIURETICS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "ANTISEPTICS AND DISINFECTANTS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS",
+          6,
+          11,
+          0.454545
+        ],
+        [
+          "GASTROINTESTINAL MEDICINES",
+          4,
+          9,
+          0.44
+        ],
+        [
+          "IV CANNULAE & GIVING SETS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "SYRINGES AND NEEDLES",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "CARDIOVASCULAR MEDICINES",
+          7,
+          20,
+          0.35
+        ],
+        [
+          "MEDICINES FOR DISEASES OF JOINTS & BONES",
+          1,
+          3,
+          0.333333
+        ],
+        [
+          "GENERAL MED-SURG",
+          4,
+          13,
+          0.31
+        ],
+        [
+          "SUTURES",
+          6,
+          20,
+          0.3
+        ],
+        [
+          "EPIDEMIC SUPPLIES",
+          8,
+          27,
+          0.3
+        ],
+        [
+          "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS",
+          2,
+          7,
+          0.29
+        ],
+        [
+          "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "CONSUMABLES",
+          7,
+          28,
+          0.25
+        ],
+        [
+          "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "IMAGING",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "GLOVES",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "ANTINEOPLASTICS AND IMMUNOMODULATORS",
+          5,
+          24,
+          0.21
+        ],
+        [
+          "ANTIINFECTIVE MEDICINES",
+          7,
+          35,
+          0.2
+        ],
+        [
+          "ANTIDOTES AND OTHER SUBSTANCES USED IN POISONINGS",
+          1,
+          5,
+          0.2
+        ],
+        [
+          "DERMATOLOGICAL/TOPICAL MEDICINES",
+          1,
+          7,
+          0.14
+        ],
+        [
+          "COTTON WOOL, DRESSING, SWABS & BANDAGES",
+          1,
+          9,
+          0.11
+        ],
+        [
+          "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
+          0,
+          6,
+          0.0
+        ],
+        [
+          "VACCINES",
+          0,
+          2,
+          0.0
+        ]
+      ]
+    },
+    {
+      "date": "2026-06-19",
+      "label": "19 June 2026",
+      "programme": "EMMS",
+      "available": 219,
+      "total": 477,
+      "unavailable": 258,
+      "availability": 0.459119,
+      "categories": [
+        [
+          "MEDICINES USED IN DIARRHOEA",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "CONDOMS",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "NUTRITIONAL PRODUCTS",
+          5,
+          5,
+          1.0
+        ],
+        [
+          "ANTIMALARIAL",
+          6,
+          7,
+          0.86
+        ],
+        [
+          "MEDICINES AFFECTING THE BLOOD",
+          4,
+          6,
+          0.83
+        ],
+        [
+          "MEDICINES ACTING ON THE RESPIRATORY TRACT",
+          4,
+          5,
+          0.8
+        ],
+        [
+          "RENAL",
+          41,
+          53,
+          0.77
+        ],
+        [
+          "VITAMINS AND MINERALS",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES",
+          16,
+          24,
+          0.67
+        ],
+        [
+          "ANTIRETROVIRAL THERAPY MEDICINES",
+          10,
+          16,
+          0.63
+        ],
+        [
+          "MEDICINES FOR PAIN AND PALLIATIVE CARE",
+          7,
+          12,
+          0.58
+        ],
+        [
+          "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE",
+          10,
+          18,
+          0.58
+        ],
+        [
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS",
+          9,
+          16,
+          0.56
+        ],
+        [
+          "DENTAL",
+          5,
+          9,
+          0.56
+        ],
+        [
+          "DIURETICS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "ANTISEPTICS AND DISINFECTANTS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "SYRINGES AND NEEDLES",
+          4,
+          8,
+          0.5
+        ],
+        [
+          "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS",
+          7,
+          11,
+          0.454545
+        ],
+        [
+          "GASTROINTESTINAL MEDICINES",
+          4,
+          9,
+          0.44
+        ],
+        [
+          "IV CANNULAE & GIVING SETS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "CARDIOVASCULAR MEDICINES",
+          8,
+          20,
+          0.4
+        ],
+        [
+          "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "MEDICINES FOR DISEASES OF JOINTS & BONES",
+          1,
+          3,
+          0.333333
+        ],
+        [
+          "GENERAL MED-SURG",
+          4,
+          13,
+          0.31
+        ],
+        [
+          "SUTURES",
+          6,
+          20,
+          0.3
+        ],
+        [
+          "EPIDEMIC SUPPLIES",
+          8,
+          27,
+          0.3
+        ],
+        [
+          "ANTIINFECTIVE MEDICINES",
+          10,
+          35,
+          0.29
+        ],
+        [
+          "CONSUMABLES",
+          7,
+          28,
+          0.25
+        ],
+        [
+          "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "IMAGING",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "GLOVES",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "ANTINEOPLASTICS AND IMMUNOMODULATORS",
+          5,
+          24,
+          0.21
+        ],
+        [
+          "ANTIDOTES AND OTHER SUBSTANCES USED IN POISONINGS",
+          1,
+          5,
+          0.2
+        ],
+        [
+          "DERMATOLOGICAL/TOPICAL MEDICINES",
+          1,
+          7,
+          0.14
+        ],
+        [
+          "COTTON WOOL, DRESSING, SWABS & BANDAGES",
+          1,
+          9,
+          0.11
+        ],
+        [
+          "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
+          0,
+          6,
+          0.0
+        ],
+        [
+          "VACCINES",
+          0,
+          2,
+          0.0
+        ]
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "label": "13 June 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.567143,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          4,
+          4,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          0.8
+        ],
+        [
+          "Biochemistry",
+          69,
+          100,
+          0.67
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          30,
+          50,
+          0.58
+        ],
+        [
+          "RDTs",
+          13,
+          26,
+          0.57
+        ],
+        [
+          "Specimen Containers",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.47
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          0,
+          6,
+          0.0
+        ]
+      ]
+    },
+    {
+      "date": "2026-06-19",
+      "label": "19 June 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.568571,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          4,
+          4,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          0.8
+        ],
+        [
+          "Biochemistry",
+          69,
+          100,
+          0.69
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          30,
+          50,
+          0.58
+        ],
+        [
+          "RDTs",
+          13,
+          26,
+          0.57
+        ],
+        [
+          "Specimen Containers",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.47
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          0,
+          6,
+          0.0
+        ]
+      ]
     }
   ],
   "changes": {
-    "from": "29 May 2026",
-    "to": "5 June 2026",
+    "from": "13 June 2026",
+    "to": "19 June 2026",
     "newlyUnavailable": [
       {
-        "item": "Clopidogrel",
-        "category": "CARDIOVASCULAR MEDICINES"
-      },
-      {
-        "item": "Digoxin",
-        "category": "CARDIOVASCULAR MEDICINES"
-      },
-      {
-        "item": "Etoposide inj",
-        "category": "ANTINEOPLASTICS AND IMMUNOMODULATORS"
-      },
-      {
-        "item": "Syringes 10ml",
-        "category": "SYRINGES AND NEEDLES"
-      },
-      {
-        "item": "Syringes 5ml",
-        "category": "SYRINGES AND NEEDLES"
-      },
-      {
-        "item": "Trihexyphenidyl",
-        "category": "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS"
-      }
-    ],
-    "recovered": [
-      {
-        "item": "Artesunate 60mg Pwd For Inj(1)",
-        "category": "ANTIMALARIAL"
-      },
-      {
-        "item": "Azithromycin tab/cap",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Bupivacaine",
-        "category": "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES"
-      },
-      {
-        "item": "Diclofenac Inj",
-        "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
+        "item": "Acid Concentrate 5ltrs",
+        "category": "RENAL"
       },
       {
         "item": "Diclofenac tab",
@@ -1440,12 +2094,66 @@ export const weeklyAvailability = {
         "category": "ANTIINFECTIVE MEDICINES"
       },
       {
-        "item": "Insulin Injection intermediate - Isophane",
-        "category": "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE"
+        "item": "Organiser set",
+        "category": "RENAL"
+      }
+    ],
+    "recovered": [
+      {
+        "item": "Benzathine Benzylpenicillin",
+        "category": "ANTIINFECTIVE MEDICINES"
       },
       {
-        "item": "Telmisartan + Hydrochlorothizide",
+        "item": "Carbamazepine",
+        "category": "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS"
+      },
+      {
+        "item": "Ceftriaxone",
+        "category": "ANTIINFECTIVE MEDICINES"
+      },
+      {
+        "item": "Ciprofloxacin tab",
+        "category": "ANTIINFECTIVE MEDICINES"
+      },
+      {
+        "item": "Co-Trimoxazole 480mg tablet(1000)",
+        "category": "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS"
+      },
+      {
+        "item": "Elisio Dialyser 19H",
+        "category": "RENAL"
+      },
+      {
+        "item": "Elisio Dialyser 21H",
+        "category": "RENAL"
+      },
+      {
+        "item": "Metronidazole inj",
+        "category": "ANTIINFECTIVE MEDICINES"
+      },
+      {
+        "item": "Nifedipine",
         "category": "CARDIOVASCULAR MEDICINES"
+      },
+      {
+        "item": "Propofol",
+        "category": "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES"
+      },
+      {
+        "item": "Sevelamer",
+        "category": "RENAL"
+      },
+      {
+        "item": "Sleep safe (clip for stay safe organizer)",
+        "category": "RENAL"
+      },
+      {
+        "item": "Substitute System line",
+        "category": "RENAL"
+      },
+      {
+        "item": "Syringes 50ml",
+        "category": "SYRINGES AND NEEDLES"
       }
     ]
   },
@@ -1632,6 +2340,86 @@ export const weeklyAvailability = {
           {
             "item": "Telmisartan + Hydrochlorothizide",
             "category": "CARDIOVASCULAR MEDICINES"
+          }
+        ]
+      },
+      {
+        "from": "13 June 2026",
+        "to": "19 June 2026",
+        "newlyUnavailable": [
+          {
+            "item": "Acid Concentrate 5ltrs",
+            "category": "RENAL"
+          },
+          {
+            "item": "Diclofenac tab",
+            "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
+          },
+          {
+            "item": "Griseofulvin",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Organiser set",
+            "category": "RENAL"
+          }
+        ],
+        "recovered": [
+          {
+            "item": "Benzathine Benzylpenicillin",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Carbamazepine",
+            "category": "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS"
+          },
+          {
+            "item": "Ceftriaxone",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Ciprofloxacin tab",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Co-Trimoxazole 480mg tablet(1000)",
+            "category": "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS"
+          },
+          {
+            "item": "Elisio Dialyser 19H",
+            "category": "RENAL"
+          },
+          {
+            "item": "Elisio Dialyser 21H",
+            "category": "RENAL"
+          },
+          {
+            "item": "Metronidazole inj",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Nifedipine",
+            "category": "CARDIOVASCULAR MEDICINES"
+          },
+          {
+            "item": "Propofol",
+            "category": "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES"
+          },
+          {
+            "item": "Sevelamer",
+            "category": "RENAL"
+          },
+          {
+            "item": "Sleep safe (clip for stay safe organizer)",
+            "category": "RENAL"
+          },
+          {
+            "item": "Substitute System line",
+            "category": "RENAL"
+          },
+          {
+            "item": "Syringes 50ml",
+            "category": "SYRINGES AND NEEDLES"
           }
         ]
       }
@@ -1867,6 +2655,12 @@ export const weeklyAvailability = {
             "category": "HIV Test Kits"
           }
         ]
+      },
+      {
+        "from": "13 June 2026",
+        "to": "19 June 2026",
+        "newlyUnavailable": [],
+        "recovered": []
       }
     ]
   }

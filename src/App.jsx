@@ -21,17 +21,17 @@ const concernFilters = {
 };
 
 const quickRanges = [
-  { label: "All reports", start: 0, end: 3 },
-  { label: "Latest report", start: 3, end: 3 },
-  { label: "Last 30 days", start: 2, end: 3 },
+  { label: "All reports", start: 0, end: reports.length - 1 },
+  { label: "Latest report", start: reports.length - 1, end: reports.length - 1 },
+  { label: "Last 30 days", start: Math.max(reports.length - 3, 0), end: reports.length - 1 },
   { label: "April 2026", start: 1, end: 2 },
-  { label: "Year to date", start: 0, end: 3 },
+  { label: "Year to date", start: 0, end: reports.length - 1 },
 ];
 
 const suggestedQuestions = [
   "What are the biggest risks?",
   "Which programmes are under pressure?",
-  "What changed from 1 May to 8 May?",
+  "What changed in the latest weekly inventory?",
   "How many stockouts are there?",
   "What should management do next?",
 ];
@@ -418,28 +418,32 @@ function App() {
     const dataGaps = latestRows.filter((item) => item.status.tone === "neutral");
     const dataQuality = countDataQuality(latestRows, end);
     const programme = categories.find((category) => lower.includes(category.toLowerCase()));
-    const emmsFirst = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-01");
-    const emmsSecond = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-08");
-    const emmsThird = weeklyAvailability.reports.find((report) => report.programme === "EMMS" && report.date === "2026-05-15");
-    const labPrevious = weeklyAvailability.reports.find((report) => report.programme === "LAB" && report.date === "2026-05-08");
+    const emmsReports = weeklyAvailability.reports.filter((report) => report.programme === "EMMS");
+    const labReports = weeklyAvailability.reports.filter((report) => report.programme === "LAB");
+    const latestEmms = weeklyAvailability.changesByProgramme.EMMS.at(-1);
+    const latestLab = weeklyAvailability.changesByProgramme.LAB.at(-1);
+    const emmsPrevious = emmsReports.at(-2);
+    const emmsLatest = emmsReports.at(-1);
+    const labPrevious = labReports.at(-2);
     const labLatest = weeklyAvailability.reports.filter((report) => report.programme === "LAB").at(-1);
 
-    if (lower.includes("15 may") || lower.includes("latest week")) {
-      const latestEmms = weeklyAvailability.changesByProgramme.EMMS.at(-1);
-      const newlyUnavailable = latestEmms.newlyUnavailable.map((item) => `${item.item} (${item.category})`).join("; ");
-      setAssistantAnswer(`From 8 May to 15 May, EMMS availability moved from ${formatPercent(emmsSecond.availability)} to ${formatPercent(emmsThird.availability)}. There were ${latestEmms.newlyUnavailable.length} newly unavailable EMMS items and no recovered EMMS items. Newly unavailable: ${newlyUnavailable}. LAB moved from ${formatPercent(labPrevious.availability)} to ${formatPercent(labLatest.availability)}.`);
+    if (lower.includes("latest week") || lower.includes("latest weekly") || lower.includes("19 june")) {
+      const newlyUnavailable = latestEmms.newlyUnavailable.map((item) => `${item.item} (${item.category})`).join("; ") || "none";
+      const recovered = latestEmms.recovered.map((item) => `${item.item} (${item.category})`).join("; ") || "none";
+      setAssistantAnswer(`From ${latestEmms.from} to ${latestEmms.to}, EMMS availability moved from ${formatPercent(emmsPrevious.availability)} to ${formatPercent(emmsLatest.availability)}. There were ${latestEmms.newlyUnavailable.length} newly unavailable EMMS items and ${latestEmms.recovered.length} recovered EMMS items. Newly unavailable: ${newlyUnavailable}. Recovered: ${recovered}. LAB moved from ${formatPercent(labPrevious.availability)} to ${formatPercent(labLatest.availability)} over the same latest window.`);
       return;
     }
 
-    if (lower.includes("what changed") || lower.includes("1 may") || lower.includes("8 may") || lower.includes("weekly")) {
-      const recovered = weeklyAvailability.changes.recovered.map((item) => `${item.item} (${item.category})`).join("; ");
-      setAssistantAnswer(`From 1 May to 8 May, EMMS availability moved from ${formatPercent(emmsFirst.availability)} to ${formatPercent(emmsSecond.availability)}. No items became newly unavailable in the matched EMMS list, and 2 recovered: ${recovered}.`);
+    if (lower.includes("what changed") || lower.includes("13 june") || lower.includes("weekly")) {
+      const recovered = weeklyAvailability.changes.recovered.map((item) => `${item.item} (${item.category})`).join("; ") || "none";
+      const newlyUnavailable = weeklyAvailability.changes.newlyUnavailable.map((item) => `${item.item} (${item.category})`).join("; ") || "none";
+      setAssistantAnswer(`From ${weeklyAvailability.changes.from} to ${weeklyAvailability.changes.to}, EMMS availability moved from ${formatPercent(emmsPrevious.availability)} to ${formatPercent(emmsLatest.availability)}. ${weeklyAvailability.changes.newlyUnavailable.length} matched EMMS items became newly unavailable: ${newlyUnavailable}. ${weeklyAvailability.changes.recovered.length} recovered: ${recovered}. LAB had ${latestLab.newlyUnavailable.length} newly unavailable and ${latestLab.recovered.length} recovered matched items.`);
       return;
     }
 
     if (lower.includes("lab")) {
       const lowLab = labLatest.categories.slice(0, 5).map(([category, , , availability]) => `${category} ${formatPercent(availability)}`).join(", ");
-      setAssistantAnswer(`The 8 May LAB report shows overall availability of ${formatPercent(labLatest.availability)}. Lowest LAB categories are ${lowLab}.`);
+      setAssistantAnswer(`The ${labLatest.label} LAB inventory shows overall availability of ${formatPercent(labLatest.availability)}. Lowest LAB categories are ${lowLab}.`);
       return;
     }
 
@@ -543,7 +547,7 @@ function App() {
           <div>
             <p className="eyebrow dark">Weekly Inventory Availability</p>
             <h2>Submitted weekly EMMS and LAB reports</h2>
-            <p>Availability is based on the submitted Excel files for 1 May, 8 May, and 15 May. Item change lists compare the latest matched weekly submissions.</p>
+            <p>Availability is based on the submitted weekly Excel files through 19 June 2026. Item change lists compare the latest matched EMMS and LAB submissions while the formal stock status is pending.</p>
           </div>
           <select value={weeklyProgramme} onChange={(event) => setWeeklyProgramme(event.target.value)}>
             {weeklyProgrammes.map((programme) => <option key={programme} value={programme}>{programme}</option>)}
