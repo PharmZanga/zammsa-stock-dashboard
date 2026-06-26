@@ -130,6 +130,37 @@ function matchesDataQualityFilters(item, reportIndex, amiFilter, tbdFilter, sohF
 
 const fullCommodityHistory = buildFullCommodityHistory(stockHistory);
 
+function trendStatus(mos) {
+  if (mos === null || mos === undefined) return { label: "Data gap", tone: "neutral", rank: 5 };
+  if (mos <= 0.1) return { label: "Stock out", tone: "red", rank: 0 };
+  if (mos < 2) return { label: "Understocked", tone: "amber", rank: 1 };
+  if (mos <= 4) return { label: "Adequate", tone: "green", rank: 2 };
+  if (mos <= 12) return { label: "Overstocked", tone: "orange", rank: 3 };
+  return { label: "Excess", tone: "red", rank: 4 };
+}
+
+function distanceFromOptimalMos(mos) {
+  if (mos === null || mos === undefined) return 99;
+  if (mos >= 2 && mos <= 4) return 0;
+  return mos < 2 ? 2 - mos : mos - 4;
+}
+
+function trendDirection(values) {
+  const valid = values.filter((value) => value !== null && value !== undefined);
+  if (valid.length < 2) return { label: "Stable", tone: "neutral", delta: 0 };
+  const first = valid[0];
+  const last = valid.at(-1);
+  const improvement = distanceFromOptimalMos(first) - distanceFromOptimalMos(last);
+  if (Math.abs(improvement) < 0.25) return { label: "Stable", tone: "neutral", delta: last - first };
+  return improvement > 0
+    ? { label: "Improving", tone: "green", delta: last - first }
+    : { label: "Worsening", tone: "red", delta: last - first };
+}
+
+function commodityKey(item) {
+  return `${item.code}|${item.item}|${item.category}`;
+}
+
 function Stat({ label, value, tone, sub, active, onClick }) {
   return (
     <button className={`stat stat-${tone} ${active ? "active" : ""}`} type="button" onClick={onClick}>
@@ -229,6 +260,116 @@ function AvailabilityBars({ categories }) {
   );
 }
 
+function MosBandChart({ rows }) {
+  const width = 720;
+  const height = 260;
+  const pad = 34;
+  const usableW = width - pad * 2;
+  const usableH = height - pad * 2;
+  const valid = rows.map((row) => row.mos).filter((value) => value !== null && value !== undefined);
+  const max = Math.max(6, ...valid, 4);
+  const xFor = (index) => pad + (index / Math.max(rows.length - 1, 1)) * usableW;
+  const yFor = (value) => pad + usableH - (Math.min(value, max) / max) * usableH;
+  const d = rows
+    .filter((row) => row.mos !== null && row.mos !== undefined)
+    .map((row, index, filtered) => {
+      const originalIndex = rows.findIndex((candidate) => candidate.key === row.key);
+      return `${index === 0 ? "M" : "L"} ${xFor(originalIndex)} ${yFor(row.mos)}`;
+    })
+    .join(" ");
+  const optimalTop = yFor(4);
+  const optimalBottom = yFor(2);
+  const understockTop = yFor(2);
+
+  return (
+    <svg className="mos-band-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Months of stock trend with stock status bands">
+      <rect className="band-under" x={pad} y={understockTop} width={usableW} height={height - pad - understockTop} />
+      <rect className="band-optimal" x={pad} y={optimalTop} width={usableW} height={optimalBottom - optimalTop} />
+      <rect className="band-over" x={pad} y={pad} width={usableW} height={optimalTop - pad} />
+      {[0, 2, 4, max].map((tick) => (
+        <g key={tick}>
+          <line x1={pad} x2={width - pad} y1={yFor(tick)} y2={yFor(tick)} />
+          <text x={8} y={yFor(tick) + 4}>{tick}</text>
+        </g>
+      ))}
+      <path d={d} />
+      {rows.map((row, index) => row.mos === null || row.mos === undefined ? null : (
+        <g key={row.key}>
+          <circle className={trendStatus(row.mos).tone} cx={xFor(index)} cy={yFor(row.mos)} r="5" />
+          <text x={xFor(index)} y={height - 8} textAnchor="middle">{row.short}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function StockConsumptionChart({ rows }) {
+  const stockValues = rows.map((row) => row.stockOnHand || 0);
+  const amcValues = rows.map((row) => row.amc || 0);
+  const max = Math.max(...stockValues, ...amcValues, 1);
+  return (
+    <div className="stock-consumption-chart">
+      {rows.map((row) => (
+        <div className="stock-consumption-point" key={row.key}>
+          <div className="stock-bars">
+            <span className="soh-bar" style={{ height: `${24 + ((row.stockOnHand || 0) / max) * 132}px` }} />
+            <span className="amc-bar" style={{ height: `${24 + ((row.amc || 0) / max) * 132}px` }} />
+          </div>
+          <b>{row.short}</b>
+          <small>{row.stockOnHand === null || row.stockOnHand === undefined ? "-" : Math.round(row.stockOnHand).toLocaleString()}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StatusTimeline({ rows }) {
+  return (
+    <div className="status-timeline">
+      {rows.map((row) => {
+        const status = trendStatus(row.mos);
+        return (
+          <div className={`status-step ${status.tone}`} key={row.key}>
+            <span>{row.short}</span>
+            <b>{status.label}</b>
+            <small>{row.mos === null || row.mos === undefined ? "MOS TBD" : `${formatMos(row.mos)} MOS`}</small>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExpiryRiskTrend({ rows }) {
+  const riskRows = rows.map((row, index) => {
+    const previous = rows[index - 1];
+    const isHighCover = row.mos !== null && row.mos !== undefined && row.mos > 4;
+    const expiring = isHighCover ? row.stockOnHand || 0 : 0;
+    const stockReduction = previous && previous.stockOnHand && row.stockOnHand !== null && row.stockOnHand !== undefined
+      ? Math.max(0, previous.stockOnHand - row.stockOnHand)
+      : 0;
+    return {
+      ...row,
+      expiring,
+      salvaged: isHighCover ? Math.round(stockReduction * 0.35) : 0,
+      redistributed: isHighCover ? Math.round(stockReduction * 0.65) : 0,
+    };
+  });
+  const max = Math.max(...riskRows.flatMap((row) => [row.expiring, row.salvaged, row.redistributed]), 1);
+  return (
+    <div className="expiry-risk-trend">
+      {riskRows.map((row) => (
+        <div key={row.key}>
+          <span>{row.short}</span>
+          <div><b className="expiring" style={{ height: `${18 + (row.expiring / max) * 92}px` }} /></div>
+          <div><b className="salvaged" style={{ height: `${18 + (row.salvaged / max) * 92}px` }} /></div>
+          <div><b className="redistributed" style={{ height: `${18 + (row.redistributed / max) * 92}px` }} /></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CommodityModal({ item, onClose }) {
   if (!item) return null;
   const status = classify(item.mos.at(-1));
@@ -271,8 +412,15 @@ function App() {
   const [sohFilter, setSohFilter] = useState("all");
   const [activeConcern, setActiveConcern] = useState("");
   const [selectedCommodity, setSelectedCommodity] = useState(null);
+  const [trendCommodity, setTrendCommodity] = useState("auto");
+  const [trendProgramme, setTrendProgramme] = useState("all");
+  const [trendMonth, setTrendMonth] = useState(reports.at(-1).key);
   const [assistantQuestion, setAssistantQuestion] = useState("");
   const [assistantAnswer, setAssistantAnswer] = useState("Ask about stockouts, programme pressure, overstock, data gaps, or recommended actions. I will answer from the loaded ZAMMSA report data.");
+  const [assistantPosition, setAssistantPosition] = useState(() => ({
+    x: typeof window !== "undefined" ? Math.max(window.innerWidth - 650, 18) : 18,
+    y: 18,
+  }));
   const [weeklyProgramme, setWeeklyProgramme] = useState("EMMS");
 
   const start = Math.min(rangeStart, rangeEnd);
@@ -314,6 +462,46 @@ function App() {
 
   const kpiTrend = filteredTrend.at(-1) || selectedTrend;
   const previousTrend = filteredTrend.length > 1 ? filteredTrend.at(-2) : trend[end - 1];
+  const trendEndIndex = reportIndexFromDate(trendMonth);
+  const stockTrendOptions = useMemo(() => fullCommodityHistory
+    .filter((item) => item.present.some(Boolean))
+    .filter((item) => trendProgramme === "all" || item.category === trendProgramme)
+    .map((item) => ({ ...item, latestStatus: trendStatus(item.mos[trendEndIndex]) }))
+    .sort((a, b) => a.latestStatus.rank - b.latestStatus.rank || (a.mos[trendEndIndex] ?? 99999) - (b.mos[trendEndIndex] ?? 99999)), [trendEndIndex, trendProgramme]);
+  const selectedTrendCommodity = stockTrendOptions.find((item) => commodityKey(item) === trendCommodity) || stockTrendOptions[0] || fullCommodityHistory[0];
+  const selectedTrendRows = selectedTrendCommodity ? reports.slice(0, trendEndIndex + 1).map((report, index) => ({
+    ...report,
+    mos: selectedTrendCommodity.mos[index],
+    amc: selectedTrendCommodity.ami[index],
+    stockOnHand: selectedTrendCommodity.stockOnHand[index],
+    present: selectedTrendCommodity.present[index],
+    status: trendStatus(selectedTrendCommodity.mos[index]),
+  })) : [];
+  const latestTrendRow = [...selectedTrendRows].reverse().find((row) => row.present) || selectedTrendRows.at(-1);
+  const previousTrendRow = selectedTrendRows.filter((row) => row.present).at(-2);
+  const productTrend = trendDirection(selectedTrendRows.map((row) => row.mos));
+  const previousStockKnown = previousTrendRow?.stockOnHand !== null && previousTrendRow?.stockOnHand !== undefined;
+  const latestStockKnown = latestTrendRow?.stockOnHand !== null && latestTrendRow?.stockOnHand !== undefined;
+  const stockMovement = previousStockKnown && latestStockKnown ? latestTrendRow.stockOnHand - previousTrendRow.stockOnHand : 0;
+  const peerTrendRows = stockTrendOptions.slice(0, 14).map((item) => {
+    const values = reports.slice(0, trendEndIndex + 1).map((report, index) => item.mos[index]);
+    return { ...item, values, direction: trendDirection(values), currentStatus: trendStatus(item.mos[trendEndIndex]) };
+  });
+  const highCoverCount = stockTrendOptions.filter((item) => {
+    const mos = item.mos[trendEndIndex];
+    return mos !== null && mos !== undefined && mos > 4;
+  }).length;
+  const lowCoverCount = stockTrendOptions.filter((item) => {
+    const mos = item.mos[trendEndIndex];
+    return mos !== null && mos !== undefined && mos > 0 && mos < 2;
+  }).length;
+  const stockTrendInsights = [
+    `${selectedTrendCommodity?.code || ""} ${selectedTrendCommodity?.item || "Selected product"} is currently ${latestTrendRow?.status.label || "not classified"} at ${latestTrendRow?.mos === null || latestTrendRow?.mos === undefined ? "TBD" : `${formatMos(latestTrendRow.mos)} MOS`}.`,
+    `The product trend is ${productTrend.label.toLowerCase()} across the loaded reporting window, moving ${productTrend.delta >= 0 ? "up" : "down"} by ${Math.abs(productTrend.delta).toFixed(1)} MOS.`,
+    latestTrendRow?.amc ? `Consumption signal is ${Math.round(latestTrendRow.amc).toLocaleString()} AMC, while stock on hand is ${Math.round(latestTrendRow.stockOnHand || 0).toLocaleString()}.` : "AMC is missing for this product, so MOS should be interpreted with caution.",
+    `${highCoverCount} products in the selected programme are above 4 MOS and ${lowCoverCount} are below 2 MOS.`,
+    latestTrendRow?.mos > 4 ? "Recommended action: review expiry dates and prioritize redistribution before additional procurement." : latestTrendRow?.mos < 2 ? "Recommended action: confirm pipeline receipts and prioritize replenishment or redistribution." : "Recommended action: maintain routine monitoring and protect the 2-4 MOS operating range.",
+  ];
 
   const filteredConcerns = useMemo(() => {
     if (statusFilter === "all" && categoryFilter === "all" && amiFilter === "all" && tbdFilter === "all" && sohFilter === "all" && !query) return managementConcerns;
@@ -403,6 +591,29 @@ function App() {
 
   function exportPdf() {
     window.print();
+  }
+
+  function startAssistantDrag(event) {
+    event.preventDefault();
+    const originX = event.clientX - assistantPosition.x;
+    const originY = event.clientY - assistantPosition.y;
+
+    function moveAssistant(moveEvent) {
+      const panelWidth = Math.min(620, window.innerWidth - 24);
+      const panelHeight = 260;
+      setAssistantPosition({
+        x: Math.min(Math.max(moveEvent.clientX - originX, 12), window.innerWidth - panelWidth - 12),
+        y: Math.min(Math.max(moveEvent.clientY - originY, 12), window.innerHeight - panelHeight),
+      });
+    }
+
+    function stopAssistantDrag() {
+      window.removeEventListener("pointermove", moveAssistant);
+      window.removeEventListener("pointerup", stopAssistantDrag);
+    }
+
+    window.addEventListener("pointermove", moveAssistant);
+    window.addEventListener("pointerup", stopAssistantDrag);
   }
 
   function answerQuestion(question) {
@@ -496,12 +707,49 @@ function App() {
           <h1>Interactive supply chain command center</h1>
           <p className="lede">Explore biweekly risk trends, cross-filter programme pressure, and jump from management concerns into the underlying commodity movement.</p>
         </div>
-        <div className="report-card">
-          <span>Analysis window</span>
+        <div className="report-card brand-card">
+          <div className="brand-logo-frame">
+            <img src="./zammsa-logo-transparent.png" alt="ZAMMSA logo" />
+          </div>
+          <span>ZAMMSA Intelligence Centre</span>
           <strong>{reports[start].short} - {reports[end].short}</strong>
           <small>{selectedTrend.total.toLocaleString()} extracted commodity rows in the latest selected report.</small>
           <small>Data status: static report extracts, updated {selectedMeta.label}</small>
           <button className="hero-export" type="button" onClick={exportCsv}>Export current CSV</button>
+        </div>
+      </section>
+
+      <section
+        className="assistant-panel floating-assistant"
+        style={{ left: `${assistantPosition.x}px`, top: `${assistantPosition.y}px` }}
+      >
+        <div className="assistant-intro">
+          <button className="assistant-drag-handle" type="button" onPointerDown={startAssistantDrag} aria-label="Move ZAMMSA Copilot panel">
+            <span />
+            <span />
+            <span />
+          </button>
+          <p className="eyebrow dark">Ask ZAMMSA Copilot</p>
+          <h2>Questions answered from this dashboard</h2>
+          <p>This public version uses the loaded report data only. It does not send data to an external AI service.</p>
+        </div>
+        <div className="assistant-chat">
+          <div className="suggested-questions">
+            {suggestedQuestions.map((question) => (
+              <button type="button" key={question} onClick={() => {
+                setAssistantQuestion(question);
+                answerQuestion(question);
+              }}>{question}</button>
+            ))}
+          </div>
+          <form onSubmit={(event) => {
+            event.preventDefault();
+            answerQuestion(assistantQuestion);
+          }}>
+            <input value={assistantQuestion} onChange={(event) => setAssistantQuestion(event.target.value)} placeholder="Ask about stockouts, TB, malaria, overstock, or data gaps" />
+            <button type="submit">Ask</button>
+          </form>
+          <div className="assistant-answer">{assistantAnswer}</div>
         </div>
       </section>
 
@@ -590,6 +838,135 @@ function App() {
         </div>
       </section>
 
+      <section className="stock-trend-section">
+        <div className="stock-trend-head">
+          <div>
+            <p className="eyebrow dark">5. Stock Trend</p>
+            <h2>How this product stock position changed over time</h2>
+            <p>The section combines MOS history, stock on hand, AMC, status movement, expiry-risk proxy, peer trend rows, and action-oriented insights.</p>
+          </div>
+          <div className="stock-trend-filters">
+            <label>
+              <span>Program</span>
+              <select value={trendProgramme} onChange={(event) => {
+                setTrendProgramme(event.target.value);
+                setTrendCommodity("auto");
+              }}>
+                <option value="all">All programs</option>
+                {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Product</span>
+              <select value={selectedTrendCommodity ? commodityKey(selectedTrendCommodity) : "auto"} onChange={(event) => setTrendCommodity(event.target.value)}>
+                {stockTrendOptions.slice(0, 180).map((item) => (
+                  <option key={commodityKey(item)} value={commodityKey(item)}>{item.code} - {item.item}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Reporting month</span>
+              <select value={trendMonth} onChange={(event) => setTrendMonth(event.target.value)}>
+                {reports.map((report) => <option key={report.key} value={report.key}>{report.label}</option>)}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div className="stock-trend-summary">
+          <div>
+            <span>Current stock on hand</span>
+            <strong>{latestTrendRow?.stockOnHand === null || latestTrendRow?.stockOnHand === undefined ? "-" : Math.round(latestTrendRow.stockOnHand).toLocaleString()}</strong>
+            <small>{latestTrendRow?.short} report</small>
+          </div>
+          <div>
+            <span>Current MOS</span>
+            <strong>{latestTrendRow?.mos === null || latestTrendRow?.mos === undefined ? "TBD" : formatMos(latestTrendRow.mos)}</strong>
+            <small>Optimal band is 2-4 MOS</small>
+          </div>
+          <div>
+            <span>Current AMC</span>
+            <strong>{latestTrendRow?.amc === null || latestTrendRow?.amc === undefined ? "Missing" : Math.round(latestTrendRow.amc).toLocaleString()}</strong>
+            <small>Average monthly consumption</small>
+          </div>
+          <div>
+            <span>Current stock status</span>
+            <strong className={`stock-status-text ${latestTrendRow?.status.tone}`}>{latestTrendRow?.status.label || "-"}</strong>
+            <small>{stockMovement > 0 ? "SOH increased" : stockMovement < 0 ? "SOH reduced" : "SOH stable"} vs prior report</small>
+          </div>
+          <div>
+            <span>Trend</span>
+            <strong className={`stock-status-text ${productTrend.tone}`}>{productTrend.label}</strong>
+            <small>{Math.abs(productTrend.delta).toFixed(1)} MOS movement</small>
+          </div>
+        </div>
+
+        <div className="stock-trend-grid">
+          <div className="panel span-2">
+            <div className="panel-head">
+              <div>
+                <h2>MOS trend with stock policy bands</h2>
+                <p>Green shows 2-4 MOS, red shows below 2 MOS, and orange shows stock above plan.</p>
+              </div>
+            </div>
+            <MosBandChart rows={selectedTrendRows} />
+            <div className="legend stock-legend"><span className="red">Understocked</span><span className="green">Optimal</span><span className="orange">Above 4 MOS</span></div>
+          </div>
+          <div className="panel">
+            <h2>Status timeline</h2>
+            <StatusTimeline rows={selectedTrendRows} />
+          </div>
+          <div className="panel span-2">
+            <h2>Stock on hand vs AMC</h2>
+            <StockConsumptionChart rows={selectedTrendRows} />
+            <div className="stock-chart-legend"><span className="soh">Stock on hand</span><span className="amc">AMC</span></div>
+          </div>
+          <div className="panel">
+            <h2>Expiry risk trend</h2>
+            <p className="panel-copy">Proxy based on stock above 4 MOS and stock reductions between reports until true expiry and redistribution fields are loaded.</p>
+            <ExpiryRiskTrend rows={selectedTrendRows} />
+            <div className="expiry-legend"><span>At risk</span><span>Salvaged</span><span>Redistributed</span></div>
+          </div>
+        </div>
+
+        <div className="stock-trend-lower">
+          <div className="table-panel">
+            <div className="table-headline">
+              <div>
+                <h2>Facility trend table</h2>
+                <p>National product trend proxy shown until facility-month stock history is added to the public extract.</p>
+              </div>
+            </div>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    {reports.slice(0, trendEndIndex + 1).map((report) => <th key={report.key}>{report.short}</th>)}
+                    <th>Trend</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {peerTrendRows.map((item) => (
+                    <tr key={commodityKey(item)}>
+                      <td><b>{item.code}</b> {item.item}<small>{item.category}</small></td>
+                      {item.values.map((value, index) => <td key={`${item.code}-${index}`} className={trendStatus(value).tone}>{value === null || value === undefined ? "-" : formatMos(value)}</td>)}
+                      <td><span className={`trend-pill ${item.direction.tone}`}>{item.direction.label}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="stock-insights panel">
+            <h2>Automatic insights</h2>
+            <ul>
+              {stockTrendInsights.map((insight) => <li key={insight}>{insight}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {view === "historic" && (
         <section className="timeline-grid">
           {["red", "amber", "blue", "neutral"].map((status) => (
@@ -653,32 +1030,6 @@ function App() {
               <b>{concern.action}</b>
             </button>
           ))}
-        </div>
-      </section>
-
-      <section className="assistant-panel">
-        <div>
-          <p className="eyebrow dark">Ask ZAMMSA Copilot</p>
-          <h2>Questions answered from this dashboard</h2>
-          <p>This public version uses the loaded report data only. It does not send data to an external AI service.</p>
-        </div>
-        <div className="assistant-chat">
-          <div className="suggested-questions">
-            {suggestedQuestions.map((question) => (
-              <button type="button" key={question} onClick={() => {
-                setAssistantQuestion(question);
-                answerQuestion(question);
-              }}>{question}</button>
-            ))}
-          </div>
-          <form onSubmit={(event) => {
-            event.preventDefault();
-            answerQuestion(assistantQuestion);
-          }}>
-            <input value={assistantQuestion} onChange={(event) => setAssistantQuestion(event.target.value)} placeholder="Ask about stockouts, TB, malaria, overstock, or data gaps" />
-            <button type="submit">Ask</button>
-          </form>
-          <div className="assistant-answer">{assistantAnswer}</div>
         </div>
       </section>
 
