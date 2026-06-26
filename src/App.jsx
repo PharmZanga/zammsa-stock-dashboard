@@ -80,8 +80,11 @@ function formatPercent(value) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-function calculateMos(stockOnHand, ami) {
+function calculateMos(stockOnHand, ami, sourceMos, comment = "") {
   if (stockOnHand === null || stockOnHand === undefined || ami === null || ami === undefined || ami === 0) return null;
+  if (sourceMos !== null && sourceMos !== undefined && /pack|based on|in 1`?s/i.test(comment)) {
+    return Math.round(Number(sourceMos) * 10) / 10;
+  }
   return Math.round((stockOnHand / ami) * 10) / 10;
 }
 
@@ -104,7 +107,7 @@ function buildFullCommodityHistory(rows) {
     const entry = grouped.get(key);
     const reportIndex = reports.findIndex((report) => report.key === row.reportDate);
     if (reportIndex >= 0) {
-      entry.mos[reportIndex] = calculateMos(row.stockOnHand, row.ami);
+      entry.mos[reportIndex] = calculateMos(row.stockOnHand, row.ami, row.mos, row.comment || "");
       entry.ami[reportIndex] = row.ami;
       entry.stockOnHand[reportIndex] = row.stockOnHand;
       entry.comments[reportIndex] = row.comment || "";
