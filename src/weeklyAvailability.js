@@ -82,7 +82,7 @@ export const weeklyAvailability = {
           0.571429
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -252,6 +252,101 @@ export const weeklyAvailability = {
       ]
     },
     {
+      "date": "2026-05-15",
+      "label": "15 May 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.497857,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          null,
+          null,
+          0.75
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "RDTs",
+          null,
+          null,
+          0.57
+        ],
+        [
+          "Specimen Containers",
+          null,
+          null,
+          0.5
+        ],
+        [
+          "General Labs",
+          null,
+          null,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          null,
+          null,
+          0.36
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.32
+        ],
+        [
+          "Microbiology & Parasitology",
+          null,
+          null,
+          0.27
+        ],
+        [
+          "Acids & Alcochols",
+          null,
+          null,
+          0.25
+        ],
+        [
+          "Biochemistry",
+          null,
+          null,
+          0.21
+        ],
+        [
+          "Pipettes & Tips",
+          null,
+          null,
+          0.0
+        ]
+      ]
+    },
+    {
       "date": "2026-05-22",
       "label": "22 May 2026",
       "programme": "EMMS",
@@ -327,7 +422,7 @@ export const weeklyAvailability = {
           0.6
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -503,6 +598,101 @@ export const weeklyAvailability = {
       ]
     },
     {
+      "date": "2026-05-22",
+      "label": "22 May 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.539286,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          null,
+          null,
+          0.75
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "Biochemistry",
+          null,
+          null,
+          0.58
+        ],
+        [
+          "RDTs",
+          null,
+          null,
+          0.57
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.53
+        ],
+        [
+          "Specimen Containers",
+          null,
+          null,
+          0.5
+        ],
+        [
+          "General Labs",
+          null,
+          null,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          null,
+          null,
+          0.36
+        ],
+        [
+          "Microbiology & Parasitology",
+          null,
+          null,
+          0.27
+        ],
+        [
+          "Acids & Alcochols",
+          null,
+          null,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          null,
+          null,
+          0.0
+        ]
+      ]
+    },
+    {
       "date": "2026-05-29",
       "label": "29 May 2026",
       "programme": "EMMS",
@@ -584,7 +774,7 @@ export const weeklyAvailability = {
           0.6
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -754,6 +944,101 @@ export const weeklyAvailability = {
       ]
     },
     {
+      "date": "2026-05-29",
+      "label": "29 May 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.534286,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          null,
+          null,
+          0.75
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          null,
+          null,
+          0.67
+        ],
+        [
+          "Biochemistry",
+          null,
+          null,
+          0.6
+        ],
+        [
+          "RDTs",
+          null,
+          null,
+          0.57
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.53
+        ],
+        [
+          "Specimen Containers",
+          null,
+          null,
+          0.5
+        ],
+        [
+          "General Labs",
+          null,
+          null,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          null,
+          null,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          null,
+          null,
+          0.25
+        ],
+        [
+          "Microbiology & Parasitology",
+          null,
+          null,
+          0.18
+        ],
+        [
+          "Pipettes & Tips",
+          null,
+          null,
+          0.0
+        ]
+      ]
+    },
+    {
       "date": "2026-06-05",
       "label": "5 June 2026",
       "programme": "EMMS",
@@ -841,7 +1126,7 @@ export const weeklyAvailability = {
           0.6
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -1000,291 +1285,6 @@ export const weeklyAvailability = {
           "VACCINES",
           0,
           2,
-          0.0
-        ]
-      ]
-    },
-    {
-      "date": "2026-05-15",
-      "label": "15 May 2026",
-      "programme": "LAB",
-      "available": null,
-      "total": null,
-      "unavailable": null,
-      "availability": 0.497857,
-      "categories": [
-        [
-          "Infection Prevention Products",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "Gene Xpert",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "HIV Test Kits",
-          null,
-          null,
-          0.75
-        ],
-        [
-          "Microscope Slides & Coverslips",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "CD4 Testing",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "RDTs",
-          null,
-          null,
-          0.57
-        ],
-        [
-          "Specimen Containers",
-          null,
-          null,
-          0.5
-        ],
-        [
-          "General Labs",
-          null,
-          null,
-          0.4
-        ],
-        [
-          "Histopthology & Cytology",
-          null,
-          null,
-          0.36
-        ],
-        [
-          "Haematology & Blood Transfusion",
-          null,
-          null,
-          0.32
-        ],
-        [
-          "Microbiology & Parasitology",
-          null,
-          null,
-          0.27
-        ],
-        [
-          "Acids & Alcochols",
-          null,
-          null,
-          0.25
-        ],
-        [
-          "Biochemistry",
-          null,
-          null,
-          0.21
-        ],
-        [
-          "Pipettes & Tips",
-          null,
-          null,
-          0.0
-        ]
-      ]
-    },
-    {
-      "date": "2026-05-22",
-      "label": "22 May 2026",
-      "programme": "LAB",
-      "available": null,
-      "total": null,
-      "unavailable": null,
-      "availability": 0.539286,
-      "categories": [
-        [
-          "Infection Prevention Products",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "Gene Xpert",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "HIV Test Kits",
-          null,
-          null,
-          0.75
-        ],
-        [
-          "Microscope Slides & Coverslips",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "CD4 Testing",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "Biochemistry",
-          null,
-          null,
-          0.58
-        ],
-        [
-          "RDTs",
-          null,
-          null,
-          0.57
-        ],
-        [
-          "Haematology & Blood Transfusion",
-          null,
-          null,
-          0.53
-        ],
-        [
-          "Specimen Containers",
-          null,
-          null,
-          0.5
-        ],
-        [
-          "General Labs",
-          null,
-          null,
-          0.4
-        ],
-        [
-          "Histopthology & Cytology",
-          null,
-          null,
-          0.36
-        ],
-        [
-          "Microbiology & Parasitology",
-          null,
-          null,
-          0.27
-        ],
-        [
-          "Acids & Alcochols",
-          null,
-          null,
-          0.25
-        ],
-        [
-          "Pipettes & Tips",
-          null,
-          null,
-          0.0
-        ]
-      ]
-    },
-    {
-      "date": "2026-05-29",
-      "label": "29 May 2026",
-      "programme": "LAB",
-      "available": null,
-      "total": null,
-      "unavailable": null,
-      "availability": 0.534286,
-      "categories": [
-        [
-          "Infection Prevention Products",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "Gene Xpert",
-          null,
-          null,
-          1.0
-        ],
-        [
-          "HIV Test Kits",
-          null,
-          null,
-          0.75
-        ],
-        [
-          "Microscope Slides & Coverslips",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "CD4 Testing",
-          null,
-          null,
-          0.67
-        ],
-        [
-          "Biochemistry",
-          null,
-          null,
-          0.6
-        ],
-        [
-          "RDTs",
-          null,
-          null,
-          0.57
-        ],
-        [
-          "Haematology & Blood Transfusion",
-          null,
-          null,
-          0.53
-        ],
-        [
-          "Specimen Containers",
-          null,
-          null,
-          0.5
-        ],
-        [
-          "General Labs",
-          null,
-          null,
-          0.4
-        ],
-        [
-          "Histopthology & Cytology",
-          null,
-          null,
-          0.36
-        ],
-        [
-          "Acids & Alcochols",
-          null,
-          null,
-          0.25
-        ],
-        [
-          "Microbiology & Parasitology",
-          null,
-          null,
-          0.18
-        ],
-        [
-          "Pipettes & Tips",
-          null,
-          null,
           0.0
         ]
       ]
@@ -1466,7 +1466,7 @@ export const weeklyAvailability = {
           0.58
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -1636,6 +1636,101 @@ export const weeklyAvailability = {
       ]
     },
     {
+      "date": "2026-06-13",
+      "label": "13 June 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.567143,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          4,
+          4,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          0.8
+        ],
+        [
+          "Biochemistry",
+          69,
+          100,
+          0.67
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          30,
+          50,
+          0.58
+        ],
+        [
+          "RDTs",
+          13,
+          26,
+          0.57
+        ],
+        [
+          "Specimen Containers",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.47
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          0,
+          6,
+          0.0
+        ]
+      ]
+    },
+    {
       "date": "2026-06-19",
       "label": "19 June 2026",
       "programme": "EMMS",
@@ -1648,19 +1743,19 @@ export const weeklyAvailability = {
           "MEDICINES USED IN DIARRHOEA",
           2,
           2,
-          1.0
+          1
         ],
         [
           "CONDOMS",
           2,
           2,
-          1.0
+          1
         ],
         [
           "NUTRITIONAL PRODUCTS",
           5,
           5,
-          1.0
+          1
         ],
         [
           "ANTIMALARIAL",
@@ -1717,7 +1812,7 @@ export const weeklyAvailability = {
           0.58
         ],
         [
-          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
           4,
           7,
           0.57
@@ -1876,108 +1971,13 @@ export const weeklyAvailability = {
           "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
           0,
           6,
-          0.0
+          0
         ],
         [
           "VACCINES",
           0,
           2,
-          0.0
-        ]
-      ]
-    },
-    {
-      "date": "2026-06-13",
-      "label": "13 June 2026",
-      "programme": "LAB",
-      "available": null,
-      "total": null,
-      "unavailable": null,
-      "availability": 0.567143,
-      "categories": [
-        [
-          "Infection Prevention Products",
-          1,
-          1,
-          1.0
-        ],
-        [
-          "HIV Test Kits",
-          4,
-          4,
-          1.0
-        ],
-        [
-          "Gene Xpert",
-          null,
-          null,
-          0.8
-        ],
-        [
-          "Biochemistry",
-          69,
-          100,
-          0.67
-        ],
-        [
-          "Microscope Slides & Coverslips",
-          2,
-          3,
-          0.67
-        ],
-        [
-          "CD4 Testing",
-          2,
-          3,
-          0.67
-        ],
-        [
-          "Microbiology & Parasitology",
-          30,
-          50,
-          0.58
-        ],
-        [
-          "RDTs",
-          13,
-          26,
-          0.57
-        ],
-        [
-          "Specimen Containers",
-          3,
-          6,
-          0.5
-        ],
-        [
-          "Haematology & Blood Transfusion",
-          null,
-          null,
-          0.47
-        ],
-        [
-          "General Labs",
-          6,
-          15,
-          0.4
-        ],
-        [
-          "Histopthology & Cytology",
-          4,
-          11,
-          0.36
-        ],
-        [
-          "Acids & Alcochols",
-          1,
-          4,
-          0.25
-        ],
-        [
-          "Pipettes & Tips",
-          0,
-          6,
-          0.0
+          0
         ]
       ]
     },
@@ -1994,13 +1994,13 @@ export const weeklyAvailability = {
           "Infection Prevention Products",
           1,
           1,
-          1.0
+          1
         ],
         [
           "HIV Test Kits",
           4,
           4,
-          1.0
+          1
         ],
         [
           "Gene Xpert",
@@ -2028,14 +2028,14 @@ export const weeklyAvailability = {
         ],
         [
           "Microbiology & Parasitology",
-          30,
-          50,
+          26,
+          45,
           0.58
         ],
         [
           "RDTs",
-          13,
-          26,
+          4,
+          7,
           0.57
         ],
         [
@@ -2072,88 +2072,390 @@ export const weeklyAvailability = {
           "Pipettes & Tips",
           0,
           6,
-          0.0
+          0
+        ]
+      ]
+    },
+    {
+      "date": "2026-06-26",
+      "label": "26 June 2026",
+      "programme": "EMMS",
+      "available": 216,
+      "total": 477,
+      "unavailable": 261,
+      "availability": 0.45283,
+      "categories": [
+        [
+          "MEDICINES USED IN DIARRHOEA",
+          2,
+          2,
+          1
+        ],
+        [
+          "NUTRITIONAL PRODUCTS",
+          5,
+          5,
+          1
+        ],
+        [
+          "ANTIMALARIAL",
+          6,
+          7,
+          0.86
+        ],
+        [
+          "MEDICINES AFFECTING THE BLOOD",
+          4,
+          6,
+          0.83
+        ],
+        [
+          "MEDICINES ACTING ON THE RESPIRATORY TRACT",
+          4,
+          5,
+          0.8
+        ],
+        [
+          "RENAL",
+          41,
+          53,
+          0.77
+        ],
+        [
+          "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES",
+          17,
+          24,
+          0.71
+        ],
+        [
+          "VITAMINS AND MINERALS",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "ANTIRETROVIRAL THERAPY MEDICINES",
+          10,
+          16,
+          0.63
+        ],
+        [
+          "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE",
+          10,
+          18,
+          0.58
+        ],
+        [
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID–BASE DISTURBANCES",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS",
+          9,
+          16,
+          0.56
+        ],
+        [
+          "DENTAL",
+          5,
+          9,
+          0.56
+        ],
+        [
+          "CONDOMS",
+          1,
+          2,
+          0.5
+        ],
+        [
+          "DIURETICS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "ANTISEPTICS AND DISINFECTANTS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "SYRINGES AND NEEDLES",
+          4,
+          8,
+          0.5
+        ],
+        [
+          "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS",
+          7,
+          11,
+          0.454545
+        ],
+        [
+          "GASTROINTESTINAL MEDICINES",
+          4,
+          9,
+          0.44
+        ],
+        [
+          "IV CANNULAE & GIVING SETS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR PAIN AND PALLIATIVE CARE",
+          5,
+          12,
+          0.42
+        ],
+        [
+          "CARDIOVASCULAR MEDICINES",
+          8,
+          20,
+          0.4
+        ],
+        [
+          "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "MEDICINES FOR DISEASES OF JOINTS & BONES",
+          1,
+          3,
+          0.333333
+        ],
+        [
+          "GENERAL MED-SURG",
+          4,
+          13,
+          0.31
+        ],
+        [
+          "SUTURES",
+          6,
+          20,
+          0.3
+        ],
+        [
+          "EPIDEMIC SUPPLIES",
+          8,
+          27,
+          0.3
+        ],
+        [
+          "ANTIINFECTIVE MEDICINES",
+          10,
+          35,
+          0.29
+        ],
+        [
+          "CONSUMABLES",
+          7,
+          28,
+          0.25
+        ],
+        [
+          "IMAGING",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "GLOVES",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "ANTIDOTES AND OTHER SUBSTANCES USED IN POISONINGS",
+          1,
+          5,
+          0.2
+        ],
+        [
+          "ANTINEOPLASTICS AND IMMUNOMODULATORS",
+          4,
+          24,
+          0.17
+        ],
+        [
+          "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
+          1,
+          6,
+          0.17
+        ],
+        [
+          "DERMATOLOGICAL/TOPICAL MEDICINES",
+          1,
+          7,
+          0.14
+        ],
+        [
+          "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS",
+          1,
+          8,
+          0.13
+        ],
+        [
+          "COTTON WOOL, DRESSING, SWABS & BANDAGES",
+          1,
+          9,
+          0.11
+        ],
+        [
+          "VACCINES",
+          0,
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "date": "2026-06-26",
+      "label": "26 June 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.595,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1
+        ],
+        [
+          "HIV Test Kits",
+          4,
+          4,
+          1
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.84
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          0.8
+        ],
+        [
+          "Biochemistry",
+          69,
+          100,
+          0.69
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          26,
+          45,
+          0.58
+        ],
+        [
+          "RDTs",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "Specimen Containers",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          0,
+          6,
+          0
         ]
       ]
     }
   ],
   "changes": {
-    "from": "13 June 2026",
-    "to": "19 June 2026",
+    "from": "19 June 2026",
+    "to": "26 June 2026",
     "newlyUnavailable": [
       {
-        "item": "Acid Concentrate 5ltrs",
-        "category": "RENAL"
+        "item": "Dexamethasone Inj/tab",
+        "category": "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS"
       },
       {
-        "item": "Diclofenac tab",
+        "item": "Doxorubicin inj",
+        "category": "ANTINEOPLASTICS AND IMMUNOMODULATORS"
+      },
+      {
+        "item": "Female condoms",
+        "category": "CONDOMS"
+      },
+      {
+        "item": "Diclofenac Inj",
         "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
       },
       {
-        "item": "Griseofulvin",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Organiser set",
-        "category": "RENAL"
+        "item": "Paracetamol, For IV Inj",
+        "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
       }
     ],
     "recovered": [
       {
-        "item": "Benzathine Benzylpenicillin",
-        "category": "ANTIINFECTIVE MEDICINES"
+        "item": "Linezolid",
+        "category": "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES"
       },
       {
-        "item": "Carbamazepine",
-        "category": "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS"
-      },
-      {
-        "item": "Ceftriaxone",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Ciprofloxacin tab",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Co-Trimoxazole 480mg tablet(1000)",
-        "category": "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS"
-      },
-      {
-        "item": "Elisio Dialyser 19H",
-        "category": "RENAL"
-      },
-      {
-        "item": "Elisio Dialyser 21H",
-        "category": "RENAL"
-      },
-      {
-        "item": "Metronidazole inj",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Nifedipine",
-        "category": "CARDIOVASCULAR MEDICINES"
-      },
-      {
-        "item": "Propofol",
-        "category": "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES"
-      },
-      {
-        "item": "Sevelamer",
-        "category": "RENAL"
-      },
-      {
-        "item": "Sleep safe (clip for stay safe organizer)",
-        "category": "RENAL"
-      },
-      {
-        "item": "Substitute System line",
-        "category": "RENAL"
-      },
-      {
-        "item": "Syringes 50ml",
-        "category": "SYRINGES AND NEEDLES"
+        "item": "Glycopyrronium Bromide",
+        "category": "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS"
       }
     ]
   },
@@ -2422,6 +2724,42 @@ export const weeklyAvailability = {
             "category": "SYRINGES AND NEEDLES"
           }
         ]
+      },
+      {
+        "from": "19 June 2026",
+        "to": "26 June 2026",
+        "newlyUnavailable": [
+          {
+            "item": "Dexamethasone Inj/tab",
+            "category": "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS"
+          },
+          {
+            "item": "Doxorubicin inj",
+            "category": "ANTINEOPLASTICS AND IMMUNOMODULATORS"
+          },
+          {
+            "item": "Female condoms",
+            "category": "CONDOMS"
+          },
+          {
+            "item": "Diclofenac Inj",
+            "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
+          },
+          {
+            "item": "Paracetamol, For IV Inj",
+            "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
+          }
+        ],
+        "recovered": [
+          {
+            "item": "Linezolid",
+            "category": "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES"
+          },
+          {
+            "item": "Glycopyrronium Bromide",
+            "category": "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS"
+          }
+        ]
       }
     ],
     "LAB": [
@@ -2661,6 +2999,41 @@ export const weeklyAvailability = {
         "to": "19 June 2026",
         "newlyUnavailable": [],
         "recovered": []
+      },
+      {
+        "from": "19 June 2026",
+        "to": "26 June 2026",
+        "newlyUnavailable": [],
+        "recovered": [
+          {
+            "item": "ABX Minilyse LMG, 1L",
+            "category": "Haematology"
+          },
+          {
+            "item": "ABX mini clean 1L",
+            "category": "Haematology"
+          },
+          {
+            "item": "ABX minidil LMG 20L",
+            "category": "Haematology"
+          },
+          {
+            "item": "Yumizen: ABX Cleaner 1L",
+            "category": "Haematology"
+          },
+          {
+            "item": "Yumizen: ABX Diluent, 20L",
+            "category": "Haematology"
+          },
+          {
+            "item": "Yumizen: ABX Minoclair 0.5L",
+            "category": "Haematology"
+          },
+          {
+            "item": "Yumizen: ABX WhiteDiff 1L",
+            "category": "Haematology"
+          }
+        ]
       }
     ]
   }
