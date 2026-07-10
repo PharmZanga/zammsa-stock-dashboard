@@ -803,7 +803,7 @@ function App() {
           <div>
             <p className="eyebrow dark">Weekly Inventory Availability</p>
             <h2>Submitted weekly EMMS and LAB reports</h2>
-            <p>Availability is based on the submitted weekly Excel files through 4 July 2026. Item change lists compare the latest matched EMMS and LAB submissions while the formal stock status is pending.</p>
+            <p>Availability is based on the submitted weekly Excel files through 4 July 2026. Use this section for trend and category availability review while item movement is tracked separately.</p>
           </div>
           <select value={weeklyProgramme} onChange={(event) => setWeeklyProgramme(event.target.value)}>
             {weeklyProgrammes.map((programme) => <option key={programme} value={programme}>{programme}</option>)}
@@ -826,6 +826,16 @@ function App() {
           <div className="panel span-2">
             <h2>Lowest category availability - {latestWeekly.label}</h2>
             <AvailabilityBars categories={weeklyCategoryBars} />
+          </div>
+        </div>
+      </section>
+
+      <section className="weekly-section">
+        <div className="weekly-head">
+          <div>
+            <p className="eyebrow dark">Availability Changes</p>
+            <h2>Newly unavailable and recovered items</h2>
+            <p>Matched item movement from the latest weekly EMMS and LAB comparison is separated from the availability charts for easier review.</p>
           </div>
         </div>
         <div className="change-grid">
