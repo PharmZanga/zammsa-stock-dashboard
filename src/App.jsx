@@ -877,7 +877,7 @@ function App() {
             <label>
               <span>Product</span>
               <select value={selectedTrendCommodity ? commodityKey(selectedTrendCommodity) : "auto"} onChange={(event) => setTrendCommodity(event.target.value)}>
-                {stockTrendOptions.slice(0, 180).map((item) => (
+                {stockTrendOptions.map((item) => (
                   <option key={commodityKey(item)} value={commodityKey(item)}>{item.code} - {item.item}</option>
                 ))}
               </select>

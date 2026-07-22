@@ -703,7 +703,7 @@
       document.getElementById("trendDate").value = state.trendDate;
       const options = trendOptions();
       if (!options.some(item => item.code === state.trendProduct)) state.trendProduct = options[0]?.code || stockData[0].code;
-      document.getElementById("trendProduct").innerHTML = options.slice(0, 220).map(item => '<option value="' + escapeHtml(item.code) + '">' + escapeHtml(item.code + " - " + item.name) + '</option>').join("");
+      document.getElementById("trendProduct").innerHTML = options.map(item => '<option value="' + escapeHtml(item.code) + '">' + escapeHtml(item.code + " - " + item.name) + '</option>').join("");
       document.getElementById("trendProduct").value = state.trendProduct;
       const selected = stockData.find(item => item.code === state.trendProduct) || options[0] || stockData[0];
       const rows = trendRowsFor(selected);
