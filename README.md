@@ -14,6 +14,9 @@ The Management Analytics view combines Central stock snapshots with configured t
 - Safety stock, reorder point and recommended order quantity
 - Inventory value and carrying-cost estimates when unit cost is available
 - Backtested MAE and WAPE forecast-accuracy measures
+- Historical "as of" analysis for every available Central report date, using only data available up to the selected date
+- Dynamic LAB versus EM/medicines and programme filters, including ART, malaria, TB, reproductive health and other mapped programmes
+- A date-aware analyst narrative comparing the selected snapshot with the immediately preceding report
 - Structured output in `src/analyticsReport.js` and an exportable management CSV
 
 The official policy is:

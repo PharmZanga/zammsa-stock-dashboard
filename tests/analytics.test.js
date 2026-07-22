@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { buildAnalyticsReport, classifyMos } from "../src/analytics/analytics.js";
 import { DEFAULT_POLICY } from "../src/analytics/config.js";
 import { ingestSnapshotsCsv, normalizeDate } from "../src/analytics/ingestion.js";
@@ -38,4 +39,13 @@ test("forecast report has stable dashboard output shape", () => {
   assert.equal(report.items[0].forecast.points.length, 3);
   assert.ok(report.items[0].forecastRange.lower <= report.items[0].forecastRange.upper);
   assert.ok(report.items[0].recommendedOrderQuantity > 0);
+});
+
+test("management analytics exposes stream, programme and historical date controls", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /id="analyticsStream"/);
+  assert.match(dashboard, /id="analyticsProgramme"/);
+  assert.match(dashboard, /id="analyticsDate"/);
+  assert.match(dashboard, /function analyticsItemsForDate\(date\)/);
+  assert.match(dashboard, /Compared with/);
 });
