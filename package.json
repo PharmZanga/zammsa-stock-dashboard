@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "analytics:build": "node tools/build_analytics.mjs",
+    "standalone:build": "node tools/rebuild_standalone_dashboard.mjs",
+    "build": "npm run analytics:build && npm run standalone:build && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

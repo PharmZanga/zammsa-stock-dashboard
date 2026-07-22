@@ -1,0 +1,47 @@
+{
+  "location": "Central",
+  "snapshotCsv": null,
+  "movementCsv": null,
+  "leadTimeDays": 60,
+  "reviewPeriodDays": 30,
+  "stagnantDays": 90,
+  "annualCarryingCostRate": 0.25,
+  "policy": {
+    "understockMos": 2,
+    "adequateMaxMos": 4,
+    "excessMos": 12
+  },
+  "snapshotSchema": {
+    "defaultLocation": "Central",
+    "dateOrder": "DMY",
+    "columns": {
+      "sku": "SKU",
+      "description": "SKU Description",
+      "programme": "Programme",
+      "location": "Location",
+      "date": "Snapshot Date",
+      "stockOnHand": "Stock on Hand",
+      "ami": "Average Monthly Issue",
+      "mos": "Months of Stock",
+      "unitCost": "Unit Cost",
+      "comment": "Comment"
+    }
+  },
+  "movementSchema": {
+    "defaultLocation": "Central",
+    "defaultTransactionType": "outbound",
+    "dateOrder": "MDY",
+    "columns": {
+      "transactionId": "Order ID",
+      "sku": "SKU",
+      "description": "SKU Description",
+      "location": "Location",
+      "date": "Shipped Date",
+      "transactionType": "Transaction Type",
+      "quantity": "Qty Shipped",
+      "batch": "Batch",
+      "expiryDate": "Expiry Date",
+      "unitCost": "Unit Cost"
+    }
+  }
+}

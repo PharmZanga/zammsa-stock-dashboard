@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { stockHistory } from "../src/zammsaHistory.js";
 import { reports } from "../src/zammsaData.js";
+import { analyticsReport } from "../src/analyticsReport.js";
 
 const latestReport = reports.at(-1);
 const latestRows = stockHistory.filter((row) => row.reportDate === latestReport.key);
@@ -110,6 +111,12 @@ html = replaceRequired(
   `    const reportDates = ${JSON.stringify(reports)};`,
   "embedded report dates",
 );
+html = replaceRequired(
+  html,
+  /    const analyticsReport = .*?;\r?\n    const state =/s,
+  `    const analyticsReport = ${JSON.stringify(analyticsReport).replaceAll("</", "<\\/")};\n    const state =`,
+  "embedded analytics report",
+);
 html = replaceRequired(html, /Latest central report: [^<]+/, `Latest central report: ${latestReport.label}`, "sidebar date");
 html = replaceRequired(html, /<span class="freshness">Updated [^<]+<\/span>/, `<span class="freshness">Updated 22 July 2026</span>`, "freshness date");
 html = replaceRequired(html, /Latest report<br><strong>[^<]+<\/strong>/, `Latest report<br><strong>${latestReport.label}</strong>`, "overview date");
@@ -149,4 +156,4 @@ html = html.replace(
 );
 
 writeFileSync("index.html", html, "utf8");
-console.log(JSON.stringify({ output: "index.html", reports: reports.length, uniqueCodes: data.length, latestRows: latestRows.length }, null, 2));
+console.log(JSON.stringify({ output: "index.html", reports: reports.length, uniqueCodes: data.length, latestRows: latestRows.length, analyticsItems: analyticsReport.items.length }, null, 2));
