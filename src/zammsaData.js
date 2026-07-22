@@ -33,6 +33,11 @@ export const reports = [
     "key": "2026-06-30",
     "label": "30 June 2026",
     "short": "30 Jun"
+  },
+  {
+    "key": "2026-07-15",
+    "label": "15 July 2026",
+    "short": "15 Jul"
   }
 ];
 export const trend = [
@@ -119,6 +124,18 @@ export const trend = [
     "gaps": 329,
     "amiMissing": 332,
     "tbdMos": 329
+  },
+  {
+    "key": "2026-07-15",
+    "label": "15 July 2026",
+    "short": "15 Jul",
+    "total": 726,
+    "critical": 188,
+    "near": 73,
+    "over": 100,
+    "gaps": 323,
+    "amiMissing": 322,
+    "tbdMos": 323
   }
 ];
 export const programmePressure = {
@@ -415,29 +432,78 @@ export const programmePressure = {
       "value": 5,
       "tone": "green"
     }
+  ],
+  "2026-07-15": [
+    {
+      "label": "Medical Supplies",
+      "value": 39,
+      "tone": "amber"
+    },
+    {
+      "label": "Other Essential Medicines",
+      "value": 30,
+      "tone": "amber"
+    },
+    {
+      "label": "Laboratory Services",
+      "value": 29,
+      "tone": "red"
+    },
+    {
+      "label": "Renal",
+      "value": 20,
+      "tone": "amber"
+    },
+    {
+      "label": "Dental",
+      "value": 16,
+      "tone": "green"
+    },
+    {
+      "label": "Anti-TB Medicines",
+      "value": 12,
+      "tone": "red"
+    },
+    {
+      "label": "Epidemic / PPE Supplies",
+      "value": 7,
+      "tone": "green"
+    },
+    {
+      "label": "Imaging",
+      "value": 5,
+      "tone": "green"
+    }
   ]
 };
 export const categories = [
   {
-    "name": "Laboratory Services",
-    "total": 205,
-    "risk": 37,
-    "stockout": 1,
-    "tbd": 103
+    "name": "Medical Supplies",
+    "total": 130,
+    "risk": 39,
+    "stockout": 6,
+    "tbd": 73
   },
   {
     "name": "Other Essential Medicines",
-    "total": 103,
-    "risk": 29,
-    "stockout": 6,
-    "tbd": 39
+    "total": 106,
+    "risk": 30,
+    "stockout": 3,
+    "tbd": 46
   },
   {
-    "name": "Medical Supplies",
-    "total": 133,
-    "risk": 27,
-    "stockout": 7,
-    "tbd": 85
+    "name": "Laboratory Services",
+    "total": 199,
+    "risk": 29,
+    "stockout": 3,
+    "tbd": 101
+  },
+  {
+    "name": "Renal",
+    "total": 50,
+    "risk": 20,
+    "stockout": 0,
+    "tbd": 6
   },
   {
     "name": "Dental",
@@ -447,18 +513,11 @@ export const categories = [
     "tbd": 21
   },
   {
-    "name": "Renal",
-    "total": 53,
-    "risk": 14,
+    "name": "Anti-TB Medicines",
+    "total": 23,
+    "risk": 12,
     "stockout": 2,
     "tbd": 6
-  },
-  {
-    "name": "Anti-TB Medicines",
-    "total": 19,
-    "risk": 10,
-    "stockout": 2,
-    "tbd": 2
   },
   {
     "name": "Epidemic / PPE Supplies",
@@ -468,58 +527,58 @@ export const categories = [
     "tbd": 39
   },
   {
-    "name": "Anti-Malarials",
-    "total": 9,
-    "risk": 5,
-    "stockout": 0,
-    "tbd": 3
-  },
-  {
     "name": "Imaging",
     "total": 14,
     "risk": 5,
     "stockout": 0,
-    "tbd": 9
+    "tbd": 7
   },
   {
     "name": "Cardiovascular",
-    "total": 5,
+    "total": 4,
     "risk": 4,
     "stockout": 1,
     "tbd": 0
   },
   {
-    "name": "National ART Programme",
-    "total": 16,
+    "name": "Oncology",
+    "total": 15,
     "risk": 4,
     "stockout": 1,
     "tbd": 3
   },
   {
-    "name": "Oncology",
-    "total": 12,
-    "risk": 4,
+    "name": "Essential Medicines",
+    "total": 9,
+    "risk": 3,
     "stockout": 1,
-    "tbd": 0
+    "tbd": 4
+  },
+  {
+    "name": "Anti-Malarials",
+    "total": 8,
+    "risk": 3,
+    "stockout": 0,
+    "tbd": 2
   }
 ];
 export const managementConcerns = [
   {
-    "title": "185 commodities below 2 months of stock",
+    "title": "188 commodities below 2 months of stock",
     "severity": "High",
-    "evidence": "Latest programme pressure on 30 June 2026 is concentrated in Laboratory Services (37), Other Essential Medicines (29), Medical Supplies (27), Dental (16), Renal (14).",
+    "evidence": "Latest programme pressure on 15 July 2026 is concentrated in Medical Supplies (39), Other Essential Medicines (30), Laboratory Services (29), Renal (20), Dental (16).",
     "action": "Prioritise stock verification, redistribution, and emergency supply actions for the highest-risk programme groups."
   },
   {
-    "title": "27 commodities displayed at 0.0 MOS",
+    "title": "21 commodities displayed at 0.0 MOS",
     "severity": "High",
-    "evidence": "The 30 June 2026 central report lists 27 ordering codes with zero months of stock.",
+    "evidence": "The 15 July 2026 central report lists 21 ordering codes with zero months of stock.",
     "action": "Confirm whether zero-MOS lines are true stock-outs, then escalate replenishment or substitution decisions."
   },
   {
-    "title": "329 rows still have TBD months of stock",
+    "title": "323 rows still have TBD months of stock",
     "severity": "Medium",
-    "evidence": "332 rows have missing AMI and 329 rows have TBD or missing MOS in the 30 June 2026 report.",
+    "evidence": "322 rows have missing AMI and 323 rows have TBD or missing MOS in the 15 July 2026 report.",
     "action": "Resolve missing AMI values before using MOS for procurement decisions on these commodities."
   }
 ];
