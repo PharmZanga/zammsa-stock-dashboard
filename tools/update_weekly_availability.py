@@ -6,17 +6,18 @@ import openpyxl
 
 
 NEW_WORKBOOK = Path(
-    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\june\Stock Position 13 and 19 june 2026.xlsx"
+    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\july\EMMS and LAB Stock Position.xlsx"
 )
 
 NEW_SHEETS = [
-    ("EMMS-13 JUNE", "EMMS", "2026-06-13", "13 June 2026"),
-    ("EMMS-19 JUNE", "EMMS", "2026-06-19", "19 June 2026"),
-    ("LAB-13JUNE", "LAB", "2026-06-13", "13 June 2026"),
-    ("LAB-19JUNE", "LAB", "2026-06-19", "19 June 2026"),
+    ("EMMS JULY10", "EMMS", "2026-07-10", "10 July 2026"),
+    ("EMMS JULY17", "EMMS", "2026-07-17", "17 July 2026"),
+    ("LAB JULY 10", "LAB", "2026-07-10", "10 July 2026"),
+    ("LAB JULY17", "LAB", "2026-07-17", "17 July 2026"),
 ]
 
 OUTPUT_PATH = Path("src/weeklyAvailability.js")
+MAX_DATA_ROWS = 2000
 
 
 def clean_text(value):
@@ -38,7 +39,9 @@ def is_availability(value):
 
 
 def find_overall(ws):
-    for row in ws.iter_rows(values_only=True):
+    for row in ws.iter_rows(
+        min_row=1, max_row=min(ws.max_row or 1, MAX_DATA_ROWS), values_only=True
+    ):
         cells = list(row)
         for index, value in enumerate(cells):
             if "overall" in clean_text(value).lower():
@@ -49,7 +52,9 @@ def find_overall(ws):
 
 
 def find_category_columns(ws):
-    for row in ws.iter_rows(values_only=True):
+    for row in ws.iter_rows(
+        min_row=1, max_row=min(ws.max_row or 1, MAX_DATA_ROWS), values_only=True
+    ):
         cells = list(row)
         for index in range(len(cells) - 1):
             left = clean_text(cells[index]).lower()
@@ -65,7 +70,9 @@ def extract_categories(ws, name_col, value_col):
     categories = []
     started = False
     blanks = 0
-    for row in ws.iter_rows(values_only=True):
+    for row in ws.iter_rows(
+        min_row=1, max_row=min(ws.max_row or 1, MAX_DATA_ROWS), values_only=True
+    ):
         cells = list(row) + [None] * max(0, value_col + 1 - len(row))
         name = clean_text(cells[name_col])
         value = cells[value_col]
@@ -93,7 +100,9 @@ def extract_items(ws, summary_name_col, category_names):
     category_lookup = {normalize_item(name): name for name in category_names}
     max_col = min(ws.max_column or 12, 16)
 
-    for row in ws.iter_rows(values_only=True):
+    for row in ws.iter_rows(
+        min_row=1, max_row=min(ws.max_row or 1, MAX_DATA_ROWS), values_only=True
+    ):
         cells = list(row) + [None] * max(0, max_col - len(row))
         for name_col in range(max_col - 1):
             if name_col == summary_name_col:

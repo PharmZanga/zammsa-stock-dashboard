@@ -2,9 +2,13 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { stockHistory } from "../src/zammsaHistory.js";
 import { reports } from "../src/zammsaData.js";
 import { analyticsReport } from "../src/analyticsReport.js";
+import { weeklyAvailability } from "../src/weeklyAvailability.js";
 
 const latestReport = reports.at(-1);
 const latestRows = stockHistory.filter((row) => row.reportDate === latestReport.key);
+const latestWeeklyDate = [...new Set(weeklyAvailability.reports.map((report) => report.date))]
+  .sort()
+  .at(-1);
 
 const programmeByPrefix = {
   ARV: "National ART Programme",
@@ -113,6 +117,12 @@ html = replaceRequired(
 );
 html = replaceRequired(
   html,
+  /    const weeklyData = .*?;\r?\n    const analyticsReport =/s,
+  `    const weeklyData = ${JSON.stringify(weeklyAvailability).replaceAll("</", "<\\/")};\n    const analyticsReport =`,
+  "embedded weekly availability dataset",
+);
+html = replaceRequired(
+  html,
   /    const analyticsReport = .*?;\r?\n    const state =/s,
   `    const analyticsReport = ${JSON.stringify(analyticsReport).replaceAll("</", "<\\/")};\n    const state =`,
   "embedded analytics report",
@@ -154,6 +164,16 @@ html = html.replace(
   /Object\.assign\(state, \{ classification: "all", stock: "all", search: "", snapshot: "[^"]+"/,
   `Object.assign(state, { classification: "all", stock: "all", search: "", snapshot: "${latestReport.key}"`,
 );
+html = html.replace(/overviewWeeklyDate: "[^"]+"/, `overviewWeeklyDate: "${latestWeeklyDate}"`);
+html = html.replace(/weeklyDate: "[^"]+"/, `weeklyDate: "${latestWeeklyDate}"`);
+html = html.replace(
+  /weeklyReport\("EMMS", "\d{4}-\d{2}-\d{2}"\)/,
+  `weeklyReport("EMMS", "${latestWeeklyDate}")`,
+);
+html = html.replace(
+  /weeklyReport\("LAB", "\d{4}-\d{2}-\d{2}"\)/,
+  `weeklyReport("LAB", "${latestWeeklyDate}")`,
+);
 
 writeFileSync("index.html", html, "utf8");
-console.log(JSON.stringify({ output: "index.html", reports: reports.length, uniqueCodes: data.length, latestRows: latestRows.length, analyticsItems: analyticsReport.items.length }, null, 2));
+console.log(JSON.stringify({ output: "index.html", reports: reports.length, uniqueCodes: data.length, latestRows: latestRows.length, analyticsItems: analyticsReport.items.length, latestWeeklyDate }, null, 2));
