@@ -135,6 +135,99 @@ if (!html.includes("function openPredictiveWarning")) {
   );
 }
 
+if (!html.includes(".scenario-panel")) {
+  html = html.replace(
+    "    .warning-action { margin-top: 14px; padding: 14px; border-left: 4px solid #b22b20; background: #fff; line-height: 1.5; }",
+    `    .warning-action { margin-top: 14px; padding: 14px; border-left: 4px solid #b22b20; background: #fff; line-height: 1.5; }
+    .scenario-panel { margin-top: 16px; padding: 16px; border: 1px solid #9eb6ad; background: #fff; }
+    .scenario-panel h4 { margin: 0 0 4px; }
+    .scenario-panel > p { margin: 0 0 14px; color: var(--muted); font-size: 11px; }
+    .scenario-inputs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .scenario-inputs label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 750; }
+    .scenario-inputs input, .scenario-inputs select { width: 100%; border: 1px solid #9eb6ad; background: #fff; padding: 9px; color: var(--ink); }
+    .scenario-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 14px; border: 1px solid var(--border); }
+    .scenario-results article { padding: 11px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .scenario-results span, .scenario-results small { display: block; color: var(--muted); font-size: 10px; }
+    .scenario-results strong { display: block; margin: 3px 0; font-size: 17px; }
+    .scenario-verdict { margin-top: 12px; padding: 12px; border-left: 4px solid #bf7a00; background: #f7faf8; line-height: 1.45; }
+    .scenario-verdict.critical { border-left-color: #b22b20; background: #fff1ef; }
+    .scenario-verdict.safe { border-left-color: var(--green); background: #edf7f1; }
+    @media (max-width: 520px) { .scenario-inputs, .scenario-results { grid-template-columns: 1fr; } }`,
+  );
+}
+
+if (!html.includes('id="predictiveScenario"')) {
+  html = html.replace(
+    `'<div class="warning-action"><b>Recommended action</b><br>' + escapeHtml(item.action) + '<br><small>Forecast confidence: ' + confidence + ' · ' + item.observations + ' historical observations · 95% monthly demand range ' + analyticsNumber(item.forecastRange?.lower) + '–' + analyticsNumber(item.forecastRange?.upper) + '.</small></div>';`,
+    `'<div class="warning-action"><b>Recommended action</b><br>' + escapeHtml(item.action) + '<br><small>Forecast confidence: ' + confidence + ' · ' + item.observations + ' historical observations · 95% monthly demand range ' + analyticsNumber(item.forecastRange?.lower) + '–' + analyticsNumber(item.forecastRange?.upper) + '.</small></div>' +
+        '<section class="scenario-panel" id="predictiveScenario" data-sku="' + escapeHtml(item.sku) + '"><h4>Stage 2 · Scenario simulator</h4><p>Test a demand change and a planned delivery before committing an order. Pipeline quantity is a manual scenario until confirmed shipment data is connected.</p><div class="scenario-inputs">' +
+        '<label>Demand change (%)<input id="scenarioDemand" type="number" min="-80" max="200" step="5" value="0"></label>' +
+        '<label>Pipeline quantity<input id="scenarioPipeline" type="number" min="0" step="1" value="0"></label>' +
+        '<label>Delivery delay (days)<input id="scenarioDelay" type="number" min="0" max="365" step="1" value="30"></label>' +
+        '<label>Target stock level<select id="scenarioTarget"><option value="3">3 MOS</option><option value="6">6 MOS</option><option value="9">9 MOS</option><option value="12">12 MOS</option></select></label></div>' +
+        '<div id="scenarioResults"></div></section>';`,
+  );
+  html = html.replace(
+    `      panel.hidden = false;
+      document.getElementById("predictiveWarningClose").focus();`,
+    `      panel.hidden = false;
+      calculatePredictiveScenario();
+      document.getElementById("predictiveWarningClose").focus();`,
+  );
+}
+
+if (!html.includes("function calculatePredictiveScenario")) {
+  html = html.replace(
+    "    function closePredictiveWarning() {",
+    `    function calculatePredictiveScenario() {
+      const scenario = document.getElementById("predictiveScenario");
+      const results = document.getElementById("scenarioResults");
+      if (!scenario || !results) return;
+      const item = analyticsItemsForDate(state.analyticsDate).find(row => row.sku === scenario.dataset.sku);
+      if (!item || !Number.isFinite(item.forecastMonthlyDemand) || item.forecastMonthlyDemand <= 0) {
+        results.innerHTML = '<div class="scenario-verdict critical"><b>Scenario unavailable</b><br>A usable demand forecast is required before pipeline timing can be simulated.</div>';
+        return;
+      }
+      const demandChange = Math.max(-80, Math.min(200, Number(document.getElementById("scenarioDemand").value) || 0));
+      const pipeline = Math.max(0, Number(document.getElementById("scenarioPipeline").value) || 0);
+      const delay = Math.max(0, Number(document.getElementById("scenarioDelay").value) || 0);
+      const targetMos = Math.max(1, Number(document.getElementById("scenarioTarget").value) || 3);
+      const monthlyDemand = item.forecastMonthlyDemand * (1 + demandChange / 100);
+      const dailyDemand = monthlyDemand / 30.4375;
+      const currentStock = Math.max(0, Number(item.stockOnHand) || 0);
+      const daysWithoutPipeline = currentStock / dailyDemand;
+      const pipelineArrivesInTime = pipeline > 0 && delay < daysWithoutPipeline;
+      const stockAtArrival = Math.max(0, currentStock - dailyDemand * delay);
+      const usablePipeline = pipelineArrivesInTime ? pipeline : 0;
+      const projectedDays = pipelineArrivesInTime ? delay + (stockAtArrival + pipeline) / dailyDemand : daysWithoutPipeline;
+      const stockoutDate = new Date(state.analyticsDate + "T00:00:00Z");
+      stockoutDate.setUTCDate(stockoutDate.getUTCDate() + Math.max(0, Math.floor(projectedDays)));
+      const targetUnits = monthlyDemand * targetMos;
+      const recommendedOrder = Math.max(0, Math.ceil(targetUnits - currentStock - usablePipeline));
+      const arrivalGap = Math.floor(daysWithoutPipeline - delay);
+      const risk = daysWithoutPipeline <= 0 ? "critical" : !pipelineArrivesInTime && delay >= daysWithoutPipeline ? "critical" : projectedDays <= 30 ? "critical" : projectedDays <= 90 ? "watch" : "safe";
+      let action = recommendedOrder > 0 ? "Order " + analyticsNumber(recommendedOrder) + " units to reach " + targetMos + " MOS under this scenario." : "No additional order is indicated for the selected target.";
+      if (pipeline > 0 && !pipelineArrivesInTime) action = "Expedite the planned delivery: stock is projected to run out " + Math.abs(arrivalGap) + " days before arrival. " + action;
+      else if (pipelineArrivesInTime) action = "The pipeline arrives with approximately " + analyticsNumber(stockAtArrival) + " units remaining. " + action;
+      results.innerHTML = '<div class="scenario-results"><article><span>Adjusted monthly demand</span><strong>' + analyticsNumber(monthlyDemand) + '</strong><small>' + (demandChange >= 0 ? '+' : '') + demandChange + '% scenario</small></article>' +
+        '<article><span>Stock at delivery</span><strong>' + analyticsNumber(stockAtArrival) + '</strong><small>' + (pipelineArrivesInTime ? 'Delivery arrives before stockout' : pipeline > 0 ? 'Delivery may arrive too late' : 'No pipeline entered') + '</small></article>' +
+        '<article><span>Projected stockout</span><strong>' + analyticsDate(stockoutDate.toISOString().slice(0, 10)) + '</strong><small>' + analyticsNumber(projectedDays) + ' days of cover</small></article>' +
+        '<article><span>Scenario order quantity</span><strong>' + analyticsNumber(recommendedOrder) + '</strong><small>Target ' + targetMos + ' MOS</small></article></div>' +
+        '<div class="scenario-verdict ' + risk + '"><b>' + (risk === "critical" ? "Intervention required" : risk === "watch" ? "Watch closely" : "Scenario is covered") + '</b><br>' + escapeHtml(action) + '</div>';
+    }
+    function closePredictiveWarning() {`,
+  );
+}
+
+if (!html.includes('event.target.closest("#predictiveScenario")')) {
+  html = html.replace(
+    `    document.getElementById("predictiveWarningDetail").addEventListener("click", event => { if (event.target.id === "predictiveWarningClose") closePredictiveWarning(); });`,
+    `    document.getElementById("predictiveWarningDetail").addEventListener("click", event => { if (event.target.id === "predictiveWarningClose") closePredictiveWarning(); });
+    document.getElementById("predictiveWarningDetail").addEventListener("input", event => { if (event.target.closest("#predictiveScenario")) calculatePredictiveScenario(); });
+    document.getElementById("predictiveWarningDetail").addEventListener("change", event => { if (event.target.closest("#predictiveScenario")) calculatePredictiveScenario(); });`,
+  );
+}
+
 if (!html.includes('document.getElementById("analyticsKpis").addEventListener')) {
   html = html.replace(
     `    document.getElementById("analyticsSearch").addEventListener("input", event => { state.analyticsSearch = event.target.value; renderManagementAnalytics(); });`,

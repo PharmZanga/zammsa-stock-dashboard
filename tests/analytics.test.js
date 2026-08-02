@@ -49,3 +49,15 @@ test("management analytics exposes stream, programme and historical date control
   assert.match(dashboard, /function analyticsItemsForDate\(date\)/);
   assert.match(dashboard, /Compared with/);
 });
+
+test("predictive warning center includes the Stage 2 scenario simulator", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /id="predictiveScenario"/);
+  assert.match(dashboard, /id="scenarioDemand"/);
+  assert.match(dashboard, /id="scenarioPipeline"/);
+  assert.match(dashboard, /id="scenarioDelay"/);
+  assert.match(dashboard, /id="scenarioTarget"/);
+  assert.match(dashboard, /function calculatePredictiveScenario\(\)/);
+  assert.match(dashboard, /Scenario order quantity/);
+  assert.match(dashboard, /Expedite the planned delivery/);
+});
