@@ -13,13 +13,13 @@ const oldConcerns = `        <section class="view" id="concerns" hidden>
         </section>`;
 
 const newConcerns = `        <section class="view" id="concerns" hidden>
-          <div class="page-head"><div><p class="eyebrow">Management Analytics</p><h2>Central stock intelligence, forecast and quantification</h2><p>Review current stock, historical consumption signals, forecast stockout dates and quantified replenishment recommendations.</p></div></div>
+          <div class="page-head"><div><p class="eyebrow">Predictive Analysis</p><h2>Central stock forecasts and replenishment intelligence</h2><p>Review current stock, historical consumption signals, forecast stockout dates and quantified replenishment recommendations.</p></div></div>
           <div class="analytics-policy" id="analyticsPolicy"></div>
           <div class="analytics-kpis" id="analyticsKpis"></div>
           <div class="analytics-summary"><div class="analytics-note" id="analyticsNarrative"></div><div class="analytics-note warning" id="analyticsMethod"></div></div>
           <div class="analytics-controls">
-            <input id="analyticsSearch" type="search" placeholder="Search SKU, commodity or programme" aria-label="Search management analytics">
-            <select id="analyticsStatus" aria-label="Filter management analytics by stock status"><option value="all">All stock statuses</option><option value="understocked">Understocked</option><option value="adequate">Adequate</option><option value="overstocked">Overstocked</option><option value="excess">Excess</option><option value="data_gap">Data gap</option></select>
+            <input id="analyticsSearch" type="search" placeholder="Search SKU, commodity or programme" aria-label="Search predictive analysis">
+            <select id="analyticsStatus" aria-label="Filter predictive analysis by stock status"><option value="all">All stock statuses</option><option value="understocked">Understocked</option><option value="adequate">Adequate</option><option value="overstocked">Overstocked</option><option value="excess">Excess</option><option value="data_gap">Data gap</option></select>
             <button class="reset" id="analyticsExport" type="button">Export analytical CSV</button>
           </div>
           <div class="table-shell"><div class="table-scroll"><table class="analytics-table"><thead><tr><th>Priority commodity</th><th>Status</th><th>Current SOH</th><th>MOS / DOS</th><th>Forecast monthly demand</th><th>Expected stockout</th><th>Reorder point</th><th>Recommended order</th><th>Historical signal</th><th>Management action</th></tr></thead><tbody id="analyticsTableBody"></tbody></table></div><div class="pagination"><span id="analyticsResultCount"></span><span>Central warehouse · forecast ranked by management priority</span></div></div>
@@ -178,6 +178,13 @@ html = html.replace(
   '      const lines = [headers, ...filteredAnalyticsItems().map(item => [item.sku, item.description, item.programme, item.location, item.status, item.stockOnHand, item.mos, item.daysOfSupply, item.forecastMonthlyDemand, item.forecastRange?.lower, item.forecastRange?.upper, item.expectedStockoutDate, item.safetyStock, item.reorderPoint, item.recommendedOrderQuantity, item.turnoverRate, item.forecastAccuracy.wape, item.action])]',
   '      const lines = [headers, ...filteredAnalyticsItems().map(item => [item.sku, item.description, item.programme, item.location, item.status, item.stockOnHand, item.mos, item.daysOfSupply, item.usageRates.daily, item.usageRates.weekly, item.forecastMonthlyDemand, item.forecastRange?.lower, item.forecastRange?.upper, item.expectedStockoutDate, item.stockAgeDays, item.stagnant, item.safetyStock, item.reorderPoint, item.recommendedOrderQuantity, item.turnoverRate, item.stockoutFrequency, item.historicalTrend.stockOnHandChange, item.historicalTrend.demandChange, item.historicalTrend.seasonality.status, item.forecastAccuracy.wape, item.action])]',
 );
+
+html = html
+  .replace('<button data-target="concerns"><span class="nav-icon">05</span> Management Concerns</button>', '<button data-target="concerns"><span class="nav-icon">05</span> Predictive Analysis</button>')
+  .replace('<p class="eyebrow">Management Analytics</p><h2>Central stock intelligence, forecast and quantification</h2>', '<p class="eyebrow">Predictive Analysis</p><h2>Central stock forecasts and replenishment intelligence</h2>')
+  .replace('aria-label="Search management analytics"', 'aria-label="Search predictive analysis"')
+  .replace('aria-label="Filter management analytics by stock status"', 'aria-label="Filter predictive analysis by stock status"')
+  .replace('concerns: "Management Concerns"', 'concerns: "Predictive Analysis"');
 
 writeFileSync("index.html", html, "utf8");
 console.log(JSON.stringify({ output: "index.html", managementAnalytics: true }, null, 2));
