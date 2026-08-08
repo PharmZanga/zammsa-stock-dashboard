@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { buildAnalyticsReport, classifyMos } from "../src/analytics/analytics.js";
 import { DEFAULT_POLICY } from "../src/analytics/config.js";
 import { ingestSnapshotsCsv, normalizeDate } from "../src/analytics/ingestion.js";
+import { fitForecast, reorderRecommendation } from "../src/analytics/forecasting.js";
 
 test("CSV ingestion handles quoted commas, missing values, dates, and duplicates", () => {
   const csv = `SKU,Description,Snapshot Date,Location,Stock on Hand,Average Monthly Issue,Months of Stock\nEM001,"Medicine, 5mg",15/07/2026,Central,"1,200",600,2\nEM001,"Medicine, 5mg",15/07/2026,Central,900,,1.5\nEM002,Other,2026-07-15,Central,-,100,TBD`;
@@ -41,6 +42,21 @@ test("forecast report has stable dashboard output shape", () => {
   assert.ok(report.items[0].recommendedOrderQuantity > 0);
 });
 
+test("optimized Holt-Winters forecast returns diagnostics and widening 95% intervals", () => {
+  const history = Array.from({ length: 24 }, (_, index) => 400 + 12 * index + [0, 52, 52, 0, -52, -52][index % 6]);
+  const forecast = fitForecast(history, { horizon: 6, seasonalPeriod: 6 });
+  assert.equal(forecast.method, "holt_winters_additive");
+  assert.equal(forecast.forecast.length, 6);
+  assert.equal(forecast.lower95.length, 6);
+  assert.equal(forecast.upper95.length, 6);
+  assert.ok(Number.isFinite(forecast.rmse));
+  assert.ok(Number.isFinite(forecast.params.smoothing_level));
+  assert.ok(forecast.upper95[5] - forecast.lower95[5] >= forecast.upper95[0] - forecast.lower95[0]);
+  const reorder = reorderRecommendation(forecast, 100, 3, 1.15);
+  assert.ok(reorder.reorderPoint > reorder.demandDuringLeadTime);
+  assert.ok(reorder.recommendedOrderQty > 0);
+});
+
 test("management analytics exposes stream, programme and historical date controls", () => {
   const dashboard = readFileSync("index.html", "utf8");
   assert.match(dashboard, /id="analyticsStream"/);
@@ -60,4 +76,23 @@ test("predictive warning center includes the Stage 2 scenario simulator", () => 
   assert.match(dashboard, /function calculatePredictiveScenario\(\)/);
   assert.match(dashboard, /Scenario order quantity/);
   assert.match(dashboard, /Expedite the planned delivery/);
+});
+
+test("warning center includes Stage 3 ownership and escalation workflow", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /id="warningWorkflow"/);
+  assert.match(dashboard, /id="warningOwner"/);
+  assert.match(dashboard, /id="warningDeadline"/);
+  assert.match(dashboard, /id="warningAcknowledge"/);
+  assert.match(dashboard, /zammsa-warning-center-v1/);
+  assert.match(dashboard, /mailto:\?subject=/);
+  assert.match(dashboard, /https:\/\/wa\.me\/\?text=/);
+  assert.match(dashboard, /function updateWarningWorkflow\(type\)/);
+});
+
+test("warning detail exposes optimized Holt model diagnostics", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /Holt-Winters · optimized/);
+  assert.match(dashboard, /item\.forecast\?\.rmse/);
+  assert.match(dashboard, /item\.forecast\?\.mape/);
 });

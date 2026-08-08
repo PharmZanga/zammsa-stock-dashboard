@@ -1,5 +1,5 @@
 export const analyticsReport = {
-  "generatedAt": "2026-07-22T14:11:16.343Z",
+  "generatedAt": "2026-08-08T22:28:11.290Z",
   "asOfDate": "2026-07-15",
   "location": "Central",
   "policy": {
@@ -8,7 +8,7 @@ export const analyticsReport = {
     "excessMos": 12
   },
   "methodology": {
-    "forecast": "simple_exponential_smoothing",
+    "forecast": "holt_winters_optimized",
     "demandPreference": [
       "outbound_movements",
       "ami_proxy"
@@ -16,6 +16,8 @@ export const analyticsReport = {
     "leadTimeDays": 60,
     "reviewPeriodDays": 30,
     "serviceLevelZ": 1.645,
+    "seasonalPeriod": 6,
+    "reorderSafetyFactor": 1.15,
     "annualCarryingCostRate": 0.25,
     "note": "AMI-based forecasts are planning proxies and should be replaced by transaction-level consumption when available."
   },
@@ -23,17 +25,17 @@ export const analyticsReport = {
     "understocked": 197,
     "adequate": 82,
     "overstocked": 83,
-    "excess": 59,
-    "data_gap": 305,
-    "stockouts90Days": 239,
+    "excess": 58,
+    "data_gap": 306,
+    "stockouts90Days": 242,
     "forecastableItems": 427,
     "demandUnavailable": 299,
-    "reorderUnits": 16011315,
+    "reorderUnits": 6022582,
     "costedItems": 0,
     "inventoryValue": null,
     "annualCarryingCost": null
   },
-  "humanSummary": "197 Central commodities are below 2 MOS, 83 are above 4 MOS, and 59 are above 12 MOS. 239 commodities are projected to run out within 90 days where a demand signal is available. Forecasts currently use AMI as a proxy for 427 commodities; 299 commodities still lack enough demand data.",
+  "humanSummary": "197 Central commodities are below 2 MOS, 83 are above 4 MOS, and 58 are above 12 MOS. 242 commodities are projected to run out within 90 days where a demand signal is available. Forecasts currently use AMI as a proxy for 427 commodities; 299 commodities still lack enough demand data.",
   "items": [
     {
       "sku": "LAB0133",
@@ -58,11 +60,30 @@ export const analyticsReport = {
         "upper": 24
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          24,
+          24,
+          24,
+          24
+        ],
+        "forecast": [
+          24,
+          24,
+          24
+        ],
+        "lower95": [
+          24,
+          24,
+          24
+        ],
+        "upper95": [
+          24,
+          24,
+          24
+        ],
         "points": [
           {
             "period": 1,
@@ -82,12 +103,20 @@ export const analyticsReport = {
             "lower": 24,
             "upper": 24
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 47,
-      "recommendedOrderQuantity": 109,
+      "safetyStock": 7,
+      "reorderPoint": 54,
+      "recommendedOrderQuantity": 43,
       "turnoverRate": 6.36,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -127,50 +156,79 @@ export const analyticsReport = {
       "ami": 139,
       "mos": 0,
       "status": "understocked",
-      "daysOfSupply": 22,
+      "daysOfSupply": 25,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 66.85,
+      "forecastMonthlyDemand": 59.08,
       "usageRates": {
-        "daily": 2.2,
-        "weekly": 15.37,
-        "monthly": 66.85
+        "daily": 1.94,
+        "weekly": 13.59,
+        "monthly": 59.08
       },
       "forecastRange": {
         "lower": 0,
-        "upper": 164.15
+        "upper": 156.38
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 49.64070910049533,
+        "fitted": [
+          28,
+          28,
+          28.000000000000004,
+          28.00000000000001,
+          28.000000000000014,
+          28.000000000000018
+        ],
+        "forecast": [
+          59.08000000000002,
+          67.96000000000002,
+          76.84000000000003
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          156.37578983697085,
+          205.55702554924653,
+          245.3612513601771
+        ],
         "points": [
           {
             "period": 1,
-            "value": 66.85,
+            "value": 59.08000000000002,
             "lower": 0,
-            "upper": 164.14578983697083
+            "upper": 156.37578983697085
           },
           {
             "period": 2,
-            "value": 66.85,
+            "value": 67.96000000000002,
             "lower": 0,
-            "upper": 204.44702554924652
+            "upper": 205.55702554924653
           },
           {
             "period": 3,
-            "value": 66.85,
+            "value": 76.84000000000003,
             "lower": 0,
-            "upper": 235.3712513601771
+            "upper": 245.3612513601771
           }
-        ]
+        ],
+        "residualStdDev": 49.64070910049532,
+        "rmse": 49.64070910049532,
+        "mape": 15.971223021582754,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2026-08-05",
-      "safetyStock": 105,
-      "reorderPoint": 236,
-      "recommendedOrderQuantity": 285,
-      "turnoverRate": 5.47,
+      "expectedStockoutDate": "2026-08-08",
+      "safetyStock": 19,
+      "reorderPoint": 144,
+      "recommendedOrderQuantity": 96,
+      "turnoverRate": 4.83,
       "stockoutFrequency": 0.125,
       "stockAgeDays": null,
       "stagnant": false,
@@ -222,11 +280,28 @@ export const analyticsReport = {
         "upper": 887
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          887,
+          887
+        ],
+        "forecast": [
+          887,
+          887,
+          887
+        ],
+        "lower95": [
+          887,
+          887,
+          887
+        ],
+        "upper95": [
+          887,
+          887,
+          887
+        ],
         "points": [
           {
             "period": 1,
@@ -246,12 +321,20 @@ export const analyticsReport = {
             "lower": 887,
             "upper": 887
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1749,
-      "recommendedOrderQuantity": 4419,
+      "safetyStock": 262,
+      "reorderPoint": 2011,
+      "recommendedOrderQuantity": 2008,
       "turnoverRate": 3548,
       "stockoutFrequency": 0.375,
       "stockAgeDays": null,
@@ -305,11 +388,32 @@ export const analyticsReport = {
         "upper": 73
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          73,
+          73,
+          73,
+          73,
+          73,
+          73
+        ],
+        "forecast": [
+          73,
+          73,
+          73
+        ],
+        "lower95": [
+          73,
+          73,
+          73
+        ],
+        "upper95": [
+          73,
+          73,
+          73
+        ],
         "points": [
           {
             "period": 1,
@@ -329,12 +433,20 @@ export const analyticsReport = {
             "lower": 73,
             "upper": 73
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 144,
-      "recommendedOrderQuantity": 344,
+      "safetyStock": 22,
+      "reorderPoint": 165,
+      "recommendedOrderQuantity": 145,
       "turnoverRate": 43.8,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -387,11 +499,32 @@ export const analyticsReport = {
         "upper": 83862
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          83862,
+          83862,
+          83862,
+          83862,
+          83862,
+          83862
+        ],
+        "forecast": [
+          83862,
+          83862,
+          83862
+        ],
+        "lower95": [
+          83862,
+          83862,
+          83862
+        ],
+        "upper95": [
+          83862,
+          83862,
+          83862
+        ],
         "points": [
           {
             "period": 1,
@@ -411,12 +544,20 @@ export const analyticsReport = {
             "lower": 83862,
             "upper": 83862
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 165313,
-      "recommendedOrderQuantity": 418039,
+      "safetyStock": 24797,
+      "reorderPoint": 190110,
+      "recommendedOrderQuantity": 190044,
       "turnoverRate": 26.76,
       "stockoutFrequency": 0.167,
       "stockAgeDays": null,
@@ -469,11 +610,28 @@ export const analyticsReport = {
         "upper": 7901
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          7901,
+          7901
+        ],
+        "forecast": [
+          7901,
+          7901,
+          7901
+        ],
+        "lower95": [
+          7901,
+          7901,
+          7901
+        ],
+        "upper95": [
+          7901,
+          7901,
+          7901
+        ],
         "points": [
           {
             "period": 1,
@@ -493,12 +651,20 @@ export const analyticsReport = {
             "lower": 7901,
             "upper": 7901
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-24",
-      "safetyStock": 0,
-      "reorderPoint": 15575,
-      "recommendedOrderQuantity": 37038,
+      "safetyStock": 2336,
+      "reorderPoint": 17911,
+      "recommendedOrderQuantity": 15558,
       "turnoverRate": 18.68,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -551,11 +717,33 @@ export const analyticsReport = {
         "upper": 174
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          174,
+          174,
+          174,
+          174,
+          174,
+          174,
+          174
+        ],
+        "forecast": [
+          174,
+          174,
+          174
+        ],
+        "lower95": [
+          174,
+          174,
+          174
+        ],
+        "upper95": [
+          174,
+          174,
+          174
+        ],
         "points": [
           {
             "period": 1,
@@ -575,12 +763,20 @@ export const analyticsReport = {
             "lower": 174,
             "upper": 174
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-29",
-      "safetyStock": 0,
-      "reorderPoint": 343,
-      "recommendedOrderQuantity": 786,
+      "safetyStock": 51,
+      "reorderPoint": 394,
+      "recommendedOrderQuantity": 313,
       "turnoverRate": 22.8,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -633,11 +829,29 @@ export const analyticsReport = {
         "upper": 84089
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          84089,
+          84089,
+          84089
+        ],
+        "forecast": [
+          84089,
+          84089,
+          84089
+        ],
+        "lower95": [
+          84089,
+          84089,
+          84089
+        ],
+        "upper95": [
+          84089,
+          84089,
+          84089
+        ],
         "points": [
           {
             "period": 1,
@@ -657,12 +871,20 @@ export const analyticsReport = {
             "lower": 84089,
             "upper": 84089
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-27",
-      "safetyStock": 0,
-      "reorderPoint": 165761,
-      "recommendedOrderQuantity": 384635,
+      "safetyStock": 24864,
+      "reorderPoint": 190625,
+      "recommendedOrderQuantity": 156024,
       "turnoverRate": 25.61,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -715,11 +937,30 @@ export const analyticsReport = {
         "upper": 1949
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          1949,
+          1949,
+          1949,
+          1949
+        ],
+        "forecast": [
+          1949,
+          1949,
+          1949
+        ],
+        "lower95": [
+          1949,
+          1949,
+          1949
+        ],
+        "upper95": [
+          1949,
+          1949,
+          1949
+        ],
         "points": [
           {
             "period": 1,
@@ -739,12 +980,20 @@ export const analyticsReport = {
             "lower": 1949,
             "upper": 1949
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 3842,
-      "recommendedOrderQuantity": 8884,
+      "safetyStock": 576,
+      "reorderPoint": 4418,
+      "recommendedOrderQuantity": 3585,
       "turnoverRate": 28.08,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -797,11 +1046,31 @@ export const analyticsReport = {
         "upper": 402
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          402,
+          402,
+          402,
+          402,
+          402
+        ],
+        "forecast": [
+          402,
+          402,
+          402
+        ],
+        "lower95": [
+          402,
+          402,
+          402
+        ],
+        "upper95": [
+          402,
+          402,
+          402
+        ],
         "points": [
           {
             "period": 1,
@@ -821,12 +1090,20 @@ export const analyticsReport = {
             "lower": 402,
             "upper": 402
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-29",
-      "safetyStock": 0,
-      "reorderPoint": 792,
-      "recommendedOrderQuantity": 1816,
+      "safetyStock": 119,
+      "reorderPoint": 911,
+      "recommendedOrderQuantity": 723,
       "turnoverRate": 7.26,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -879,11 +1156,29 @@ export const analyticsReport = {
         "upper": 19578
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          19578,
+          19578,
+          19578
+        ],
+        "forecast": [
+          19578,
+          19578,
+          19578
+        ],
+        "lower95": [
+          19578,
+          19578,
+          19578
+        ],
+        "upper95": [
+          19578,
+          19578,
+          19578
+        ],
         "points": [
           {
             "period": 1,
@@ -903,12 +1198,20 @@ export const analyticsReport = {
             "lower": 19578,
             "upper": 19578
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 38593,
-      "recommendedOrderQuantity": 95152,
+      "safetyStock": 5789,
+      "reorderPoint": 44382,
+      "recommendedOrderQuantity": 41925,
       "turnoverRate": 83.45,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -961,11 +1264,29 @@ export const analyticsReport = {
         "upper": 84089
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          84089,
+          84089,
+          84089
+        ],
+        "forecast": [
+          84089,
+          84089,
+          84089
+        ],
+        "lower95": [
+          84089,
+          84089,
+          84089
+        ],
+        "upper95": [
+          84089,
+          84089,
+          84089
+        ],
         "points": [
           {
             "period": 1,
@@ -985,12 +1306,20 @@ export const analyticsReport = {
             "lower": 84089,
             "upper": 84089
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 165761,
-      "recommendedOrderQuantity": 418653,
+      "safetyStock": 24864,
+      "reorderPoint": 190625,
+      "recommendedOrderQuantity": 190042,
       "turnoverRate": 635.97,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1043,11 +1372,32 @@ export const analyticsReport = {
         "upper": 38
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          38,
+          38,
+          38,
+          38,
+          38,
+          38
+        ],
+        "forecast": [
+          38,
+          38,
+          38
+        ],
+        "lower95": [
+          38,
+          38,
+          38
+        ],
+        "upper95": [
+          38,
+          38,
+          38
+        ],
         "points": [
           {
             "period": 1,
@@ -1067,12 +1417,20 @@ export const analyticsReport = {
             "lower": 38,
             "upper": 38
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-31",
-      "safetyStock": 0,
-      "reorderPoint": 75,
-      "recommendedOrderQuantity": 169,
+      "safetyStock": 11,
+      "reorderPoint": 86,
+      "recommendedOrderQuantity": 66,
       "turnoverRate": 20.49,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1103,88 +1461,6 @@ export const analyticsReport = {
       "priorityScore": 190
     },
     {
-      "sku": "RN0356",
-      "description": "Permanent catheter 14.5F x 33cm (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 19,
-      "ami": 30,
-      "mos": 0.6,
-      "status": "understocked",
-      "daysOfSupply": 27,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 21.62,
-      "usageRates": {
-        "daily": 0.71,
-        "weekly": 4.97,
-        "monthly": 21.62
-      },
-      "forecastRange": {
-        "lower": 7.11,
-        "upper": 36.14
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 7,
-        "residualStdDev": 7.40647338196563,
-        "points": [
-          {
-            "period": 1,
-            "value": 21.623512359375,
-            "lower": 7.106824530722365,
-            "upper": 36.140200188027634
-          },
-          {
-            "period": 2,
-            "value": 21.623512359375,
-            "lower": 1.0938155513580057,
-            "upper": 42.15320916739199
-          },
-          {
-            "period": 3,
-            "value": 21.623512359375,
-            "lower": 0,
-            "upper": 46.76715323621808
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-08-10",
-      "safetyStock": 27,
-      "reorderPoint": 70,
-      "recommendedOrderQuantity": 89,
-      "turnoverRate": 10.03,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 10.44,
-        "wape": 0.555,
-        "observations": 5
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.136,
-        "demandChange": 9,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 190
-    },
-    {
       "sku": "LAB0229",
       "description": "Fluoride Oxalate Blood Collection tubes 4ml(100)",
       "programme": "Laboratory Services",
@@ -1207,11 +1483,30 @@ export const analyticsReport = {
         "upper": 870
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          870,
+          870,
+          870,
+          870
+        ],
+        "forecast": [
+          870,
+          870,
+          870
+        ],
+        "lower95": [
+          870,
+          870,
+          870
+        ],
+        "upper95": [
+          870,
+          870,
+          870
+        ],
         "points": [
           {
             "period": 1,
@@ -1231,12 +1526,20 @@ export const analyticsReport = {
             "lower": 870,
             "upper": 870
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 1715,
-      "recommendedOrderQuantity": 3692,
+      "safetyStock": 257,
+      "reorderPoint": 1972,
+      "recommendedOrderQuantity": 1327,
       "turnoverRate": 65.58,
       "stockoutFrequency": 0.4,
       "stockAgeDays": null,
@@ -1289,36 +1592,61 @@ export const analyticsReport = {
         "upper": 429
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          429,
+          429
+        ],
+        "forecast": [
+          429.00000000000006,
+          429.00000000000006,
+          429.0000000000001
+        ],
+        "lower95": [
+          429.00000000000006,
+          429.00000000000006,
+          429.0000000000001
+        ],
+        "upper95": [
+          429.00000000000006,
+          429.00000000000006,
+          429.0000000000001
+        ],
         "points": [
           {
             "period": 1,
-            "value": 429,
-            "lower": 429,
-            "upper": 429
+            "value": 429.00000000000006,
+            "lower": 429.00000000000006,
+            "upper": 429.00000000000006
           },
           {
             "period": 2,
-            "value": 429,
-            "lower": 429,
-            "upper": 429
+            "value": 429.00000000000006,
+            "lower": 429.00000000000006,
+            "upper": 429.00000000000006
           },
           {
             "period": 3,
-            "value": 429,
-            "lower": 429,
-            "upper": 429
+            "value": 429.0000000000001,
+            "lower": 429.0000000000001,
+            "upper": 429.0000000000001
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-09",
-      "safetyStock": 0,
-      "reorderPoint": 846,
-      "recommendedOrderQuantity": 1780,
+      "safetyStock": 127,
+      "reorderPoint": 973,
+      "recommendedOrderQuantity": 614,
       "turnoverRate": 14.34,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1371,11 +1699,29 @@ export const analyticsReport = {
         "upper": 4408
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          4408,
+          4408,
+          4408
+        ],
+        "forecast": [
+          4408,
+          4408,
+          4408
+        ],
+        "lower95": [
+          4408,
+          4408,
+          4408
+        ],
+        "upper95": [
+          4408,
+          4408,
+          4408
+        ],
         "points": [
           {
             "period": 1,
@@ -1395,12 +1741,20 @@ export const analyticsReport = {
             "lower": 4408,
             "upper": 4408
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 8689,
-      "recommendedOrderQuantity": 21897,
+      "safetyStock": 1303,
+      "reorderPoint": 9993,
+      "recommendedOrderQuantity": 9913,
       "turnoverRate": 16.98,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1453,11 +1807,29 @@ export const analyticsReport = {
         "upper": 1313777
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          1313777,
+          1313777,
+          1313777
+        ],
+        "forecast": [
+          1313777,
+          1313777,
+          1313777
+        ],
+        "lower95": [
+          1313777,
+          1313777,
+          1313777
+        ],
+        "upper95": [
+          1313777,
+          1313777,
+          1313777
+        ],
         "points": [
           {
             "period": 1,
@@ -1477,12 +1849,20 @@ export const analyticsReport = {
             "lower": 1313777,
             "upper": 1313777
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-22",
-      "safetyStock": 0,
-      "reorderPoint": 2589786,
-      "recommendedOrderQuantity": 6212986,
+      "safetyStock": 388468,
+      "reorderPoint": 2978254,
+      "recommendedOrderQuantity": 2641239,
       "turnoverRate": 47.63,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1535,11 +1915,28 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -1559,12 +1956,20 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-14",
       "safetyStock": 0,
       "reorderPoint": 2,
-      "recommendedOrderQuantity": 4,
+      "recommendedOrderQuantity": 1,
       "turnoverRate": 12,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -1618,11 +2023,28 @@ export const analyticsReport = {
         "upper": 1064
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          1064,
+          1064
+        ],
+        "forecast": [
+          1064,
+          1064,
+          1064
+        ],
+        "lower95": [
+          1064,
+          1064,
+          1064
+        ],
+        "upper95": [
+          1064,
+          1064,
+          1064
+        ],
         "points": [
           {
             "period": 1,
@@ -1642,12 +2064,20 @@ export const analyticsReport = {
             "lower": 1064,
             "upper": 1064
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-14",
-      "safetyStock": 0,
-      "reorderPoint": 2097,
-      "recommendedOrderQuantity": 4222,
+      "safetyStock": 315,
+      "reorderPoint": 2412,
+      "recommendedOrderQuantity": 1329,
       "turnoverRate": 11.83,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -1679,6 +2109,119 @@ export const analyticsReport = {
       "priorityScore": 190
     },
     {
+      "sku": "RN0178",
+      "description": "Enoxaparin Sodium Injection 60mg(1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 2531,
+      "ami": 2271,
+      "mos": 1.1,
+      "status": "understocked",
+      "daysOfSupply": 29,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 2696.84,
+      "usageRates": {
+        "daily": 88.6,
+        "weekly": 620.22,
+        "monthly": 2696.84
+      },
+      "forecastRange": {
+        "lower": 1980.54,
+        "upper": 3413.15
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          351,
+          463,
+          575,
+          560.44,
+          526.0272,
+          1366.655936,
+          1761.7557836800001,
+          2639.1739024384005
+        ],
+        "forecast": [
+          2696.841877409792,
+          3049.048974331904,
+          3401.2560712540158
+        ],
+        "lower95": [
+          1980.5379540197564,
+          2036.0422510926574,
+          2160.5812822815496
+        ],
+        "upper95": [
+          3413.145800799827,
+          4062.0556975711506,
+          4641.930860226482
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 2696.841877409792,
+            "lower": 1980.5379540197564,
+            "upper": 3413.145800799827
+          },
+          {
+            "period": 2,
+            "value": 3049.048974331904,
+            "lower": 2036.0422510926574,
+            "upper": 4062.0556975711506
+          },
+          {
+            "period": 3,
+            "value": 3401.2560712540158,
+            "lower": 2160.5812822815496,
+            "upper": 4641.930860226482
+          }
+        ],
+        "residualStdDev": 365.46118540307936,
+        "rmse": 365.46118540307936,
+        "mape": 21.332798547115235,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.4
+        }
+      },
+      "expectedStockoutDate": "2026-08-12",
+      "safetyStock": 849,
+      "reorderPoint": 6513,
+      "recommendedOrderQuantity": 3982,
+      "turnoverRate": 4.54,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 463.02,
+        "wape": 0.34,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.753,
+        "demandChange": 5.47,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 190
+    },
+    {
       "sku": "EM1294",
       "description": "Morphine Sulphate Injection 10mg/ml, 1ml Amp (5)",
       "programme": "Pain & Palliative",
@@ -1688,50 +2231,80 @@ export const analyticsReport = {
       "ami": 57311,
       "mos": 1.2,
       "status": "understocked",
-      "daysOfSupply": 2,
+      "daysOfSupply": 1,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 41798.26,
+      "forecastMonthlyDemand": 67068.34,
       "usageRates": {
-        "daily": 1373.25,
-        "weekly": 9612.74,
-        "monthly": 41798.26
+        "daily": 2203.48,
+        "weekly": 15424.34,
+        "monthly": 67068.34
       },
       "forecastRange": {
-        "lower": 0,
-        "upper": 88380.8
+        "lower": 21270.1,
+        "upper": 112866.57
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 23766.60178007385,
+        "fitted": [
+          824,
+          824,
+          824,
+          824,
+          824,
+          55051.520000000004,
+          66258.5408
+        ],
+        "forecast": [
+          67068.338432,
+          75036.168704,
+          83003.998976
+        ],
+        "lower95": [
+          21270.103480635065,
+          10267.68370303019,
+          3679.1291432591825
+        ],
+        "upper95": [
+          112866.57338336494,
+          139804.6537049698,
+          162328.8688087408
+        ],
         "points": [
           {
             "period": 1,
-            "value": 41798.257625,
-            "lower": 0,
-            "upper": 88380.79711394475
+            "value": 67068.338432,
+            "lower": 21270.103480635065,
+            "upper": 112866.57338336494
           },
           {
             "period": 2,
-            "value": 41798.257625,
-            "lower": 0,
-            "upper": 107675.91674004593
+            "value": 75036.168704,
+            "lower": 10267.68370303019,
+            "upper": 139804.6537049698
           },
           {
             "period": 3,
-            "value": 41798.257625,
-            "lower": 0,
-            "upper": 122481.58276543584
+            "value": 83003.998976,
+            "lower": 3679.1291432591825,
+            "upper": 162328.8688087408
           }
-        ]
+        ],
+        "residualStdDev": 23366.44640375762,
+        "rmse": 23366.44640375762,
+        "mape": 19.68616286576748,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 69735,
-      "reorderPoint": 152130,
-      "recommendedOrderQuantity": 205941,
-      "turnoverRate": 105.14,
+      "safetyStock": 21009,
+      "reorderPoint": 161071,
+      "recommendedOrderQuantity": 158622,
+      "turnoverRate": 168.7,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -1740,13 +2313,125 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 23413.86,
-        "wape": 0.674,
+        "mae": 23932.41,
+        "wape": 0.689,
         "observations": 5
       },
       "historicalTrend": {
         "stockOnHandChange": -0.724,
         "demandChange": 68.552,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 190
+    },
+    {
+      "sku": "RN0354",
+      "description": "Permanent catheter 14.5F x 19cm (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 26,
+      "ami": 22,
+      "mos": 1.2,
+      "status": "understocked",
+      "daysOfSupply": 30,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 26.72,
+      "usageRates": {
+        "daily": 0.88,
+        "weekly": 6.15,
+        "monthly": 26.72
+      },
+      "forecastRange": {
+        "lower": 19.38,
+        "upper": 34.06
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 7,
+        "fitted": [
+          2,
+          4,
+          6,
+          6.320000000000001,
+          10.9312,
+          13.980191999999999,
+          23.30454272
+        ],
+        "forecast": [
+          26.7211927552,
+          30.9205684224,
+          35.1199440896
+        ],
+        "lower95": [
+          19.380885662297857,
+          20.53980657963436,
+          22.40615926153528
+        ],
+        "upper95": [
+          34.061499848102144,
+          41.30133026516564,
+          47.833728917664715
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 26.7211927552,
+            "lower": 19.380885662297857,
+            "upper": 34.061499848102144
+          },
+          {
+            "period": 2,
+            "value": 30.9205684224,
+            "lower": 20.53980657963436,
+            "upper": 41.30133026516564
+          },
+          {
+            "period": 3,
+            "value": 35.1199440896,
+            "lower": 22.40615926153528,
+            "upper": 47.833728917664715
+          }
+        ],
+        "residualStdDev": 3.7450546392357884,
+        "rmse": 3.7450546392357884,
+        "mape": 22.62572542242942,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.4
+        }
+      },
+      "expectedStockoutDate": "2026-08-13",
+      "safetyStock": 9,
+      "reorderPoint": 65,
+      "recommendedOrderQuantity": 39,
+      "turnoverRate": 10.02,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 3.89,
+        "wape": 0.279,
+        "observations": 5
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 0.182,
+        "demandChange": 10,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -1783,11 +2468,34 @@ export const analyticsReport = {
         "upper": 14289
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          14289,
+          14289,
+          14289,
+          14289,
+          14289,
+          14289,
+          14289,
+          14289
+        ],
+        "forecast": [
+          14289,
+          14289,
+          14289
+        ],
+        "lower95": [
+          14289,
+          14289,
+          14289
+        ],
+        "upper95": [
+          14289,
+          14289,
+          14289
+        ],
         "points": [
           {
             "period": 1,
@@ -1807,12 +2515,20 @@ export const analyticsReport = {
             "lower": 14289,
             "upper": 14289
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 28167,
-      "recommendedOrderQuantity": 71210,
+      "safetyStock": 4225,
+      "reorderPoint": 32392,
+      "recommendedOrderQuantity": 32362,
       "turnoverRate": 7.62,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -1863,11 +2579,33 @@ export const analyticsReport = {
         "upper": 1250
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1250,
+          1250,
+          1250,
+          1250,
+          1250,
+          1250,
+          1250
+        ],
+        "forecast": [
+          1250,
+          1250,
+          1250
+        ],
+        "lower95": [
+          1250,
+          1250,
+          1250
+        ],
+        "upper95": [
+          1250,
+          1250,
+          1250
+        ],
         "points": [
           {
             "period": 1,
@@ -1887,12 +2625,20 @@ export const analyticsReport = {
             "lower": 1250,
             "upper": 1250
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 2464,
-      "recommendedOrderQuantity": 6177,
+      "safetyStock": 370,
+      "reorderPoint": 2834,
+      "recommendedOrderQuantity": 2779,
       "turnoverRate": 272.73,
       "stockoutFrequency": 1,
       "stockAgeDays": null,
@@ -1943,11 +2689,31 @@ export const analyticsReport = {
         "upper": 70
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "forecast": [
+          70,
+          70,
+          70
+        ],
+        "lower95": [
+          70,
+          70,
+          70
+        ],
+        "upper95": [
+          70,
+          70,
+          70
+        ],
         "points": [
           {
             "period": 1,
@@ -1967,12 +2733,20 @@ export const analyticsReport = {
             "lower": 70,
             "upper": 70
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 138,
-      "recommendedOrderQuantity": 347,
+      "safetyStock": 21,
+      "reorderPoint": 159,
+      "recommendedOrderQuantity": 157,
       "turnoverRate": 420,
       "stockoutFrequency": 1,
       "stockAgeDays": null,
@@ -2023,11 +2797,29 @@ export const analyticsReport = {
         "upper": 18711
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          18711,
+          18711,
+          18711
+        ],
+        "forecast": [
+          18711,
+          18711,
+          18711
+        ],
+        "lower95": [
+          18711,
+          18711,
+          18711
+        ],
+        "upper95": [
+          18711,
+          18711,
+          18711
+        ],
         "points": [
           {
             "period": 1,
@@ -2047,12 +2839,20 @@ export const analyticsReport = {
             "lower": 18711,
             "upper": 18711
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 36884,
-      "recommendedOrderQuantity": 93236,
+      "safetyStock": 5533,
+      "reorderPoint": 42417,
+      "recommendedOrderQuantity": 42367,
       "turnoverRate": 3.41,
       "stockoutFrequency": 0.333,
       "stockAgeDays": null,
@@ -2103,11 +2903,31 @@ export const analyticsReport = {
         "upper": 102290
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          102290,
+          102290,
+          102290,
+          102290,
+          102290
+        ],
+        "forecast": [
+          102290,
+          102290,
+          102290
+        ],
+        "lower95": [
+          102290,
+          102290,
+          102290
+        ],
+        "upper95": [
+          102290,
+          102290,
+          102290
+        ],
         "points": [
           {
             "period": 1,
@@ -2127,12 +2947,20 @@ export const analyticsReport = {
             "lower": 102290,
             "upper": 102290
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 201639,
-      "recommendedOrderQuantity": 509919,
+      "safetyStock": 30246,
+      "reorderPoint": 231885,
+      "recommendedOrderQuantity": 231824,
       "turnoverRate": 447.4,
       "stockoutFrequency": 0.6,
       "stockAgeDays": null,
@@ -2183,11 +3011,33 @@ export const analyticsReport = {
         "upper": 1038
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1038,
+          1038,
+          1038,
+          1038,
+          1038,
+          1038,
+          1038
+        ],
+        "forecast": [
+          1038,
+          1038,
+          1038
+        ],
+        "lower95": [
+          1038,
+          1038,
+          1038
+        ],
+        "upper95": [
+          1038,
+          1038,
+          1038
+        ],
         "points": [
           {
             "period": 1,
@@ -2207,12 +3057,20 @@ export const analyticsReport = {
             "lower": 1038,
             "upper": 1038
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 2046,
-      "recommendedOrderQuantity": 5143,
+      "safetyStock": 307,
+      "reorderPoint": 2353,
+      "recommendedOrderQuantity": 2321,
       "turnoverRate": 14.9,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -2263,11 +3121,33 @@ export const analyticsReport = {
         "upper": 21054
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          21054,
+          21054,
+          21054,
+          21054,
+          21054,
+          21054,
+          21054
+        ],
+        "forecast": [
+          21054,
+          21054,
+          21054
+        ],
+        "lower95": [
+          21054,
+          21054,
+          21054
+        ],
+        "upper95": [
+          21054,
+          21054,
+          21054
+        ],
         "points": [
           {
             "period": 1,
@@ -2287,12 +3167,20 @@ export const analyticsReport = {
             "lower": 21054,
             "upper": 21054
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 41503,
-      "recommendedOrderQuantity": 104526,
+      "safetyStock": 6225,
+      "reorderPoint": 47728,
+      "recommendedOrderQuantity": 47287,
       "turnoverRate": 276.19,
       "stockoutFrequency": 0.5,
       "stockAgeDays": null,
@@ -2343,11 +3231,33 @@ export const analyticsReport = {
         "upper": 528
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          528,
+          528,
+          528,
+          528,
+          528,
+          528,
+          528
+        ],
+        "forecast": [
+          528,
+          528,
+          528
+        ],
+        "lower95": [
+          528,
+          528,
+          528
+        ],
+        "upper95": [
+          528,
+          528,
+          528
+        ],
         "points": [
           {
             "period": 1,
@@ -2367,12 +3277,20 @@ export const analyticsReport = {
             "lower": 528,
             "upper": 528
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1041,
-      "recommendedOrderQuantity": 2630,
+      "safetyStock": 156,
+      "reorderPoint": 1197,
+      "recommendedOrderQuantity": 1195,
       "turnoverRate": 3168,
       "stockoutFrequency": 0.875,
       "stockAgeDays": null,
@@ -2423,11 +3341,34 @@ export const analyticsReport = {
         "upper": 1481
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1481,
+          1481,
+          1481,
+          1481,
+          1481,
+          1481,
+          1481,
+          1481
+        ],
+        "forecast": [
+          1481,
+          1481,
+          1481
+        ],
+        "lower95": [
+          1481,
+          1481,
+          1481
+        ],
+        "upper95": [
+          1481,
+          1481,
+          1481
+        ],
         "points": [
           {
             "period": 1,
@@ -2447,12 +3388,20 @@ export const analyticsReport = {
             "lower": 1481,
             "upper": 1481
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 2919,
-      "recommendedOrderQuantity": 7375,
+      "safetyStock": 438,
+      "reorderPoint": 3357,
+      "recommendedOrderQuantity": 3348,
       "turnoverRate": 33.44,
       "stockoutFrequency": 0.375,
       "stockAgeDays": null,
@@ -2503,11 +3452,30 @@ export const analyticsReport = {
         "upper": 6162
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          6162,
+          6162,
+          6162,
+          6162
+        ],
+        "forecast": [
+          6162,
+          6162,
+          6162
+        ],
+        "lower95": [
+          6162,
+          6162,
+          6162
+        ],
+        "upper95": [
+          6162,
+          6162,
+          6162
+        ],
         "points": [
           {
             "period": 1,
@@ -2527,12 +3495,20 @@ export const analyticsReport = {
             "lower": 6162,
             "upper": 6162
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 12147,
-      "recommendedOrderQuantity": 30654,
+      "safetyStock": 1822,
+      "reorderPoint": 13969,
+      "recommendedOrderQuantity": 13902,
       "turnoverRate": 115,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -2583,11 +3559,33 @@ export const analyticsReport = {
         "upper": 546
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          546,
+          546,
+          546,
+          546,
+          546,
+          546,
+          546
+        ],
+        "forecast": [
+          546,
+          546,
+          546
+        ],
+        "lower95": [
+          546,
+          546,
+          546
+        ],
+        "upper95": [
+          546,
+          546,
+          546
+        ],
         "points": [
           {
             "period": 1,
@@ -2607,12 +3605,20 @@ export const analyticsReport = {
             "lower": 546,
             "upper": 546
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1076,
-      "recommendedOrderQuantity": 2716,
+      "safetyStock": 161,
+      "reorderPoint": 1238,
+      "recommendedOrderQuantity": 1232,
       "turnoverRate": 794.18,
       "stockoutFrequency": 0.875,
       "stockAgeDays": null,
@@ -2663,11 +3669,33 @@ export const analyticsReport = {
         "upper": 546
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          546,
+          546,
+          546,
+          546,
+          546,
+          546,
+          546
+        ],
+        "forecast": [
+          546,
+          546,
+          546
+        ],
+        "lower95": [
+          546,
+          546,
+          546
+        ],
+        "upper95": [
+          546,
+          546,
+          546
+        ],
         "points": [
           {
             "period": 1,
@@ -2687,12 +3715,20 @@ export const analyticsReport = {
             "lower": 546,
             "upper": 546
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1076,
-      "recommendedOrderQuantity": 2717,
+      "safetyStock": 161,
+      "reorderPoint": 1238,
+      "recommendedOrderQuantity": 1233,
       "turnoverRate": 238.25,
       "stockoutFrequency": 0.5,
       "stockAgeDays": null,
@@ -2743,11 +3779,33 @@ export const analyticsReport = {
         "upper": 546
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          546,
+          546,
+          546,
+          546,
+          546,
+          546,
+          546
+        ],
+        "forecast": [
+          546,
+          546,
+          546
+        ],
+        "lower95": [
+          546,
+          546,
+          546
+        ],
+        "upper95": [
+          546,
+          546,
+          546
+        ],
         "points": [
           {
             "period": 1,
@@ -2767,12 +3825,20 @@ export const analyticsReport = {
             "lower": 546,
             "upper": 546
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1076,
-      "recommendedOrderQuantity": 2716,
+      "safetyStock": 161,
+      "reorderPoint": 1238,
+      "recommendedOrderQuantity": 1232,
       "turnoverRate": 1092,
       "stockoutFrequency": 0.875,
       "stockAgeDays": null,
@@ -2823,11 +3889,33 @@ export const analyticsReport = {
         "upper": 546
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          546,
+          546,
+          546,
+          546,
+          546,
+          546,
+          546
+        ],
+        "forecast": [
+          546,
+          546,
+          546
+        ],
+        "lower95": [
+          546,
+          546,
+          546
+        ],
+        "upper95": [
+          546,
+          546,
+          546
+        ],
         "points": [
           {
             "period": 1,
@@ -2847,12 +3935,20 @@ export const analyticsReport = {
             "lower": 546,
             "upper": 546
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 1076,
-      "recommendedOrderQuantity": 2716,
+      "safetyStock": 161,
+      "reorderPoint": 1238,
+      "recommendedOrderQuantity": 1232,
       "turnoverRate": 1092,
       "stockoutFrequency": 0.875,
       "stockAgeDays": null,
@@ -2903,11 +3999,34 @@ export const analyticsReport = {
         "upper": 75332
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          75332,
+          75332,
+          75332,
+          75332,
+          75332,
+          75332,
+          75332,
+          75332
+        ],
+        "forecast": [
+          75332,
+          75332,
+          75332
+        ],
+        "lower95": [
+          75332,
+          75332,
+          75332
+        ],
+        "upper95": [
+          75332,
+          75332,
+          75332
+        ],
         "points": [
           {
             "period": 1,
@@ -2927,12 +4046,20 @@ export const analyticsReport = {
             "lower": 75332,
             "upper": 75332
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 148498,
-      "recommendedOrderQuantity": 373538,
+      "safetyStock": 22275,
+      "reorderPoint": 170773,
+      "recommendedOrderQuantity": 168734,
       "turnoverRate": 13.25,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -2983,11 +4110,34 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -3007,12 +4157,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 129,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 58,
       "turnoverRate": 312,
       "stockoutFrequency": 1,
       "stockAgeDays": null,
@@ -3052,48 +4210,75 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 0,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 198785.15,
+      "forecastMonthlyDemand": 198785.38,
       "usageRates": {
-        "daily": 6530.93,
-        "weekly": 45716.5,
-        "monthly": 198785.15
+        "daily": 6530.94,
+        "weekly": 45716.56,
+        "monthly": 198785.38
       },
       "forecastRange": {
-        "lower": 198784.72,
-        "upper": 198785.57
+        "lower": 198784.71,
+        "upper": 198786.06
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0.21682697593130795,
+        "fitted": [
+          198785,
+          198785.3,
+          198785.59999999998,
+          198785.324
+        ],
+        "forecast": [
+          198785.38495999997,
+          198785.46031999995,
+          198785.53567999994
+        ],
+        "lower95": [
+          198784.7054531294,
+          198784.49935216786,
+          198784.358739576
+        ],
+        "upper95": [
+          198786.06446687054,
+          198786.42128783205,
+          198786.71262042387
+        ],
         "points": [
           {
             "period": 1,
-            "value": 198785.1493625,
-            "lower": 198784.72438162717,
-            "upper": 198785.57434337283
+            "value": 198785.38495999997,
+            "lower": 198784.7054531294,
+            "upper": 198786.06446687054
           },
           {
             "period": 2,
-            "value": 198785.1493625,
-            "lower": 198784.5483487859,
-            "upper": 198785.7503762141
+            "value": 198785.46031999995,
+            "lower": 198784.49935216786,
+            "upper": 198786.42128783205
           },
           {
             "period": 3,
-            "value": 198785.1493625,
-            "lower": 198784.41327403602,
-            "upper": 198785.88545096398
+            "value": 198785.53567999994,
+            "lower": 198784.358739576,
+            "upper": 198786.71262042387
           }
-        ]
+        ],
+        "residualStdDev": 0.3466871788670083,
+        "rmse": 0.3466871788670083,
+        "mape": 0.00010463565556784537,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.6
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 391856,
-      "recommendedOrderQuantity": 990917,
-      "turnoverRate": 15797.5,
+      "safetyStock": 58778,
+      "reorderPoint": 450635,
+      "recommendedOrderQuantity": 450484,
+      "turnoverRate": 15797.51,
       "stockoutFrequency": 0.667,
       "stockAgeDays": null,
       "stagnant": false,
@@ -3102,7 +4287,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
+        "mae": 0.53,
         "wape": 0,
         "observations": 2
       },
@@ -3143,11 +4328,33 @@ export const analyticsReport = {
         "upper": 16583
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          16583,
+          16583,
+          16583,
+          16583,
+          16583,
+          16583,
+          16583
+        ],
+        "forecast": [
+          16583,
+          16583,
+          16583
+        ],
+        "lower95": [
+          16583,
+          16583,
+          16583
+        ],
+        "upper95": [
+          16583,
+          16583,
+          16583
+        ],
         "points": [
           {
             "period": 1,
@@ -3167,12 +4374,20 @@ export const analyticsReport = {
             "lower": 16583,
             "upper": 16583
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 32689,
-      "recommendedOrderQuantity": 82005,
+      "safetyStock": 4903,
+      "reorderPoint": 37593,
+      "recommendedOrderQuantity": 36921,
       "turnoverRate": 266.08,
       "stockoutFrequency": 0.875,
       "stockAgeDays": null,
@@ -3223,11 +4438,33 @@ export const analyticsReport = {
         "upper": 793
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          793,
+          793,
+          793,
+          793,
+          793,
+          793,
+          793
+        ],
+        "forecast": [
+          793,
+          793,
+          793
+        ],
+        "lower95": [
+          793,
+          793,
+          793
+        ],
+        "upper95": [
+          793,
+          793,
+          793
+        ],
         "points": [
           {
             "period": 1,
@@ -3247,12 +4484,20 @@ export const analyticsReport = {
             "lower": 793,
             "upper": 793
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 1563,
-      "recommendedOrderQuantity": 3918,
+      "safetyStock": 234,
+      "reorderPoint": 1798,
+      "recommendedOrderQuantity": 1762,
       "turnoverRate": 221.3,
       "stockoutFrequency": 0.75,
       "stockAgeDays": null,
@@ -3292,48 +4537,77 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 2,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 283.84,
+      "forecastMonthlyDemand": 283.78,
       "usageRates": {
-        "daily": 9.33,
-        "weekly": 65.28,
-        "monthly": 283.84
+        "daily": 9.32,
+        "weekly": 65.26,
+        "monthly": 283.78
       },
       "forecastRange": {
-        "lower": 283.49,
-        "upper": 284.19
+        "lower": 283.44,
+        "upper": 284.11
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.178755384534281,
+        "fitted": [
+          284,
+          284,
+          284,
+          284,
+          283.892,
+          283.88288000000006
+        ],
+        "forecast": [
+          283.77552320000007,
+          283.71074240000013,
+          283.64596160000013
+        ],
+        "lower95": [
+          283.4394739043522,
+          283.235496928469,
+          283.0639071460903
+        ],
+        "upper95": [
+          284.1115724956479,
+          284.18598787153127,
+          284.22801605391
+        ],
         "points": [
           {
             "period": 1,
-            "value": 283.84013749999997,
-            "lower": 283.48977694631276,
-            "upper": 284.1904980536872
+            "value": 283.77552320000007,
+            "lower": 283.4394739043522,
+            "upper": 284.1115724956479
           },
           {
             "period": 2,
-            "value": 283.84013749999997,
-            "lower": 283.344652853255,
-            "upper": 284.3356221467449
+            "value": 283.71074240000013,
+            "lower": 283.235496928469,
+            "upper": 284.18598787153127
           },
           {
             "period": 3,
-            "value": 283.84013749999997,
-            "lower": 283.2332952200458,
-            "upper": 284.4469797799541
+            "value": 283.64596160000013,
+            "lower": 283.0639071460903,
+            "upper": 284.22801605391
           }
-        ]
+        ],
+        "residualStdDev": 0.17145372226931976,
+        "rmse": 0.17145372226931976,
+        "mape": 0.043763724284595844,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 560,
-      "recommendedOrderQuantity": 1398,
-      "turnoverRate": 182.47,
+      "safetyStock": 84,
+      "reorderPoint": 643,
+      "recommendedOrderQuantity": 626,
+      "turnoverRate": 182.43,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -3342,7 +4616,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
+        "mae": 0.16,
         "wape": 0.001,
         "observations": 4
       },
@@ -3383,11 +4657,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -3407,12 +4701,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 123,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 55,
       "turnoverRate": 150,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3463,11 +4765,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -3487,12 +4809,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 122,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 54,
       "turnoverRate": 100,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3543,11 +4873,31 @@ export const analyticsReport = {
         "upper": 70
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "forecast": [
+          70,
+          70,
+          70
+        ],
+        "lower95": [
+          70,
+          70,
+          70
+        ],
+        "upper95": [
+          70,
+          70,
+          70
+        ],
         "points": [
           {
             "period": 1,
@@ -3567,12 +4917,20 @@ export const analyticsReport = {
             "lower": 70,
             "upper": 70
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 138,
-      "recommendedOrderQuantity": 344,
+      "safetyStock": 21,
+      "reorderPoint": 159,
+      "recommendedOrderQuantity": 154,
       "turnoverRate": 168,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3623,11 +4981,29 @@ export const analyticsReport = {
         "upper": 19849
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          19849,
+          19849,
+          19849
+        ],
+        "forecast": [
+          19849,
+          19849,
+          19849
+        ],
+        "lower95": [
+          19849,
+          19849,
+          19849
+        ],
+        "upper95": [
+          19849,
+          19849,
+          19849
+        ],
         "points": [
           {
             "period": 1,
@@ -3647,12 +5023,20 @@ export const analyticsReport = {
             "lower": 19849,
             "upper": 19849
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 39127,
-      "recommendedOrderQuantity": 96804,
+      "safetyStock": 5869,
+      "reorderPoint": 44997,
+      "recommendedOrderQuantity": 42841,
       "turnoverRate": 14.64,
       "stockoutFrequency": 0.333,
       "stockAgeDays": null,
@@ -3703,11 +5087,30 @@ export const analyticsReport = {
         "upper": 968
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          968,
+          968,
+          968,
+          968
+        ],
+        "forecast": [
+          968,
+          968,
+          968
+        ],
+        "lower95": [
+          968,
+          968,
+          968
+        ],
+        "upper95": [
+          968,
+          968,
+          968
+        ],
         "points": [
           {
             "period": 1,
@@ -3727,12 +5130,20 @@ export const analyticsReport = {
             "lower": 968,
             "upper": 968
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 1908,
-      "recommendedOrderQuantity": 4777,
+      "safetyStock": 286,
+      "reorderPoint": 2194,
+      "recommendedOrderQuantity": 2145,
       "turnoverRate": 61.53,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3783,11 +5194,33 @@ export const analyticsReport = {
         "upper": 5223
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          5223,
+          5223,
+          5223,
+          5223,
+          5223,
+          5223,
+          5223
+        ],
+        "forecast": [
+          5223,
+          5223,
+          5223
+        ],
+        "lower95": [
+          5223,
+          5223,
+          5223
+        ],
+        "upper95": [
+          5223,
+          5223,
+          5223
+        ],
         "points": [
           {
             "period": 1,
@@ -3807,12 +5240,20 @@ export const analyticsReport = {
             "lower": 5223,
             "upper": 5223
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 10296,
-      "recommendedOrderQuantity": 25776,
+      "safetyStock": 1544,
+      "reorderPoint": 11840,
+      "recommendedOrderQuantity": 11576,
       "turnoverRate": 63.44,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3863,11 +5304,34 @@ export const analyticsReport = {
         "upper": 3612
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3612,
+          3612,
+          3612,
+          3612,
+          3612,
+          3612,
+          3612,
+          3612
+        ],
+        "forecast": [
+          3612,
+          3612,
+          3612
+        ],
+        "lower95": [
+          3612,
+          3612,
+          3612
+        ],
+        "upper95": [
+          3612,
+          3612,
+          3612
+        ],
         "points": [
           {
             "period": 1,
@@ -3887,12 +5351,20 @@ export const analyticsReport = {
             "lower": 3612,
             "upper": 3612
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-19",
-      "safetyStock": 0,
-      "reorderPoint": 7120,
-      "recommendedOrderQuantity": 17513,
+      "safetyStock": 1068,
+      "reorderPoint": 8188,
+      "recommendedOrderQuantity": 7693,
       "turnoverRate": 26.99,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -3943,11 +5415,33 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -3967,12 +5461,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 491,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 219,
       "turnoverRate": 101.05,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4012,47 +5514,76 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 4,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 229.04,
+      "forecastMonthlyDemand": 229.06,
       "usageRates": {
         "daily": 7.53,
         "weekly": 52.68,
-        "monthly": 229.04
+        "monthly": 229.06
       },
       "forecastRange": {
-        "lower": 228.73,
-        "upper": 229.36
+        "lower": 228.78,
+        "upper": 229.34
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.16005463910802414,
+        "fitted": [
+          229,
+          229,
+          229.00000000000003,
+          229.00000000000006,
+          229.07200000000006,
+          229.06672000000006
+        ],
+        "forecast": [
+          229.0598272000001,
+          229.06627840000007,
+          229.0727296000001
+        ],
+        "lower95": [
+          228.78314689309357,
+          228.67499335753135,
+          228.59350525098426
+        ],
+        "upper95": [
+          229.3365075069066,
+          229.4575634424688,
+          229.5519539490159
+        ],
         "points": [
           {
             "period": 1,
-            "value": 229.04436249999998,
-            "lower": 228.73065540734825,
-            "upper": 229.3580695926517
+            "value": 229.0598272000001,
+            "lower": 228.78314689309357,
+            "upper": 229.3365075069066
           },
           {
             "period": 2,
-            "value": 229.04436249999998,
-            "lower": 228.60071367495928,
-            "upper": 229.48801132504067
+            "value": 229.06627840000007,
+            "lower": 228.67499335753135,
+            "upper": 229.4575634424688
           },
           {
             "period": 3,
-            "value": 229.04436249999998,
-            "lower": 228.50100587683247,
-            "upper": 229.5877191231675
+            "value": 229.0727296000001,
+            "lower": 228.59350525098426,
+            "upper": 229.5519539490159
           }
-        ]
+        ],
+        "residualStdDev": 0.14116342189107586,
+        "rmse": 0.14116342189107586,
+        "mape": 0.03828187782448715,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 452,
-      "recommendedOrderQuantity": 1115,
+      "safetyStock": 68,
+      "reorderPoint": 519,
+      "recommendedOrderQuantity": 492,
       "turnoverRate": 11.94,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4062,8 +5593,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.12,
-        "wape": 0.001,
+        "mae": 0.11,
+        "wape": 0,
         "observations": 4
       },
       "historicalTrend": {
@@ -4092,47 +5623,77 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 2,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 201.96,
+      "forecastMonthlyDemand": 201.94,
       "usageRates": {
-        "daily": 6.64,
-        "weekly": 46.45,
-        "monthly": 201.96
+        "daily": 6.63,
+        "weekly": 46.44,
+        "monthly": 201.94
       },
       "forecastRange": {
-        "lower": 201.67,
-        "upper": 202.24
+        "lower": 201.69,
+        "upper": 202.19
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0.14353081115217878,
+        "fitted": [
+          202,
+          202,
+          202.00000000000003,
+          202.00000000000003,
+          202.00000000000003,
+          201.92800000000003,
+          201.93328000000005
+        ],
+        "forecast": [
+          201.94017280000008,
+          201.9337216000001,
+          201.9272704000001
+        ],
+        "lower95": [
+          201.6875993911498,
+          201.57652885970924,
+          201.48980042323058
+        ],
+        "upper95": [
+          202.19274620885037,
+          202.29091434029095,
+          202.36474037676965
+        ],
         "points": [
           {
             "period": 1,
-            "value": 201.9556375,
-            "lower": 201.67431711014171,
-            "upper": 202.23695788985827
+            "value": 201.94017280000008,
+            "lower": 201.6875993911498,
+            "upper": 202.19274620885037
           },
           {
             "period": 2,
-            "value": 201.9556375,
-            "lower": 201.55779038929035,
-            "upper": 202.35348461070964
+            "value": 201.9337216000001,
+            "lower": 201.57652885970924,
+            "upper": 202.29091434029095
           },
           {
             "period": 3,
-            "value": 201.9556375,
-            "lower": 201.4683762915604,
-            "upper": 202.4428987084396
+            "value": 201.9272704000001,
+            "lower": 201.48980042323058,
+            "upper": 202.36474037676965
           }
-        ]
+        ],
+        "residualStdDev": 0.12886398410728336,
+        "rmse": 0.12886398410728336,
+        "mape": 0.036234835580733565,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 398,
-      "recommendedOrderQuantity": 995,
+      "safetyStock": 60,
+      "reorderPoint": 458,
+      "recommendedOrderQuantity": 446,
       "turnoverRate": 50.19,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4142,8 +5703,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.09,
-        "wape": 0,
+        "mae": 0.1,
+        "wape": 0.001,
         "observations": 5
       },
       "historicalTrend": {
@@ -4183,11 +5744,34 @@ export const analyticsReport = {
         "upper": 2922
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2922,
+          2922,
+          2922,
+          2922,
+          2922,
+          2922,
+          2922,
+          2922
+        ],
+        "forecast": [
+          2922,
+          2922,
+          2922
+        ],
+        "lower95": [
+          2922,
+          2922,
+          2922
+        ],
+        "upper95": [
+          2922,
+          2922,
+          2922
+        ],
         "points": [
           {
             "period": 1,
@@ -4207,12 +5791,20 @@ export const analyticsReport = {
             "lower": 2922,
             "upper": 2922
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 5760,
-      "recommendedOrderQuantity": 14190,
+      "safetyStock": 864,
+      "reorderPoint": 6624,
+      "recommendedOrderQuantity": 6246,
       "turnoverRate": 8.2,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4263,11 +5855,32 @@ export const analyticsReport = {
         "upper": 1717
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717
+        ],
+        "forecast": [
+          1717,
+          1717,
+          1717
+        ],
+        "lower95": [
+          1717,
+          1717,
+          1717
+        ],
+        "upper95": [
+          1717,
+          1717,
+          1717
+        ],
         "points": [
           {
             "period": 1,
@@ -4287,12 +5900,20 @@ export const analyticsReport = {
             "lower": 1717,
             "upper": 1717
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 3385,
-      "recommendedOrderQuantity": 8400,
+      "safetyStock": 508,
+      "reorderPoint": 3892,
+      "recommendedOrderQuantity": 3732,
       "turnoverRate": 75.61,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4343,11 +5964,32 @@ export const analyticsReport = {
         "upper": 546
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          546,
+          546,
+          546,
+          546,
+          546,
+          546
+        ],
+        "forecast": [
+          546,
+          546,
+          546
+        ],
+        "lower95": [
+          546,
+          546,
+          546
+        ],
+        "upper95": [
+          546,
+          546,
+          546
+        ],
         "points": [
           {
             "period": 1,
@@ -4367,12 +6009,20 @@ export const analyticsReport = {
             "lower": 546,
             "upper": 546
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 1076,
-      "recommendedOrderQuantity": 2672,
+      "safetyStock": 161,
+      "reorderPoint": 1238,
+      "recommendedOrderQuantity": 1188,
       "turnoverRate": 131.04,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4423,11 +6073,33 @@ export const analyticsReport = {
         "upper": 1717
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717
+        ],
+        "forecast": [
+          1717,
+          1717,
+          1717
+        ],
+        "lower95": [
+          1717,
+          1717,
+          1717
+        ],
+        "upper95": [
+          1717,
+          1717,
+          1717
+        ],
         "points": [
           {
             "period": 1,
@@ -4447,12 +6119,20 @@ export const analyticsReport = {
             "lower": 1717,
             "upper": 1717
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 3385,
-      "recommendedOrderQuantity": 8395,
+      "safetyStock": 508,
+      "reorderPoint": 3892,
+      "recommendedOrderQuantity": 3727,
       "turnoverRate": 124.87,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4503,11 +6183,33 @@ export const analyticsReport = {
         "upper": 1717
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717
+        ],
+        "forecast": [
+          1717,
+          1717,
+          1717
+        ],
+        "lower95": [
+          1717,
+          1717,
+          1717
+        ],
+        "upper95": [
+          1717,
+          1717,
+          1717
+        ],
         "points": [
           {
             "period": 1,
@@ -4527,12 +6229,20 @@ export const analyticsReport = {
             "lower": 1717,
             "upper": 1717
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 3385,
-      "recommendedOrderQuantity": 8440,
+      "safetyStock": 508,
+      "reorderPoint": 3892,
+      "recommendedOrderQuantity": 3772,
       "turnoverRate": 171.7,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4583,11 +6293,34 @@ export const analyticsReport = {
         "upper": 493
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          493,
+          493,
+          493,
+          493,
+          493,
+          493,
+          493,
+          493
+        ],
+        "forecast": [
+          493,
+          493,
+          493
+        ],
+        "lower95": [
+          493,
+          493,
+          493
+        ],
+        "upper95": [
+          493,
+          493,
+          493
+        ],
         "points": [
           {
             "period": 1,
@@ -4607,12 +6340,20 @@ export const analyticsReport = {
             "lower": 493,
             "upper": 493
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 972,
-      "recommendedOrderQuantity": 2403,
+      "safetyStock": 146,
+      "reorderPoint": 1118,
+      "recommendedOrderQuantity": 1063,
       "turnoverRate": 41.74,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4652,48 +6393,76 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 3,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 172.84,
+      "forecastMonthlyDemand": 172.78,
       "usageRates": {
         "daily": 5.68,
-        "weekly": 39.75,
-        "monthly": 172.84
+        "weekly": 39.73,
+        "monthly": 172.78
       },
       "forecastRange": {
-        "lower": 172.45,
-        "upper": 173.23
+        "lower": 172.4,
+        "upper": 173.15
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0.19780707930962607,
+        "fitted": [
+          173,
+          173,
+          173,
+          172.892,
+          172.88288
+        ],
+        "forecast": [
+          172.7755232,
+          172.71074240000002,
+          172.64596160000002
+        ],
+        "lower95": [
+          172.39980866557025,
+          172.17940180982876,
+          171.9952049372256
+        ],
+        "upper95": [
+          173.15123773442977,
+          173.24208299017127,
+          173.29671826277445
+        ],
         "points": [
           {
             "period": 1,
-            "value": 172.8401375,
-            "lower": 172.45243562455312,
-            "upper": 173.22783937544688
+            "value": 172.7755232,
+            "lower": 172.39980866557025,
+            "upper": 173.15123773442977
           },
           {
             "period": 2,
-            "value": 172.8401375,
-            "lower": 172.29184424958555,
-            "upper": 173.38843075041444
+            "value": 172.71074240000002,
+            "lower": 172.17940180982876,
+            "upper": 173.24208299017127
           },
           {
             "period": 3,
-            "value": 172.8401375,
-            "lower": 172.16861815353627,
-            "upper": 173.51165684646372
+            "value": 172.64596160000002,
+            "lower": 171.9952049372256,
+            "upper": 173.29671826277445
           }
-        ]
+        ],
+        "residualStdDev": 0.19169108899477635,
+        "rmse": 0.19169108899477635,
+        "mape": 0.08985664489310975,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 341,
-      "recommendedOrderQuantity": 844,
-      "turnoverRate": 115.23,
+      "safetyStock": 51,
+      "reorderPoint": 392,
+      "recommendedOrderQuantity": 374,
+      "turnoverRate": 115.18,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -4702,7 +6471,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.22,
+        "mae": 0.21,
         "wape": 0.001,
         "observations": 3
       },
@@ -4743,11 +6512,34 @@ export const analyticsReport = {
         "upper": 23866
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          23866,
+          23866,
+          23866,
+          23866,
+          23866,
+          23866,
+          23866,
+          23866
+        ],
+        "forecast": [
+          23866,
+          23866,
+          23866
+        ],
+        "lower95": [
+          23866,
+          23866,
+          23866
+        ],
+        "upper95": [
+          23866,
+          23866,
+          23866
+        ],
         "points": [
           {
             "period": 1,
@@ -4767,12 +6559,20 @@ export const analyticsReport = {
             "lower": 23866,
             "upper": 23866
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 0,
-      "reorderPoint": 47046,
-      "recommendedOrderQuantity": 116704,
+      "safetyStock": 7057,
+      "reorderPoint": 54103,
+      "recommendedOrderQuantity": 51820,
       "turnoverRate": 7.8,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -4810,50 +6610,78 @@ export const analyticsReport = {
       "ami": 1586,
       "mos": 0.1,
       "status": "understocked",
-      "daysOfSupply": 3,
+      "daysOfSupply": 2,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1340.48,
+      "forecastMonthlyDemand": 2088.67,
       "usageRates": {
-        "daily": 44.04,
-        "weekly": 308.28,
-        "monthly": 1340.48
+        "daily": 68.62,
+        "weekly": 480.35,
+        "monthly": 2088.67
       },
       "forecastRange": {
-        "lower": 1026.02,
-        "upper": 1654.94
+        "lower": 1776.83,
+        "upper": 2400.51
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 160.43868501861988,
+        "fitted": [
+          690,
+          973,
+          1256,
+          1574.928,
+          1866.5732800000003
+        ],
+        "forecast": [
+          2088.6665728000003,
+          2366.8745216000007,
+          2645.0824704000006
+        ],
+        "lower95": [
+          1776.8262539404054,
+          1925.8657133740112,
+          2104.959194286703
+        ],
+        "upper95": [
+          2400.506891659595,
+          2807.88332982599,
+          3185.205746513298
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1340.47574375,
-            "lower": 1026.015921113505,
-            "upper": 1654.9355663864949
+            "value": 2088.6665728000003,
+            "lower": 1776.8262539404054,
+            "upper": 2400.506891659595
           },
           {
             "period": 2,
-            "value": 1340.47574375,
-            "lower": 895.7623977560309,
-            "upper": 1785.1890897439691
+            "value": 2366.8745216000007,
+            "lower": 1925.8657133740112,
+            "upper": 2807.88332982599
           },
           {
             "period": 3,
-            "value": 1340.47574375,
-            "lower": 795.815354004493,
-            "upper": 1885.136133495507
+            "value": 2645.0824704000006,
+            "lower": 2104.959194286703,
+            "upper": 3185.205746513298
           }
-        ]
+        ],
+        "residualStdDev": 159.10220349979332,
+        "rmse": 159.10220349979332,
+        "mape": 7.2595574675651795,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-07-17",
-      "safetyStock": 924,
-      "reorderPoint": 3567,
-      "recommendedOrderQuantity": 6570,
-      "turnoverRate": 9.37,
+      "expectedStockoutDate": "2026-07-16",
+      "safetyStock": 659,
+      "reorderPoint": 5050,
+      "recommendedOrderQuantity": 4937,
+      "turnoverRate": 14.6,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -4862,8 +6690,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 525.17,
-        "wape": 0.344,
+        "mae": 150.73,
+        "wape": 0.099,
         "observations": 3
       },
       "historicalTrend": {
@@ -4890,50 +6718,80 @@ export const analyticsReport = {
       "ami": 523,
       "mos": 0.1,
       "status": "understocked",
-      "daysOfSupply": 5,
+      "daysOfSupply": 3,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 388.53,
+      "forecastMonthlyDemand": 623.59,
       "usageRates": {
-        "daily": 12.76,
-        "weekly": 89.35,
-        "monthly": 388.53
+        "daily": 20.49,
+        "weekly": 143.41,
+        "monthly": 623.59
       },
       "forecastRange": {
-        "lower": 125.47,
-        "upper": 651.59
+        "lower": 400.75,
+        "upper": 846.42
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 134.21429587006904,
+        "fitted": [
+          180,
+          180,
+          180,
+          180,
+          178.88000000000002,
+          259.67040000000003,
+          577.4539520000001
+        ],
+        "forecast": [
+          623.58539776,
+          713.2800051199999,
+          802.97461248
+        ],
+        "lower95": [
+          400.7517465451607,
+          398.14563341885827,
+          417.0154069398161
+        ],
+        "upper95": [
+          846.4190489748393,
+          1028.4143768211416,
+          1188.933818020184
+        ],
         "points": [
           {
             "period": 1,
-            "value": 388.52986875,
-            "lower": 125.46984884466468,
-            "upper": 651.5898886553352
+            "value": 623.58539776,
+            "lower": 400.7517465451607,
+            "upper": 846.4190489748393
           },
           {
             "period": 2,
-            "value": 388.52986875,
-            "lower": 16.506820881738406,
-            "upper": 760.5529166182616
+            "value": 713.2800051199999,
+            "lower": 398.14563341885827,
+            "upper": 1028.4143768211416
           },
           {
             "period": 3,
-            "value": 388.52986875,
-            "lower": 0,
-            "upper": 844.163188666121
+            "value": 802.97461248,
+            "lower": 417.0154069398161,
+            "upper": 1188.933818020184
           }
-        ]
+        ],
+        "residualStdDev": 113.69063837491801,
+        "rmse": 113.69063837491801,
+        "mape": 15.023079713849569,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2026-07-20",
-      "safetyStock": 376,
-      "reorderPoint": 1141,
-      "recommendedOrderQuantity": 1870,
-      "turnoverRate": 5.87,
+      "expectedStockoutDate": "2026-07-18",
+      "safetyStock": 198,
+      "reorderPoint": 1515,
+      "recommendedOrderQuantity": 1448,
+      "turnoverRate": 9.42,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -4942,8 +6800,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 119.56,
-        "wape": 0.361,
+        "mae": 110.06,
+        "wape": 0.332,
         "observations": 5
       },
       "historicalTrend": {
@@ -4983,11 +6841,33 @@ export const analyticsReport = {
         "upper": 6887
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          6887,
+          6887,
+          6887,
+          6887,
+          6887,
+          6887,
+          6887
+        ],
+        "forecast": [
+          6887,
+          6887,
+          6887
+        ],
+        "lower95": [
+          6887,
+          6887,
+          6887
+        ],
+        "upper95": [
+          6887,
+          6887,
+          6887
+        ],
         "points": [
           {
             "period": 1,
@@ -5007,12 +6887,20 @@ export const analyticsReport = {
             "lower": 6887,
             "upper": 6887
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 13576,
-      "recommendedOrderQuantity": 33447,
+      "safetyStock": 2036,
+      "reorderPoint": 15612,
+      "recommendedOrderQuantity": 14723,
       "turnoverRate": 91.74,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5063,11 +6951,34 @@ export const analyticsReport = {
         "upper": 2699
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2699,
+          2699,
+          2699,
+          2699,
+          2699,
+          2699,
+          2699,
+          2699
+        ],
+        "forecast": [
+          2699,
+          2699,
+          2699
+        ],
+        "lower95": [
+          2699,
+          2699,
+          2699
+        ],
+        "upper95": [
+          2699,
+          2699,
+          2699
+        ],
         "points": [
           {
             "period": 1,
@@ -5087,12 +6998,20 @@ export const analyticsReport = {
             "lower": 2699,
             "upper": 2699
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 5320,
-      "recommendedOrderQuantity": 13316,
+      "safetyStock": 798,
+      "reorderPoint": 6118,
+      "recommendedOrderQuantity": 5978,
       "turnoverRate": 18.68,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5143,11 +7062,31 @@ export const analyticsReport = {
         "upper": 64
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          64,
+          64,
+          64,
+          64,
+          64
+        ],
+        "forecast": [
+          64,
+          64,
+          64
+        ],
+        "lower95": [
+          64,
+          64,
+          64
+        ],
+        "upper95": [
+          64,
+          64,
+          64
+        ],
         "points": [
           {
             "period": 1,
@@ -5167,12 +7106,20 @@ export const analyticsReport = {
             "lower": 64,
             "upper": 64
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-18",
-      "safetyStock": 0,
-      "reorderPoint": 126,
-      "recommendedOrderQuantity": 311,
+      "safetyStock": 19,
+      "reorderPoint": 145,
+      "recommendedOrderQuantity": 137,
       "turnoverRate": 44.65,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5223,11 +7170,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -5247,12 +7214,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-19",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 121,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 53,
       "turnoverRate": 75,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5303,11 +7278,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -5327,12 +7322,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-21",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 120,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 52,
       "turnoverRate": 33.33,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5383,11 +7386,34 @@ export const analyticsReport = {
         "upper": 229
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          229,
+          229,
+          229,
+          229,
+          229,
+          229,
+          229,
+          229
+        ],
+        "forecast": [
+          229,
+          229,
+          229
+        ],
+        "lower95": [
+          229,
+          229,
+          229
+        ],
+        "upper95": [
+          229,
+          229,
+          229
+        ],
         "points": [
           {
             "period": 1,
@@ -5407,12 +7433,20 @@ export const analyticsReport = {
             "lower": 229,
             "upper": 229
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-20",
-      "safetyStock": 0,
-      "reorderPoint": 451,
-      "recommendedOrderQuantity": 1103,
+      "safetyStock": 68,
+      "reorderPoint": 519,
+      "recommendedOrderQuantity": 480,
       "turnoverRate": 13.08,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5463,11 +7497,33 @@ export const analyticsReport = {
         "upper": 790
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          790,
+          790,
+          790,
+          790,
+          790,
+          790,
+          790
+        ],
+        "forecast": [
+          790,
+          790,
+          790
+        ],
+        "lower95": [
+          790,
+          790,
+          790
+        ],
+        "upper95": [
+          790,
+          790,
+          790
+        ],
         "points": [
           {
             "period": 1,
@@ -5487,12 +7543,20 @@ export const analyticsReport = {
             "lower": 790,
             "upper": 790
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-20",
-      "safetyStock": 0,
-      "reorderPoint": 1557,
-      "recommendedOrderQuantity": 3793,
+      "safetyStock": 234,
+      "reorderPoint": 1791,
+      "recommendedOrderQuantity": 1645,
       "turnoverRate": 51.24,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5543,11 +7607,34 @@ export const analyticsReport = {
         "upper": 77
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          77,
+          77,
+          77,
+          77,
+          77,
+          77,
+          77,
+          77
+        ],
+        "forecast": [
+          77,
+          77,
+          77
+        ],
+        "lower95": [
+          77,
+          77,
+          77
+        ],
+        "upper95": [
+          77,
+          77,
+          77
+        ],
         "points": [
           {
             "period": 1,
@@ -5567,12 +7654,20 @@ export const analyticsReport = {
             "lower": 77,
             "upper": 77
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-20",
-      "safetyStock": 0,
-      "reorderPoint": 152,
-      "recommendedOrderQuantity": 370,
+      "safetyStock": 23,
+      "reorderPoint": 175,
+      "recommendedOrderQuantity": 161,
       "turnoverRate": 11.32,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5612,47 +7707,78 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 7,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1252.04,
+      "forecastMonthlyDemand": 1252.06,
       "usageRates": {
-        "daily": 41.13,
-        "weekly": 287.94,
-        "monthly": 1252.04
+        "daily": 41.14,
+        "weekly": 287.95,
+        "monthly": 1252.06
       },
       "forecastRange": {
-        "lower": 1251.79,
-        "upper": 1252.3
+        "lower": 1251.83,
+        "upper": 1252.29
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.13126816200869243,
+        "fitted": [
+          1252,
+          1252,
+          1252,
+          1252,
+          1252,
+          1252,
+          1252.072,
+          1252.06672
+        ],
+        "forecast": [
+          1252.0598272,
+          1252.0662784,
+          1252.0727296
+        ],
+        "lower95": [
+          1251.8259896614184,
+          1251.735582181546,
+          1251.6677111024599
+        ],
+        "upper95": [
+          1252.2936647385816,
+          1252.3969746184541,
+          1252.4777480975401
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1252.0443625,
-            "lower": 1251.787076902463,
-            "upper": 1252.301648097537
+            "value": 1252.0598272,
+            "lower": 1251.8259896614184,
+            "upper": 1252.2936647385816
           },
           {
             "period": 2,
-            "value": 1252.0443625,
-            "lower": 1251.68050571856,
-            "upper": 1252.40821928144
+            "value": 1252.0662784,
+            "lower": 1251.735582181546,
+            "upper": 1252.3969746184541
           },
           {
             "period": 3,
-            "value": 1252.0443625,
-            "lower": 1251.5987307730102,
-            "upper": 1252.48999422699
+            "value": 1252.0727296,
+            "lower": 1251.6677111024599,
+            "upper": 1252.4777480975401
           }
-        ]
+        ],
+        "residualStdDev": 0.11930486662326241,
+        "rmse": 0.11930486662326241,
+        "mape": 0.005005113329947058,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-21",
-      "safetyStock": 0,
-      "reorderPoint": 2468,
-      "recommendedOrderQuantity": 5955,
+      "safetyStock": 370,
+      "reorderPoint": 2838,
+      "recommendedOrderQuantity": 2551,
       "turnoverRate": 15.19,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5662,7 +7788,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.08,
+        "mae": 0.07,
         "wape": 0,
         "observations": 6
       },
@@ -5703,11 +7829,32 @@ export const analyticsReport = {
         "upper": 1717
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717
+        ],
+        "forecast": [
+          1717,
+          1717,
+          1717
+        ],
+        "lower95": [
+          1717,
+          1717,
+          1717
+        ],
+        "upper95": [
+          1717,
+          1717,
+          1717
+        ],
         "points": [
           {
             "period": 1,
@@ -5727,12 +7874,20 @@ export const analyticsReport = {
             "lower": 1717,
             "upper": 1717
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-20",
-      "safetyStock": 0,
-      "reorderPoint": 3385,
-      "recommendedOrderQuantity": 8260,
+      "safetyStock": 508,
+      "reorderPoint": 3892,
+      "recommendedOrderQuantity": 3592,
       "turnoverRate": 48.98,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5783,11 +7938,33 @@ export const analyticsReport = {
         "upper": 1717
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717,
+          1717
+        ],
+        "forecast": [
+          1717,
+          1717,
+          1717
+        ],
+        "lower95": [
+          1717,
+          1717,
+          1717
+        ],
+        "upper95": [
+          1717,
+          1717,
+          1717
+        ],
         "points": [
           {
             "period": 1,
@@ -5807,12 +7984,20 @@ export const analyticsReport = {
             "lower": 1717,
             "upper": 1717
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-19",
-      "safetyStock": 0,
-      "reorderPoint": 3385,
-      "recommendedOrderQuantity": 8290,
+      "safetyStock": 508,
+      "reorderPoint": 3892,
+      "recommendedOrderQuantity": 3622,
       "turnoverRate": 76.31,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5863,11 +8048,34 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -5887,12 +8095,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-19",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 126,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 55,
       "turnoverRate": 34.67,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -5930,50 +8146,81 @@ export const analyticsReport = {
       "ami": 10,
       "mos": 0.2,
       "status": "understocked",
-      "daysOfSupply": 7,
+      "daysOfSupply": 5,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 9.04,
+      "forecastMonthlyDemand": 11.36,
       "usageRates": {
-        "daily": 0.3,
-        "weekly": 2.08,
-        "monthly": 9.04
+        "daily": 0.37,
+        "weekly": 2.61,
+        "monthly": 11.36
       },
       "forecastRange": {
-        "lower": 6.98,
-        "upper": 11.09
+        "lower": 9.63,
+        "upper": 13.09
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 1.0486736303189892,
+        "fitted": [
+          5,
+          6,
+          7.000000000000002,
+          7.680000000000002,
+          8.022400000000003,
+          9.013632000000003,
+          9.900981760000004,
+          10.762743756800004
+        ],
+        "forecast": [
+          11.360624103424003,
+          12.111053201408003,
+          12.861482299392001
+        ],
+        "lower95": [
+          9.63091660105617,
+          9.66487739262092,
+          9.86554102305785
+        ],
+        "upper95": [
+          13.090331605791837,
+          14.557229010195087,
+          15.857423575726154
+        ],
         "points": [
           {
             "period": 1,
-            "value": 9.037321471093751,
-            "lower": 6.981921155668532,
-            "upper": 11.09272178651897
+            "value": 11.360624103424003,
+            "lower": 9.63091660105617,
+            "upper": 13.090331605791837
           },
           {
             "period": 2,
-            "value": 9.037321471093751,
-            "lower": 6.130546468913469,
-            "upper": 11.944096473274033
+            "value": 12.111053201408003,
+            "lower": 9.66487739262092,
+            "upper": 14.557229010195087
           },
           {
             "period": 3,
-            "value": 9.037321471093751,
-            "lower": 5.477263694884176,
-            "upper": 12.597379247303326
+            "value": 12.861482299392001,
+            "lower": 9.86554102305785,
+            "upper": 15.857423575726154
           }
-        ]
+        ],
+        "residualStdDev": 0.8825038277386907,
+        "rmse": 0.8825038277386907,
+        "mape": 9.603676380477218,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.6
+        }
       },
-      "expectedStockoutDate": "2026-07-21",
-      "safetyStock": 5,
-      "reorderPoint": 23,
-      "recommendedOrderQuantity": 43,
-      "turnoverRate": 4.9,
+      "expectedStockoutDate": "2026-07-20",
+      "safetyStock": 3,
+      "reorderPoint": 27,
+      "recommendedOrderQuantity": 25,
+      "turnoverRate": 6.16,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -5982,8 +8229,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 1.76,
-        "wape": 0.209,
+        "mae": 1.14,
+        "wape": 0.136,
         "observations": 6
       },
       "historicalTrend": {
@@ -6023,11 +8270,31 @@ export const analyticsReport = {
         "upper": 1464
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1464,
+          1464,
+          1464,
+          1464,
+          1464
+        ],
+        "forecast": [
+          1464,
+          1464,
+          1464
+        ],
+        "lower95": [
+          1464,
+          1464,
+          1464
+        ],
+        "upper95": [
+          1464,
+          1464,
+          1464
+        ],
         "points": [
           {
             "period": 1,
@@ -6047,12 +8314,20 @@ export const analyticsReport = {
             "lower": 1464,
             "upper": 1464
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-22",
-      "safetyStock": 0,
-      "reorderPoint": 2886,
-      "recommendedOrderQuantity": 6933,
+      "safetyStock": 433,
+      "reorderPoint": 3319,
+      "recommendedOrderQuantity": 2953,
       "turnoverRate": 3.33,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6103,11 +8378,33 @@ export const analyticsReport = {
         "upper": 14975
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          14975,
+          14975,
+          14975,
+          14975,
+          14975,
+          14975,
+          14975
+        ],
+        "forecast": [
+          14975,
+          14975,
+          14975
+        ],
+        "lower95": [
+          14975,
+          14975,
+          14975
+        ],
+        "upper95": [
+          14975,
+          14975,
+          14975
+        ],
         "points": [
           {
             "period": 1,
@@ -6127,12 +8424,20 @@ export const analyticsReport = {
             "lower": 14975,
             "upper": 14975
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 29520,
-      "recommendedOrderQuantity": 70623,
+      "safetyStock": 4428,
+      "reorderPoint": 33947,
+      "recommendedOrderQuantity": 29910,
       "turnoverRate": 20.75,
       "stockoutFrequency": 0.125,
       "stockAgeDays": null,
@@ -6183,11 +8488,34 @@ export const analyticsReport = {
         "upper": 171960
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          171960,
+          171960,
+          171960,
+          171960,
+          171960,
+          171960,
+          171960,
+          171960
+        ],
+        "forecast": [
+          171960,
+          171960,
+          171960
+        ],
+        "lower95": [
+          171960,
+          171960,
+          171960
+        ],
+        "upper95": [
+          171960,
+          171960,
+          171960
+        ],
         "points": [
           {
             "period": 1,
@@ -6207,12 +8535,20 @@ export const analyticsReport = {
             "lower": 171960,
             "upper": 171960
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-25",
-      "safetyStock": 0,
-      "reorderPoint": 338977,
-      "recommendedOrderQuantity": 797328,
+      "safetyStock": 50846,
+      "reorderPoint": 389823,
+      "recommendedOrderQuantity": 329823,
       "turnoverRate": 31.7,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6263,11 +8599,34 @@ export const analyticsReport = {
         "upper": 21948
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          21948,
+          21948,
+          21948,
+          21948,
+          21948,
+          21948,
+          21948,
+          21948
+        ],
+        "forecast": [
+          21948,
+          21948,
+          21948
+        ],
+        "lower95": [
+          21948,
+          21948,
+          21948
+        ],
+        "upper95": [
+          21948,
+          21948,
+          21948
+        ],
         "points": [
           {
             "period": 1,
@@ -6287,12 +8646,20 @@ export const analyticsReport = {
             "lower": 21948,
             "upper": 21948
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-22",
-      "safetyStock": 0,
-      "reorderPoint": 43265,
-      "recommendedOrderQuantity": 103865,
+      "safetyStock": 6490,
+      "reorderPoint": 49755,
+      "recommendedOrderQuantity": 44195,
       "turnoverRate": 35.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6343,11 +8710,33 @@ export const analyticsReport = {
         "upper": 4184
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          4184,
+          4184,
+          4184,
+          4184,
+          4184,
+          4184,
+          4184
+        ],
+        "forecast": [
+          4184,
+          4184,
+          4184
+        ],
+        "lower95": [
+          4184,
+          4184,
+          4184
+        ],
+        "upper95": [
+          4184,
+          4184,
+          4184
+        ],
         "points": [
           {
             "period": 1,
@@ -6367,12 +8756,20 @@ export const analyticsReport = {
             "lower": 4184,
             "upper": 4184
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 8248,
-      "recommendedOrderQuantity": 19757,
+      "safetyStock": 1237,
+      "reorderPoint": 9485,
+      "recommendedOrderQuantity": 8382,
       "turnoverRate": 13.26,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6423,11 +8820,33 @@ export const analyticsReport = {
         "upper": 6748
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          6748,
+          6748,
+          6748,
+          6748,
+          6748,
+          6748,
+          6748
+        ],
+        "forecast": [
+          6748,
+          6748,
+          6748
+        ],
+        "lower95": [
+          6748,
+          6748,
+          6748
+        ],
+        "upper95": [
+          6748,
+          6748,
+          6748
+        ],
         "points": [
           {
             "period": 1,
@@ -6447,12 +8866,20 @@ export const analyticsReport = {
             "lower": 6748,
             "upper": 6748
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 13302,
-      "recommendedOrderQuantity": 31709,
+      "safetyStock": 1995,
+      "reorderPoint": 15297,
+      "recommendedOrderQuantity": 13363,
       "turnoverRate": 16.89,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6503,11 +8930,34 @@ export const analyticsReport = {
         "upper": 77
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          77,
+          77,
+          77,
+          77,
+          77,
+          77,
+          77,
+          77
+        ],
+        "forecast": [
+          77,
+          77,
+          77
+        ],
+        "lower95": [
+          77,
+          77,
+          77
+        ],
+        "upper95": [
+          77,
+          77,
+          77
+        ],
         "points": [
           {
             "period": 1,
@@ -6527,12 +8977,20 @@ export const analyticsReport = {
             "lower": 77,
             "upper": 77
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-24",
-      "safetyStock": 0,
-      "reorderPoint": 152,
-      "recommendedOrderQuantity": 360,
+      "safetyStock": 23,
+      "reorderPoint": 175,
+      "recommendedOrderQuantity": 151,
       "turnoverRate": 9.63,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6572,47 +9030,78 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 9,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 243.04,
+      "forecastMonthlyDemand": 243.06,
       "usageRates": {
         "daily": 7.99,
         "weekly": 55.9,
-        "monthly": 243.04
+        "monthly": 243.06
       },
       "forecastRange": {
-        "lower": 242.79,
-        "upper": 243.3
+        "lower": 242.83,
+        "upper": 243.29
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.13126816200871277,
+        "fitted": [
+          243,
+          243,
+          243,
+          243,
+          243,
+          243,
+          243.072,
+          243.06672
+        ],
+        "forecast": [
+          243.05982720000003,
+          243.06627840000002,
+          243.07272960000003
+        ],
+        "lower95": [
+          242.8259896614184,
+          242.7355821815459,
+          242.66771110245978
+        ],
+        "upper95": [
+          243.29366473858167,
+          243.39697461845412,
+          243.47774809754029
+        ],
         "points": [
           {
             "period": 1,
-            "value": 243.04436250000003,
-            "lower": 242.78707690246296,
-            "upper": 243.3016480975371
+            "value": 243.05982720000003,
+            "lower": 242.8259896614184,
+            "upper": 243.29366473858167
           },
           {
             "period": 2,
-            "value": 243.04436250000003,
-            "lower": 242.68050571855983,
-            "upper": 243.40821928144024
+            "value": 243.06627840000002,
+            "lower": 242.7355821815459,
+            "upper": 243.39697461845412
           },
           {
             "period": 3,
-            "value": 243.04436250000003,
-            "lower": 242.5987307730101,
-            "upper": 243.48999422698998
+            "value": 243.07272960000003,
+            "lower": 242.66771110245978,
+            "upper": 243.47774809754029
           }
-        ]
+        ],
+        "residualStdDev": 0.11930486662329036,
+        "rmse": 0.11930486662329036,
+        "mape": 0.02577014028884252,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 479,
-      "recommendedOrderQuantity": 1143,
+      "safetyStock": 72,
+      "reorderPoint": 551,
+      "recommendedOrderQuantity": 482,
       "turnoverRate": 20.24,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6622,7 +9111,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.08,
+        "mae": 0.07,
         "wape": 0,
         "observations": 6
       },
@@ -6663,11 +9152,32 @@ export const analyticsReport = {
         "upper": 52
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          52,
+          52,
+          52,
+          52,
+          52,
+          52
+        ],
+        "forecast": [
+          52,
+          52,
+          52
+        ],
+        "lower95": [
+          52,
+          52,
+          52
+        ],
+        "upper95": [
+          52,
+          52,
+          52
+        ],
         "points": [
           {
             "period": 1,
@@ -6687,12 +9197,20 @@ export const analyticsReport = {
             "lower": 52,
             "upper": 52
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-24",
-      "safetyStock": 0,
-      "reorderPoint": 103,
-      "recommendedOrderQuantity": 243,
+      "safetyStock": 15,
+      "reorderPoint": 118,
+      "recommendedOrderQuantity": 102,
       "turnoverRate": 20.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6743,11 +9261,34 @@ export const analyticsReport = {
         "upper": 255
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "forecast": [
+          255,
+          255,
+          255
+        ],
+        "lower95": [
+          255,
+          255,
+          255
+        ],
+        "upper95": [
+          255,
+          255,
+          255
+        ],
         "points": [
           {
             "period": 1,
@@ -6767,12 +9308,20 @@ export const analyticsReport = {
             "lower": 255,
             "upper": 255
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 503,
-      "recommendedOrderQuantity": 1199,
+      "safetyStock": 75,
+      "reorderPoint": 578,
+      "recommendedOrderQuantity": 506,
       "turnoverRate": 9.11,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6823,11 +9372,33 @@ export const analyticsReport = {
         "upper": 240
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          240,
+          240,
+          240,
+          240,
+          240,
+          240,
+          240
+        ],
+        "forecast": [
+          240,
+          240,
+          240
+        ],
+        "lower95": [
+          240,
+          240,
+          240
+        ],
+        "upper95": [
+          240,
+          240,
+          240
+        ],
         "points": [
           {
             "period": 1,
@@ -6847,12 +9418,20 @@ export const analyticsReport = {
             "lower": 240,
             "upper": 240
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-25",
-      "safetyStock": 0,
-      "reorderPoint": 473,
-      "recommendedOrderQuantity": 1115,
+      "safetyStock": 71,
+      "reorderPoint": 544,
+      "recommendedOrderQuantity": 462,
       "turnoverRate": 7.77,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6903,11 +9482,34 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -6927,12 +9529,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-23",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 123,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 52,
       "turnoverRate": 44.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -6970,50 +9580,81 @@ export const analyticsReport = {
       "ami": 34,
       "mos": 0.3,
       "status": "understocked",
-      "daysOfSupply": 11,
+      "daysOfSupply": 7,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 27.53,
+      "forecastMonthlyDemand": 42.86,
       "usageRates": {
-        "daily": 0.9,
-        "weekly": 6.33,
-        "monthly": 27.53
+        "daily": 1.41,
+        "weekly": 9.86,
+        "monthly": 42.86
       },
       "forecastRange": {
-        "lower": 9.86,
-        "upper": 45.2
+        "lower": 27.71,
+        "upper": 58.01
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 9.01432944123615,
+        "fitted": [
+          27,
+          19,
+          11,
+          11.64,
+          15.4288,
+          13.258496000000001,
+          17.822296319999996,
+          36.5931142144
+        ],
+        "forecast": [
+          42.856746549248,
+          50.676247412736004,
+          58.495748276224
+        ],
+        "lower95": [
+          27.70607200808109,
+          29.249957997516987,
+          32.254010201982624
+        ],
+        "upper95": [
+          58.00742109041491,
+          72.10253682795502,
+          84.73748635046537
+        ],
         "points": [
           {
             "period": 1,
-            "value": 27.52972198125,
-            "lower": 9.861636276427145,
-            "upper": 45.19780768607285
+            "value": 42.856746549248,
+            "lower": 27.70607200808109,
+            "upper": 58.00742109041491
           },
           {
             "period": 2,
-            "value": 27.52972198125,
-            "lower": 2.543275556319312,
-            "upper": 52.51616840618068
+            "value": 50.676247412736004,
+            "lower": 29.249957997516987,
+            "upper": 72.10253682795502
           },
           {
             "period": 3,
-            "value": 27.52972198125,
-            "lower": 0,
-            "upper": 58.13174409448456
+            "value": 58.495748276224,
+            "lower": 32.254010201982624,
+            "upper": 84.73748635046537
           }
-        ]
+        ],
+        "residualStdDev": 7.729935990391281,
+        "rmse": 7.729935990391281,
+        "mape": 25.050722763605123,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 18,
-      "reorderPoint": 72,
-      "recommendedOrderQuantity": 127,
-      "turnoverRate": 5.48,
+      "expectedStockoutDate": "2026-07-22",
+      "safetyStock": 14,
+      "reorderPoint": 106,
+      "recommendedOrderQuantity": 96,
+      "turnoverRate": 8.54,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -7022,8 +9663,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 6.84,
-        "wape": 0.296,
+        "mae": 9.32,
+        "wape": 0.403,
         "observations": 6
       },
       "historicalTrend": {
@@ -7050,50 +9691,81 @@ export const analyticsReport = {
       "ami": 468,
       "mos": 0.3,
       "status": "understocked",
-      "daysOfSupply": 12,
+      "daysOfSupply": 9,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 396.26,
+      "forecastMonthlyDemand": 523.17,
       "usageRates": {
-        "daily": 13.02,
-        "weekly": 91.13,
-        "monthly": 396.26
+        "daily": 17.19,
+        "weekly": 120.32,
+        "monthly": 523.17
       },
       "forecastRange": {
-        "lower": 322.43,
-        "upper": 470.1
+        "lower": 367.21,
+        "upper": 679.14
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 37.67169913753732,
+        "fitted": [
+          125,
+          278,
+          431,
+          363.67999999999995,
+          295.38079999999997,
+          344.0372479999999,
+          379.1366988800001,
+          534.7891017728
+        ],
+        "forecast": [
+          523.174557216768,
+          564.9912940789759,
+          606.8080309411839
+        ],
+        "lower95": [
+          367.21051715218675,
+          344.4248333771443,
+          336.6703893956212
+        ],
+        "upper95": [
+          679.1385972813492,
+          785.5577547808075,
+          876.9456724867466
+        ],
         "points": [
           {
             "period": 1,
-            "value": 396.2616350773437,
-            "lower": 322.42510476777056,
-            "upper": 470.0981653869169
+            "value": 523.174557216768,
+            "lower": 367.21051715218675,
+            "upper": 679.1385972813492
           },
           {
             "period": 2,
-            "value": 396.2616350773437,
-            "lower": 291.8410125149733,
-            "upper": 500.6822576397142
+            "value": 564.9912940789759,
+            "lower": 344.4248333771443,
+            "upper": 785.5577547808075
           },
           {
             "period": 3,
-            "value": 396.2616350773437,
-            "lower": 268.3730131265637,
-            "upper": 524.1502570281237
+            "value": 606.8080309411839,
+            "lower": 336.6703893956212,
+            "upper": 876.9456724867466
           }
-        ]
+        ],
+        "residualStdDev": 79.57348982886799,
+        "rmse": 79.57348982886799,
+        "mape": 18.850794043075705,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 259,
-      "reorderPoint": 1040,
-      "recommendedOrderQuantity": 1825,
-      "turnoverRate": 6.81,
+      "expectedStockoutDate": "2026-07-23",
+      "safetyStock": 161,
+      "reorderPoint": 1233,
+      "recommendedOrderQuantity": 1082,
+      "turnoverRate": 8.99,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -7102,7 +9774,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 103.67,
+        "mae": 103.47,
         "wape": 0.286,
         "observations": 6
       },
@@ -7143,11 +9815,34 @@ export const analyticsReport = {
         "upper": 230
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          230,
+          230,
+          230,
+          230,
+          230,
+          230,
+          230,
+          230
+        ],
+        "forecast": [
+          230,
+          230,
+          230
+        ],
+        "lower95": [
+          230,
+          230,
+          230
+        ],
+        "upper95": [
+          230,
+          230,
+          230
+        ],
         "points": [
           {
             "period": 1,
@@ -7167,12 +9862,20 @@ export const analyticsReport = {
             "lower": 230,
             "upper": 230
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-24",
-      "safetyStock": 0,
-      "reorderPoint": 453,
-      "recommendedOrderQuantity": 1073,
+      "safetyStock": 68,
+      "reorderPoint": 521,
+      "recommendedOrderQuantity": 447,
       "turnoverRate": 35.38,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7212,47 +9915,76 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 12,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1992.84,
+      "forecastMonthlyDemand": 1992.78,
       "usageRates": {
         "daily": 65.47,
-        "weekly": 458.31,
-        "monthly": 1992.84
+        "weekly": 458.3,
+        "monthly": 1992.78
       },
       "forecastRange": {
-        "lower": 1992.49,
-        "upper": 1993.19
+        "lower": 1992.44,
+        "upper": 1993.11
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.17875538453425088,
+        "fitted": [
+          1993,
+          1993,
+          1993,
+          1993,
+          1992.892,
+          1992.8828800000006
+        ],
+        "forecast": [
+          1992.775523200001,
+          1992.7107424000014,
+          1992.645961600002
+        ],
+        "lower95": [
+          1992.439473904353,
+          1992.23549692847,
+          1992.0639071460919
+        ],
+        "upper95": [
+          1993.1115724956492,
+          1993.185987871533,
+          1993.2280160539121
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1992.8401374999999,
-            "lower": 1992.4897769463128,
-            "upper": 1993.190498053687
+            "value": 1992.775523200001,
+            "lower": 1992.439473904353,
+            "upper": 1993.1115724956492
           },
           {
             "period": 2,
-            "value": 1992.8401374999999,
-            "lower": 1992.344652853255,
-            "upper": 1993.3356221467448
+            "value": 1992.7107424000014,
+            "lower": 1992.23549692847,
+            "upper": 1993.185987871533
           },
           {
             "period": 3,
-            "value": 1992.8401374999999,
-            "lower": 1992.2332952200459,
-            "upper": 1993.4469797799538
+            "value": 1992.645961600002,
+            "lower": 1992.0639071460919,
+            "upper": 1993.2280160539121
           }
-        ]
+        ],
+        "residualStdDev": 0.17145372226940564,
+        "rmse": 0.17145372226940564,
+        "mape": 0.006231414142092418,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 0,
-      "reorderPoint": 3929,
-      "recommendedOrderQuantity": 9164,
+      "safetyStock": 589,
+      "reorderPoint": 4517,
+      "recommendedOrderQuantity": 3745,
       "turnoverRate": 30.98,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7262,7 +9994,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
+        "mae": 0.16,
         "wape": 0,
         "observations": 4
       },
@@ -7303,11 +10035,31 @@ export const analyticsReport = {
         "upper": 86970
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          86970,
+          86970,
+          86970,
+          86970,
+          86970
+        ],
+        "forecast": [
+          86970,
+          86970,
+          86970
+        ],
+        "lower95": [
+          86970,
+          86970,
+          86970
+        ],
+        "upper95": [
+          86970,
+          86970,
+          86970
+        ],
         "points": [
           {
             "period": 1,
@@ -7327,12 +10079,20 @@ export const analyticsReport = {
             "lower": 86970,
             "upper": 86970
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 171440,
-      "recommendedOrderQuantity": 394984,
+      "safetyStock": 25716,
+      "reorderPoint": 197156,
+      "recommendedOrderQuantity": 158540,
       "turnoverRate": 25.91,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7383,11 +10143,34 @@ export const analyticsReport = {
         "upper": 39428
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          39428,
+          39428,
+          39428,
+          39428,
+          39428,
+          39428,
+          39428,
+          39428
+        ],
+        "forecast": [
+          39428,
+          39428,
+          39428
+        ],
+        "lower95": [
+          39428,
+          39428,
+          39428
+        ],
+        "upper95": [
+          39428,
+          39428,
+          39428
+        ],
         "points": [
           {
             "period": 1,
@@ -7407,12 +10190,20 @@ export const analyticsReport = {
             "lower": 39428,
             "upper": 39428
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 0,
-      "reorderPoint": 77723,
-      "recommendedOrderQuantity": 181787,
+      "safetyStock": 11658,
+      "reorderPoint": 89381,
+      "recommendedOrderQuantity": 74595,
       "turnoverRate": 30.69,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7463,11 +10254,34 @@ export const analyticsReport = {
         "upper": 300
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          300,
+          300,
+          300,
+          300,
+          300,
+          300,
+          300,
+          300
+        ],
+        "forecast": [
+          300,
+          300,
+          300
+        ],
+        "lower95": [
+          300,
+          300,
+          300
+        ],
+        "upper95": [
+          300,
+          300,
+          300
+        ],
         "points": [
           {
             "period": 1,
@@ -7487,12 +10301,20 @@ export const analyticsReport = {
             "lower": 300,
             "upper": 300
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 0,
-      "reorderPoint": 591,
-      "recommendedOrderQuantity": 1387,
+      "safetyStock": 89,
+      "reorderPoint": 680,
+      "recommendedOrderQuantity": 571,
       "turnoverRate": 7.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7530,50 +10352,81 @@ export const analyticsReport = {
       "ami": 3192,
       "mos": 0.4,
       "status": "understocked",
-      "daysOfSupply": 10,
+      "daysOfSupply": 11,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 3641.8,
+      "forecastMonthlyDemand": 3333.65,
       "usageRates": {
-        "daily": 119.65,
-        "weekly": 837.54,
-        "monthly": 3641.8
+        "daily": 109.52,
+        "weekly": 766.67,
+        "monthly": 3333.65
       },
       "forecastRange": {
-        "lower": 2157.25,
-        "upper": 5126.36
+        "lower": 1891.45,
+        "upper": 4775.85
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 757.4254306176367,
+        "fitted": [
+          4423,
+          4423,
+          4423,
+          4078.32,
+          4076.3504000000003,
+          3757.8266880000006,
+          3457.7415833600007,
+          3541.0941729792007
+        ],
+        "forecast": [
+          3333.6487108362253,
+          3196.0220832890896,
+          3058.395455741954
+        ],
+        "lower95": [
+          1891.4464921568551,
+          1156.440145948156,
+          560.4279382007244
+        ],
+        "upper95": [
+          4775.850929515595,
+          5235.604020630023,
+          5556.362973283183
+        ],
         "points": [
           {
             "period": 1,
-            "value": 3641.8025721718745,
-            "lower": 2157.2487281613066,
-            "upper": 5126.356416182442
+            "value": 3333.6487108362253,
+            "lower": 1891.4464921568551,
+            "upper": 4775.850929515595
           },
           {
             "period": 2,
-            "value": 3641.8025721718745,
-            "lower": 1542.326391899017,
-            "upper": 5741.278752444732
+            "value": 3196.0220832890896,
+            "lower": 1156.440145948156,
+            "upper": 5235.604020630023
           },
           {
             "period": 3,
-            "value": 3641.8025721718745,
-            "lower": 1070.4798877738895,
-            "upper": 6213.12525656986
+            "value": 3058.395455741954,
+            "lower": 560.4279382007244,
+            "upper": 5556.362973283183
           }
-        ]
+        ],
+        "residualStdDev": 735.8174585098827,
+        "rmse": 735.8174585098827,
+        "mape": 17.792832033680952,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2026-07-24",
-      "safetyStock": 1520,
-      "reorderPoint": 8699,
-      "recommendedOrderQuantity": 16996,
-      "turnoverRate": 3.86,
+      "expectedStockoutDate": "2026-07-25",
+      "safetyStock": 965,
+      "reorderPoint": 7401,
+      "recommendedOrderQuantity": 6240,
+      "turnoverRate": 3.53,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -7582,8 +10435,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 792.02,
-        "wape": 0.22,
+        "mae": 770.25,
+        "wape": 0.214,
         "observations": 6
       },
       "historicalTrend": {
@@ -7612,48 +10465,79 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 13,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 98.96,
+      "forecastMonthlyDemand": 98.94,
       "usageRates": {
         "daily": 3.25,
-        "weekly": 22.76,
-        "monthly": 98.96
+        "weekly": 22.75,
+        "monthly": 98.94
       },
       "forecastRange": {
-        "lower": 98.7,
-        "upper": 99.21
+        "lower": 98.71,
+        "upper": 99.17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.13126816200870015,
+        "fitted": [
+          99,
+          99,
+          99,
+          99,
+          99,
+          99,
+          98.928,
+          98.93328000000001
+        ],
+        "forecast": [
+          98.94017280000001,
+          98.93372160000001,
+          98.92727040000003
+        ],
+        "lower95": [
+          98.70633526141837,
+          98.60302538154592,
+          98.52225190245979
+        ],
+        "upper95": [
+          99.17401033858165,
+          99.2644178184541,
+          99.33228889754027
+        ],
         "points": [
           {
             "period": 1,
-            "value": 98.9556375,
-            "lower": 98.69835190246295,
-            "upper": 99.21292309753704
+            "value": 98.94017280000001,
+            "lower": 98.70633526141837,
+            "upper": 99.17401033858165
           },
           {
             "period": 2,
-            "value": 98.9556375,
-            "lower": 98.59178071855983,
-            "upper": 99.31949428144016
+            "value": 98.93372160000001,
+            "lower": 98.60302538154592,
+            "upper": 99.2644178184541
           },
           {
             "period": 3,
-            "value": 98.9556375,
-            "lower": 98.5100057730101,
-            "upper": 99.40126922698988
+            "value": 98.92727040000003,
+            "lower": 98.52225190245979,
+            "upper": 99.33228889754027
           }
-        ]
+        ],
+        "residualStdDev": 0.11930486662328411,
+        "rmse": 0.11930486662328411,
+        "mape": 0.06343893998605091,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 195,
-      "recommendedOrderQuantity": 450,
-      "turnoverRate": 11.3,
+      "safetyStock": 29,
+      "reorderPoint": 224,
+      "recommendedOrderQuantity": 181,
+      "turnoverRate": 11.29,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -7662,7 +10546,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.08,
+        "mae": 0.07,
         "wape": 0.001,
         "observations": 6
       },
@@ -7703,11 +10587,34 @@ export const analyticsReport = {
         "upper": 82
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          82,
+          82,
+          82,
+          82,
+          82,
+          82,
+          82,
+          82
+        ],
+        "forecast": [
+          82,
+          82,
+          82
+        ],
+        "lower95": [
+          82,
+          82,
+          82
+        ],
+        "upper95": [
+          82,
+          82,
+          82
+        ],
         "points": [
           {
             "period": 1,
@@ -7727,12 +10634,20 @@ export const analyticsReport = {
             "lower": 82,
             "upper": 82
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-26",
-      "safetyStock": 0,
-      "reorderPoint": 162,
-      "recommendedOrderQuantity": 377,
+      "safetyStock": 24,
+      "reorderPoint": 186,
+      "recommendedOrderQuantity": 154,
       "turnoverRate": 17.15,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7783,11 +10698,33 @@ export const analyticsReport = {
         "upper": 89
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          89,
+          89,
+          89,
+          89,
+          89,
+          89,
+          89
+        ],
+        "forecast": [
+          89,
+          89,
+          89
+        ],
+        "lower95": [
+          89,
+          89,
+          89
+        ],
+        "upper95": [
+          89,
+          89,
+          89
+        ],
         "points": [
           {
             "period": 1,
@@ -7807,12 +10744,20 @@ export const analyticsReport = {
             "lower": 89,
             "upper": 89
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-27",
-      "safetyStock": 0,
-      "reorderPoint": 175,
-      "recommendedOrderQuantity": 408,
+      "safetyStock": 26,
+      "reorderPoint": 202,
+      "recommendedOrderQuantity": 166,
       "turnoverRate": 22.25,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7863,11 +10808,34 @@ export const analyticsReport = {
         "upper": 117
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          117,
+          117,
+          117,
+          117,
+          117,
+          117,
+          117,
+          117
+        ],
+        "forecast": [
+          117,
+          117,
+          117
+        ],
+        "lower95": [
+          117,
+          117,
+          117
+        ],
+        "upper95": [
+          117,
+          117,
+          117
+        ],
         "points": [
           {
             "period": 1,
@@ -7887,12 +10855,20 @@ export const analyticsReport = {
             "lower": 117,
             "upper": 117
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 231,
-      "recommendedOrderQuantity": 533,
+      "safetyStock": 35,
+      "reorderPoint": 265,
+      "recommendedOrderQuantity": 215,
       "turnoverRate": 5.52,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -7930,50 +10906,81 @@ export const analyticsReport = {
       "ami": 2357,
       "mos": 0.4,
       "status": "understocked",
-      "daysOfSupply": 13,
+      "daysOfSupply": 14,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 2248.99,
+      "forecastMonthlyDemand": 2067,
       "usageRates": {
-        "daily": 73.89,
-        "weekly": 517.22,
-        "monthly": 2248.99
+        "daily": 67.91,
+        "weekly": 475.37,
+        "monthly": 2067
       },
       "forecastRange": {
-        "lower": 928.63,
-        "upper": 3569.36
+        "lower": 717.7,
+        "upper": 3416.31
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 673.6552878593922,
+        "fitted": [
+          2948,
+          2928,
+          2908,
+          2892.8,
+          2882.0480000000002,
+          2487.6844800000003,
+          2196.3182848000006,
+          2119.1925972480008
+        ],
+        "forecast": [
+          2067.004343316481,
+          1967.2546088345612,
+          1867.5048743526413
+        ],
+        "lower95": [
+          717.6958028580057,
+          59.044171092339184,
+          0
+        ],
+        "upper95": [
+          3416.3128837749564,
+          3875.465046576783,
+          4204.575821513326
+        ],
         "points": [
           {
             "period": 1,
-            "value": 2248.9934018281247,
-            "lower": 928.6290376237162,
-            "upper": 3569.357766032533
+            "value": 2067.004343316481,
+            "lower": 717.6958028580057,
+            "upper": 3416.3128837749564
           },
           {
             "period": 2,
-            "value": 2248.9934018281247,
-            "lower": 381.7162106961214,
-            "upper": 4116.270592960128
+            "value": 1967.2546088345612,
+            "lower": 59.044171092339184,
+            "upper": 3875.465046576783
           },
           {
             "period": 3,
-            "value": 2248.9934018281247,
+            "value": 1867.5048743526413,
             "lower": 0,
-            "upper": 4535.931565133537
+            "upper": 4204.575821513326
           }
-        ]
+        ],
+        "residualStdDev": 688.4227247237119,
+        "rmse": 688.4227247237119,
+        "mape": 27.55351900425576,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-07-27",
-      "safetyStock": 1498,
-      "reorderPoint": 5931,
-      "recommendedOrderQuantity": 10278,
-      "turnoverRate": 4.52,
+      "expectedStockoutDate": "2026-07-28",
+      "safetyStock": 596,
+      "reorderPoint": 4573,
+      "recommendedOrderQuantity": 3638,
+      "turnoverRate": 4.15,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -7982,8 +10989,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 470.13,
-        "wape": 0.209,
+        "mae": 661.66,
+        "wape": 0.294,
         "observations": 6
       },
       "historicalTrend": {
@@ -8012,48 +11019,77 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 14,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 58.16,
+      "forecastMonthlyDemand": 58.22,
       "usageRates": {
         "daily": 1.91,
-        "weekly": 13.38,
-        "monthly": 58.16
+        "weekly": 13.39,
+        "monthly": 58.22
       },
       "forecastRange": {
-        "lower": 57.81,
-        "upper": 58.51
+        "lower": 57.89,
+        "upper": 58.56
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.1787553845342848,
+        "fitted": [
+          58,
+          58,
+          58.000000000000014,
+          58.00000000000002,
+          58.10800000000002,
+          58.11712000000002
+        ],
+        "forecast": [
+          58.22447680000003,
+          58.289257600000035,
+          58.35403840000004
+        ],
+        "lower95": [
+          57.888427504352215,
+          57.81401212846897,
+          57.771983946090295
+        ],
+        "upper95": [
+          58.56052609564785,
+          58.7645030715311,
+          58.93609285390979
+        ],
         "points": [
           {
             "period": 1,
-            "value": 58.1598625,
-            "lower": 57.80950194631281,
-            "upper": 58.5102230536872
+            "value": 58.22447680000003,
+            "lower": 57.888427504352215,
+            "upper": 58.56052609564785
           },
           {
             "period": 2,
-            "value": 58.1598625,
-            "lower": 57.66437785325502,
-            "upper": 58.65534714674499
+            "value": 58.289257600000035,
+            "lower": 57.81401212846897,
+            "upper": 58.7645030715311
           },
           {
             "period": 3,
-            "value": 58.1598625,
-            "lower": 57.55302022004581,
-            "upper": 58.766704779954196
+            "value": 58.35403840000004,
+            "lower": 57.771983946090295,
+            "upper": 58.93609285390979
           }
-        ]
+        ],
+        "residualStdDev": 0.17145372226929326,
+        "rmse": 0.17145372226929326,
+        "mape": 0.21314893080286818,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 115,
-      "recommendedOrderQuantity": 264,
-      "turnoverRate": 26.84,
+      "safetyStock": 17,
+      "reorderPoint": 132,
+      "recommendedOrderQuantity": 106,
+      "turnoverRate": 26.87,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -8062,7 +11098,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
+        "mae": 0.16,
         "wape": 0.003,
         "observations": 4
       },
@@ -8103,11 +11139,31 @@ export const analyticsReport = {
         "upper": 70
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "forecast": [
+          70,
+          70,
+          70
+        ],
+        "lower95": [
+          70,
+          70,
+          70
+        ],
+        "upper95": [
+          70,
+          70,
+          70
+        ],
         "points": [
           {
             "period": 1,
@@ -8127,12 +11183,20 @@ export const analyticsReport = {
             "lower": 70,
             "upper": 70
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-29",
-      "safetyStock": 0,
-      "reorderPoint": 138,
-      "recommendedOrderQuantity": 315,
+      "safetyStock": 21,
+      "reorderPoint": 159,
+      "recommendedOrderQuantity": 125,
       "turnoverRate": 24.71,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8183,11 +11247,30 @@ export const analyticsReport = {
         "upper": 2340
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          2340,
+          2340,
+          2340,
+          2340
+        ],
+        "forecast": [
+          2340,
+          2340,
+          2340
+        ],
+        "lower95": [
+          2340,
+          2340,
+          2340
+        ],
+        "upper95": [
+          2340,
+          2340,
+          2340
+        ],
         "points": [
           {
             "period": 1,
@@ -8207,12 +11290,20 @@ export const analyticsReport = {
             "lower": 2340,
             "upper": 2340
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 0,
-      "reorderPoint": 4613,
-      "recommendedOrderQuantity": 10599,
+      "safetyStock": 692,
+      "reorderPoint": 5305,
+      "recommendedOrderQuantity": 4238,
       "turnoverRate": 6.54,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8263,11 +11354,33 @@ export const analyticsReport = {
         "upper": 2439
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          2439,
+          2439,
+          2439,
+          2439,
+          2439,
+          2439,
+          2439
+        ],
+        "forecast": [
+          2439,
+          2439,
+          2439
+        ],
+        "lower95": [
+          2439,
+          2439,
+          2439
+        ],
+        "upper95": [
+          2439,
+          2439,
+          2439
+        ],
         "points": [
           {
             "period": 1,
@@ -8287,12 +11400,20 @@ export const analyticsReport = {
             "lower": 2439,
             "upper": 2439
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-30",
-      "safetyStock": 0,
-      "reorderPoint": 4808,
-      "recommendedOrderQuantity": 10901,
+      "safetyStock": 721,
+      "reorderPoint": 5529,
+      "recommendedOrderQuantity": 4270,
       "turnoverRate": 14.84,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8343,11 +11464,32 @@ export const analyticsReport = {
         "upper": 52
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          52,
+          52,
+          52,
+          52,
+          52,
+          52
+        ],
+        "forecast": [
+          52,
+          52,
+          52
+        ],
+        "lower95": [
+          52,
+          52,
+          52
+        ],
+        "upper95": [
+          52,
+          52,
+          52
+        ],
         "points": [
           {
             "period": 1,
@@ -8367,12 +11509,20 @@ export const analyticsReport = {
             "lower": 52,
             "upper": 52
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-30",
-      "safetyStock": 0,
-      "reorderPoint": 103,
-      "recommendedOrderQuantity": 233,
+      "safetyStock": 15,
+      "reorderPoint": 118,
+      "recommendedOrderQuantity": 92,
       "turnoverRate": 18,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8423,11 +11573,34 @@ export const analyticsReport = {
         "upper": 150
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150
+        ],
+        "forecast": [
+          150,
+          150,
+          150
+        ],
+        "lower95": [
+          150,
+          150,
+          150
+        ],
+        "upper95": [
+          150,
+          150,
+          150
+        ],
         "points": [
           {
             "period": 1,
@@ -8447,12 +11620,20 @@ export const analyticsReport = {
             "lower": 150,
             "upper": 150
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-29",
-      "safetyStock": 0,
-      "reorderPoint": 296,
-      "recommendedOrderQuantity": 678,
+      "safetyStock": 44,
+      "reorderPoint": 340,
+      "recommendedOrderQuantity": 270,
       "turnoverRate": 6.81,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8490,50 +11671,81 @@ export const analyticsReport = {
       "ami": 320,
       "mos": 0.5,
       "status": "understocked",
-      "daysOfSupply": 14,
+      "daysOfSupply": 13,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 353.5,
+      "forecastMonthlyDemand": 367.82,
       "usageRates": {
-        "daily": 11.61,
-        "weekly": 81.3,
-        "monthly": 353.5
+        "daily": 12.08,
+        "weekly": 84.59,
+        "monthly": 367.82
       },
       "forecastRange": {
-        "lower": 202.3,
-        "upper": 504.71
+        "lower": 222.71,
+        "upper": 512.94
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 77.1451700722488,
+        "fitted": [
+          400,
+          400,
+          400,
+          400,
+          400,
+          428.8,
+          407.488,
+          386.93888000000004
+        ],
+        "forecast": [
+          367.82202880000006,
+          362.0929536000001,
+          356.3638784000001
+        ],
+        "lower95": [
+          222.70560931119672,
+          156.8673450359111,
+          105.01486683291432
+        ],
+        "upper95": [
+          512.9384482888033,
+          567.3185621640891,
+          607.7128899670859
+        ],
         "points": [
           {
             "period": 1,
-            "value": 353.50425,
-            "lower": 202.29971665839236,
-            "upper": 504.70878334160767
+            "value": 367.82202880000006,
+            "lower": 222.70560931119672,
+            "upper": 512.9384482888033
           },
           {
             "period": 2,
-            "value": 353.50425,
-            "lower": 139.6687482560036,
-            "upper": 567.3397517439964
+            "value": 362.0929536000001,
+            "lower": 156.8673450359111,
+            "upper": 567.3185621640891
           },
           {
             "period": 3,
-            "value": 353.50425,
-            "lower": 91.61031591759325,
-            "upper": 615.3981840824067
+            "value": 356.3638784000001,
+            "lower": 105.01486683291432,
+            "upper": 607.7128899670859
           }
-        ]
+        ],
+        "residualStdDev": 74.03898953510374,
+        "rmse": 74.03898953510374,
+        "mape": 15.047903296703296,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-28",
-      "safetyStock": 156,
-      "reorderPoint": 853,
-      "recommendedOrderQuantity": 1604,
-      "turnoverRate": 2.05,
+      "safetyStock": 108,
+      "reorderPoint": 827,
+      "recommendedOrderQuantity": 669,
+      "turnoverRate": 2.13,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -8542,8 +11754,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 62.14,
-        "wape": 0.164,
+        "mae": 63.87,
+        "wape": 0.168,
         "observations": 6
       },
       "historicalTrend": {
@@ -8583,11 +11795,34 @@ export const analyticsReport = {
         "upper": 106
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          106,
+          106,
+          106,
+          106,
+          106,
+          106,
+          106,
+          106
+        ],
+        "forecast": [
+          106,
+          106,
+          106
+        ],
+        "lower95": [
+          106,
+          106,
+          106
+        ],
+        "upper95": [
+          106,
+          106,
+          106
+        ],
         "points": [
           {
             "period": 1,
@@ -8607,12 +11842,20 @@ export const analyticsReport = {
             "lower": 106,
             "upper": 106
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-30",
-      "safetyStock": 0,
-      "reorderPoint": 209,
-      "recommendedOrderQuantity": 473,
+      "safetyStock": 31,
+      "reorderPoint": 240,
+      "recommendedOrderQuantity": 185,
       "turnoverRate": 21.84,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8652,48 +11895,79 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 19,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 25.04,
+      "forecastMonthlyDemand": 25.06,
       "usageRates": {
         "daily": 0.82,
         "weekly": 5.76,
-        "monthly": 25.04
+        "monthly": 25.06
       },
       "forecastRange": {
-        "lower": 24.79,
-        "upper": 25.3
+        "lower": 24.83,
+        "upper": 25.29
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.1312681620087027,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25.072000000000003,
+          25.066720000000004
+        ],
+        "forecast": [
+          25.059827200000004,
+          25.066278400000005,
+          25.072729600000006
+        ],
+        "lower95": [
+          24.82598966141836,
+          24.735582181545904,
+          24.667711102459755
+        ],
+        "upper95": [
+          25.293664738581647,
+          25.396974618454106,
+          25.477748097540257
+        ],
         "points": [
           {
             "period": 1,
-            "value": 25.044362500000002,
-            "lower": 24.787076902462946,
-            "upper": 25.301648097537058
+            "value": 25.059827200000004,
+            "lower": 24.82598966141836,
+            "upper": 25.293664738581647
           },
           {
             "period": 2,
-            "value": 25.044362500000002,
-            "lower": 24.68050571855983,
-            "upper": 25.408219281440175
+            "value": 25.066278400000005,
+            "lower": 24.735582181545904,
+            "upper": 25.396974618454106
           },
           {
             "period": 3,
-            "value": 25.044362500000002,
-            "lower": 24.5987307730101,
-            "upper": 25.489994226989904
+            "value": 25.072729600000006,
+            "lower": 24.667711102459755,
+            "upper": 25.477748097540257
           }
-        ]
+        ],
+        "residualStdDev": 0.11930486662328653,
+        "rmse": 0.11930486662328653,
+        "mape": 0.2486643929983101,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-03",
-      "safetyStock": 0,
-      "reorderPoint": 50,
-      "recommendedOrderQuantity": 109,
-      "turnoverRate": 6.79,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 41,
+      "turnoverRate": 6.8,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -8702,7 +11976,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.08,
+        "mae": 0.07,
         "wape": 0.003,
         "observations": 6
       },
@@ -8743,11 +12017,30 @@ export const analyticsReport = {
         "upper": 84
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          84,
+          84,
+          84,
+          84
+        ],
+        "forecast": [
+          84,
+          84,
+          84
+        ],
+        "lower95": [
+          84,
+          84,
+          84
+        ],
+        "upper95": [
+          84,
+          84,
+          84
+        ],
         "points": [
           {
             "period": 1,
@@ -8767,12 +12060,20 @@ export const analyticsReport = {
             "lower": 84,
             "upper": 84
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-03",
-      "safetyStock": 0,
-      "reorderPoint": 166,
-      "recommendedOrderQuantity": 365,
+      "safetyStock": 25,
+      "reorderPoint": 190,
+      "recommendedOrderQuantity": 136,
       "turnoverRate": 12.34,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8823,11 +12124,32 @@ export const analyticsReport = {
         "upper": 1542
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          1542,
+          1542,
+          1542,
+          1542,
+          1542,
+          1542
+        ],
+        "forecast": [
+          1542,
+          1542,
+          1542
+        ],
+        "lower95": [
+          1542,
+          1542,
+          1542
+        ],
+        "upper95": [
+          1542,
+          1542,
+          1542
+        ],
         "points": [
           {
             "period": 1,
@@ -8847,12 +12169,20 @@ export const analyticsReport = {
             "lower": 1542,
             "upper": 1542
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-02",
-      "safetyStock": 0,
-      "reorderPoint": 3040,
-      "recommendedOrderQuantity": 6774,
+      "safetyStock": 456,
+      "reorderPoint": 3496,
+      "recommendedOrderQuantity": 2582,
       "turnoverRate": 6.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8903,11 +12233,34 @@ export const analyticsReport = {
         "upper": 51
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          51,
+          51,
+          51,
+          51,
+          51,
+          51,
+          51,
+          51
+        ],
+        "forecast": [
+          51,
+          51,
+          51
+        ],
+        "lower95": [
+          51,
+          51,
+          51
+        ],
+        "upper95": [
+          51,
+          51,
+          51
+        ],
         "points": [
           {
             "period": 1,
@@ -8927,12 +12280,20 @@ export const analyticsReport = {
             "lower": 51,
             "upper": 51
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-01",
-      "safetyStock": 0,
-      "reorderPoint": 101,
-      "recommendedOrderQuantity": 224,
+      "safetyStock": 15,
+      "reorderPoint": 116,
+      "recommendedOrderQuantity": 86,
       "turnoverRate": 20.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -8983,11 +12344,34 @@ export const analyticsReport = {
         "upper": 2662
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2662,
+          2662,
+          2662,
+          2662,
+          2662,
+          2662,
+          2662,
+          2662
+        ],
+        "forecast": [
+          2662,
+          2662,
+          2662
+        ],
+        "lower95": [
+          2662,
+          2662,
+          2662
+        ],
+        "upper95": [
+          2662,
+          2662,
+          2662
+        ],
         "points": [
           {
             "period": 1,
@@ -9007,12 +12391,20 @@ export const analyticsReport = {
             "lower": 2662,
             "upper": 2662
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-01",
-      "safetyStock": 0,
-      "reorderPoint": 5247,
-      "recommendedOrderQuantity": 11749,
+      "safetyStock": 787,
+      "reorderPoint": 6035,
+      "recommendedOrderQuantity": 4512,
       "turnoverRate": 2.54,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9063,11 +12455,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -9087,12 +12502,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-01",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 75,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 29,
       "turnoverRate": 20.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9143,11 +12566,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -9167,12 +12613,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-01",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 75,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 29,
       "turnoverRate": 20.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9210,50 +12664,81 @@ export const analyticsReport = {
       "ami": 3132,
       "mos": 0.6,
       "status": "understocked",
-      "daysOfSupply": 19,
+      "daysOfSupply": 16,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 2808.4,
+      "forecastMonthlyDemand": 3338.09,
       "usageRates": {
-        "daily": 92.27,
-        "weekly": 645.87,
-        "monthly": 2808.4
+        "daily": 109.67,
+        "weekly": 767.69,
+        "monthly": 3338.09
       },
       "forecastRange": {
-        "lower": 2236,
-        "upper": 3380.79
+        "lower": 2160.26,
+        "upper": 4515.93
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 292.03901324947316,
+        "fitted": [
+          994,
+          2327,
+          3660,
+          3073.4799999999996,
+          2478.4287999999997,
+          2528.9041279999997,
+          2885.73255168,
+          3412.0694033408
+        ],
+        "forecast": [
+          3338.0923555348486,
+          3488.1708304015365,
+          3638.249305268225
+        ],
+        "lower95": [
+          2160.255358773369,
+          1822.4577753166566,
+          1598.175783843003
+        ],
+        "upper95": [
+          4515.929352296328,
+          5153.883885486416,
+          5678.322826693447
+        ],
         "points": [
           {
             "period": 1,
-            "value": 2808.3970084679686,
-            "lower": 2236.0005424990013,
-            "upper": 3380.793474436936
+            "value": 3338.0923555348486,
+            "lower": 2160.255358773369,
+            "upper": 4515.929352296328
           },
           {
             "period": 2,
-            "value": 2808.3970084679686,
-            "lower": 1998.906163240225,
-            "upper": 3617.8878536957122
+            "value": 3488.1708304015365,
+            "lower": 1822.4577753166566,
+            "upper": 5153.883885486416
           },
           {
             "period": 3,
-            "value": 2808.3970084679686,
-            "lower": 1816.9772473368473,
-            "upper": 3799.8167695990896
+            "value": 3638.249305268225,
+            "lower": 1598.175783843003,
+            "upper": 5678.322826693447
           }
-        ]
+        ],
+        "residualStdDev": 600.9372432456529,
+        "rmse": 600.9372432456529,
+        "mape": 16.555384938879296,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-08-02",
-      "safetyStock": 1560,
-      "reorderPoint": 7096,
-      "recommendedOrderQuantity": 12251,
-      "turnoverRate": 5.05,
+      "expectedStockoutDate": "2026-07-30",
+      "safetyStock": 1009,
+      "reorderPoint": 7737,
+      "recommendedOrderQuantity": 5986,
+      "turnoverRate": 6.01,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -9262,13 +12747,123 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 641.83,
-        "wape": 0.238,
+        "mae": 745.06,
+        "wape": 0.276,
         "observations": 6
       },
       "historicalTrend": {
         "stockOnHandChange": -0.812,
         "demandChange": 2.151,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 180
+    },
+    {
+      "sku": "RN0356",
+      "description": "Permanent catheter 14.5F x 33cm (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 19,
+      "ami": 30,
+      "mos": 0.6,
+      "status": "understocked",
+      "daysOfSupply": 15,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 38.96,
+      "usageRates": {
+        "daily": 1.28,
+        "weekly": 8.96,
+        "monthly": 38.96
+      },
+      "forecastRange": {
+        "lower": 26.83,
+        "upper": 51.09
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 7,
+        "fitted": [
+          3,
+          4,
+          5,
+          4.920000000000001,
+          16.3264,
+          20.252288000000004,
+          35.501544960000004
+        ],
+        "forecast": [
+          38.96050616320001,
+          45.720394342400006,
+          52.4802825216
+        ],
+        "lower95": [
+          26.834598404316463,
+          28.571771133701752,
+          31.477594195320044
+        ],
+        "upper95": [
+          51.08641392208355,
+          62.86901755109826,
+          73.48297084787995
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 38.96050616320001,
+            "lower": 26.834598404316463,
+            "upper": 51.08641392208355
+          },
+          {
+            "period": 2,
+            "value": 45.720394342400006,
+            "lower": 28.571771133701752,
+            "upper": 62.86901755109826
+          },
+          {
+            "period": 3,
+            "value": 52.4802825216,
+            "lower": 31.477594195320044,
+            "upper": 73.48297084787995
+          }
+        ],
+        "residualStdDev": 6.186687632083442,
+        "rmse": 6.186687632083442,
+        "mape": 25.312253866666666,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-07-29",
+      "safetyStock": 13,
+      "reorderPoint": 96,
+      "recommendedOrderQuantity": 77,
+      "turnoverRate": 18.07,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 6.76,
+        "wape": 0.36,
+        "observations": 5
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.136,
+        "demandChange": 9,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -9303,11 +12898,34 @@ export const analyticsReport = {
         "upper": 548
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          548,
+          548,
+          548,
+          548,
+          548,
+          548,
+          548,
+          548
+        ],
+        "forecast": [
+          548,
+          548,
+          548
+        ],
+        "lower95": [
+          548,
+          548,
+          548
+        ],
+        "upper95": [
+          548,
+          548,
+          548
+        ],
         "points": [
           {
             "period": 1,
@@ -9327,12 +12945,20 @@ export const analyticsReport = {
             "lower": 548,
             "upper": 548
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-01",
-      "safetyStock": 0,
-      "reorderPoint": 1080,
-      "recommendedOrderQuantity": 2417,
+      "safetyStock": 162,
+      "reorderPoint": 1242,
+      "recommendedOrderQuantity": 927,
       "turnoverRate": 20.88,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9383,11 +13009,32 @@ export const analyticsReport = {
         "upper": 140
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          140,
+          140,
+          140,
+          140,
+          140,
+          140
+        ],
+        "forecast": [
+          140,
+          140,
+          140
+        ],
+        "lower95": [
+          140,
+          140,
+          140
+        ],
+        "upper95": [
+          140,
+          140,
+          140
+        ],
         "points": [
           {
             "period": 1,
@@ -9407,12 +13054,20 @@ export const analyticsReport = {
             "lower": 140,
             "upper": 140
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-02",
-      "safetyStock": 0,
-      "reorderPoint": 276,
-      "recommendedOrderQuantity": 613,
+      "safetyStock": 41,
+      "reorderPoint": 317,
+      "recommendedOrderQuantity": 232,
       "turnoverRate": 19.65,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9463,11 +13118,34 @@ export const analyticsReport = {
         "upper": 4000
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000,
+          4000
+        ],
+        "forecast": [
+          4000,
+          4000,
+          4000
+        ],
+        "lower95": [
+          4000,
+          4000,
+          4000
+        ],
+        "upper95": [
+          4000,
+          4000,
+          4000
+        ],
         "points": [
           {
             "period": 1,
@@ -9487,12 +13165,20 @@ export const analyticsReport = {
             "lower": 4000,
             "upper": 4000
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 7885,
-      "recommendedOrderQuantity": 17039,
+      "safetyStock": 1183,
+      "reorderPoint": 9068,
+      "recommendedOrderQuantity": 6164,
       "turnoverRate": 16.53,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9543,11 +13229,31 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -9567,12 +13273,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-03",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 434,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 162,
       "turnoverRate": 18.46,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9623,11 +13337,34 @@ export const analyticsReport = {
         "upper": 520
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520
+        ],
+        "forecast": [
+          520,
+          520,
+          520
+        ],
+        "lower95": [
+          520,
+          520,
+          520
+        ],
+        "upper95": [
+          520,
+          520,
+          520
+        ],
         "points": [
           {
             "period": 1,
@@ -9647,12 +13384,20 @@ export const analyticsReport = {
             "lower": 520,
             "upper": 520
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 1025,
-      "recommendedOrderQuantity": 2215,
+      "safetyStock": 154,
+      "reorderPoint": 1179,
+      "recommendedOrderQuantity": 801,
       "turnoverRate": 4.19,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9692,48 +13437,74 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 21,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 96.13,
+      "forecastMonthlyDemand": 95.5,
       "usageRates": {
-        "daily": 3.16,
-        "weekly": 22.11,
-        "monthly": 96.13
+        "daily": 3.14,
+        "weekly": 21.96,
+        "monthly": 95.5
       },
       "forecastRange": {
-        "lower": 95.98,
-        "upper": 96.27
+        "lower": 95.08,
+        "upper": 95.91
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0.07424621202459031,
+        "fitted": [
+          96.3,
+          96,
+          95.70000000000003
+        ],
+        "forecast": [
+          95.49600000000005,
+          95.23200000000007,
+          94.96800000000009
+        ],
+        "lower95": [
+          95.08022121266241,
+          94.64400000000013,
+          94.2478500156219
+        ],
+        "upper95": [
+          95.9117787873377,
+          95.82000000000001,
+          95.68814998437827
+        ],
         "points": [
           {
             "period": 1,
-            "value": 96.12674999999999,
-            "lower": 95.9812274244318,
-            "upper": 96.27227257556818
+            "value": 95.49600000000005,
+            "lower": 95.08022121266241,
+            "upper": 95.9117787873377
           },
           {
             "period": 2,
-            "value": 96.12674999999999,
-            "lower": 95.92094999999998,
-            "upper": 96.33255
+            "value": 95.23200000000007,
+            "lower": 94.64400000000013,
+            "upper": 95.82000000000001
           },
           {
             "period": 3,
-            "value": 96.12674999999999,
-            "lower": 95.8746975054676,
-            "upper": 96.37880249453238
+            "value": 94.96800000000009,
+            "lower": 94.2478500156219,
+            "upper": 95.68814998437827
           }
-        ]
+        ],
+        "residualStdDev": 0.21213203435594216,
+        "rmse": 0.21213203435594216,
+        "mape": 0.15624999999998374,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.6
+        }
       },
       "expectedStockoutDate": "2026-08-05",
-      "safetyStock": 0,
-      "reorderPoint": 190,
-      "recommendedOrderQuantity": 412,
-      "turnoverRate": 4.39,
+      "safetyStock": 28,
+      "reorderPoint": 216,
+      "recommendedOrderQuantity": 149,
+      "turnoverRate": 4.36,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -9742,8 +13513,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.19,
-        "wape": 0.002,
+        "mae": 0.3,
+        "wape": 0.003,
         "observations": 1
       },
       "historicalTrend": {
@@ -9772,48 +13543,79 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 20,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 6852.83,
+      "forecastMonthlyDemand": 6931.61,
       "usageRates": {
-        "daily": 225.14,
-        "weekly": 1576.01,
-        "monthly": 6852.83
+        "daily": 227.73,
+        "weekly": 1594.13,
+        "monthly": 6931.61
       },
       "forecastRange": {
-        "lower": 5792.86,
-        "upper": 7912.8
+        "lower": 5550.99,
+        "upper": 8312.24
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 540.8018856606832,
+        "fitted": [
+          5317,
+          6932,
+          8547,
+          7836.4,
+          7115.464,
+          6853.859839999999,
+          6851.548710399999,
+          6902.575309824
+        ],
+        "forecast": [
+          6931.612431421439,
+          6937.109800878079,
+          6942.60717033472
+        ],
+        "lower95": [
+          5550.986049139634,
+          4984.609246485048,
+          4551.2921299526215
+        ],
+        "upper95": [
+          8312.238813703245,
+          8889.61035527111,
+          9333.922210716817
+        ],
         "points": [
           {
             "period": 1,
-            "value": 6852.829019566406,
-            "lower": 5792.8573236714665,
-            "upper": 7912.800715461345
+            "value": 6931.612431421439,
+            "lower": 5550.986049139634,
+            "upper": 8312.238813703245
           },
           {
             "period": 2,
-            "value": 6852.829019566406,
-            "lower": 5353.802671500172,
-            "upper": 8351.85536763264
+            "value": 6937.109800878079,
+            "lower": 4984.609246485048,
+            "upper": 8889.61035527111
           },
           {
             "period": 3,
-            "value": 6852.829019566406,
-            "lower": 5016.904187691424,
-            "upper": 8688.753851441388
+            "value": 6942.60717033472,
+            "lower": 4551.2921299526215,
+            "upper": 9333.922210716817
           }
-        ]
+        ],
+        "residualStdDev": 704.4012154499006,
+        "rmse": 704.4012154499006,
+        "mape": 5.95762950246476,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-08-04",
-      "safetyStock": 1319,
-      "reorderPoint": 14827,
-      "recommendedOrderQuantity": 29634,
-      "turnoverRate": 33.28,
+      "expectedStockoutDate": "2026-08-03",
+      "safetyStock": 2050,
+      "reorderPoint": 15720,
+      "recommendedOrderQuantity": 11188,
+      "turnoverRate": 33.66,
       "stockoutFrequency": 0.375,
       "stockAgeDays": null,
       "stagnant": false,
@@ -9822,8 +13624,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 462.18,
-        "wape": 0.067,
+        "mae": 804.81,
+        "wape": 0.116,
         "observations": 6
       },
       "historicalTrend": {
@@ -9863,11 +13665,32 @@ export const analyticsReport = {
         "upper": 343
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          343,
+          343,
+          343,
+          343,
+          343,
+          343
+        ],
+        "forecast": [
+          343,
+          343,
+          343
+        ],
+        "lower95": [
+          343,
+          343,
+          343
+        ],
+        "upper95": [
+          343,
+          343,
+          343
+        ],
         "points": [
           {
             "period": 1,
@@ -9887,12 +13710,20 @@ export const analyticsReport = {
             "lower": 343,
             "upper": 343
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 676,
-      "recommendedOrderQuantity": 1461,
+      "safetyStock": 101,
+      "reorderPoint": 778,
+      "recommendedOrderQuantity": 529,
       "turnoverRate": 14.82,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -9932,48 +13763,76 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 22,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 46.75,
+      "forecastMonthlyDemand": 46.84,
       "usageRates": {
         "daily": 1.54,
-        "weekly": 10.75,
-        "monthly": 46.75
+        "weekly": 10.77,
+        "monthly": 46.84
       },
       "forecastRange": {
-        "lower": 46.39,
-        "upper": 47.11
+        "lower": 46.54,
+        "upper": 47.13
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0.183720268981856,
+        "fitted": [
+          46.67,
+          46.7,
+          46.73000000000001,
+          46.752800000000015,
+          46.84092800000001
+        ],
+        "forecast": [
+          46.83859328000001,
+          46.87044416000001,
+          46.90229504000001
+        ],
+        "lower95": [
+          46.54260047261255,
+          46.451847117427775,
+          46.38962045892998
+        ],
+        "upper95": [
+          47.134586087387476,
+          47.28904120257225,
+          47.41496962107004
+        ],
         "points": [
           {
             "period": 1,
-            "value": 46.7523948125,
-            "lower": 46.39230308529556,
-            "upper": 47.11248653970444
+            "value": 46.83859328000001,
+            "lower": 46.54260047261255,
+            "upper": 47.134586087387476
           },
           {
             "period": 2,
-            "value": 46.7523948125,
-            "lower": 46.24314820818913,
-            "upper": 47.26164141681087
+            "value": 46.87044416000001,
+            "lower": 46.451847117427775,
+            "upper": 47.28904120257225
           },
           {
             "period": 3,
-            "value": 46.7523948125,
-            "lower": 46.12869764559668,
-            "upper": 47.37609197940332
+            "value": 46.90229504000001,
+            "lower": 46.38962045892998,
+            "upper": 47.41496962107004
           }
-        ]
+        ],
+        "residualStdDev": 0.15101673846299027,
+        "rmse": 0.15101673846299027,
+        "mape": 0.23911135015905718,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 92,
-      "recommendedOrderQuantity": 199,
-      "turnoverRate": 15.08,
+      "safetyStock": 14,
+      "reorderPoint": 106,
+      "recommendedOrderQuantity": 72,
+      "turnoverRate": 15.11,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -10012,47 +13871,78 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 26,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 333.04,
+      "forecastMonthlyDemand": 333.06,
       "usageRates": {
         "daily": 10.94,
-        "weekly": 76.59,
-        "monthly": 333.04
+        "weekly": 76.6,
+        "monthly": 333.06
       },
       "forecastRange": {
-        "lower": 332.79,
-        "upper": 333.3
+        "lower": 332.83,
+        "upper": 333.29
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.13126816200871277,
+        "fitted": [
+          333,
+          333,
+          333.00000000000006,
+          333.00000000000006,
+          333.00000000000006,
+          333.00000000000006,
+          333.07200000000006,
+          333.0667200000001
+        ],
+        "forecast": [
+          333.05982720000014,
+          333.06627840000016,
+          333.0727296000002
+        ],
+        "lower95": [
+          332.82598966141853,
+          332.7355821815461,
+          332.6677111024599
+        ],
+        "upper95": [
+          333.29366473858175,
+          333.39697461845424,
+          333.4777480975404
+        ],
         "points": [
           {
             "period": 1,
-            "value": 333.04436250000003,
-            "lower": 332.78707690246296,
-            "upper": 333.3016480975371
+            "value": 333.05982720000014,
+            "lower": 332.82598966141853,
+            "upper": 333.29366473858175
           },
           {
             "period": 2,
-            "value": 333.04436250000003,
-            "lower": 332.68050571855986,
-            "upper": 333.4082192814402
+            "value": 333.06627840000016,
+            "lower": 332.7355821815461,
+            "upper": 333.39697461845424
           },
           {
             "period": 3,
-            "value": 333.04436250000003,
-            "lower": 332.5987307730101,
-            "upper": 333.48999422698995
+            "value": 333.0727296000002,
+            "lower": 332.6677111024599,
+            "upper": 333.4777480975404
           }
-        ]
+        ],
+        "residualStdDev": 0.11930486662328164,
+        "rmse": 0.11930486662328164,
+        "mape": 0.018809522651118547,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-09",
-      "safetyStock": 0,
-      "reorderPoint": 657,
-      "recommendedOrderQuantity": 1377,
+      "safetyStock": 98,
+      "reorderPoint": 755,
+      "recommendedOrderQuantity": 472,
       "turnoverRate": 14.12,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10103,11 +13993,29 @@ export const analyticsReport = {
         "upper": 583
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          583,
+          583,
+          583
+        ],
+        "forecast": [
+          583,
+          583,
+          583
+        ],
+        "lower95": [
+          583,
+          583,
+          583
+        ],
+        "upper95": [
+          583,
+          583,
+          583
+        ],
         "points": [
           {
             "period": 1,
@@ -10127,12 +14035,20 @@ export const analyticsReport = {
             "lower": 583,
             "upper": 583
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-09",
-      "safetyStock": 0,
-      "reorderPoint": 1149,
-      "recommendedOrderQuantity": 2415,
+      "safetyStock": 172,
+      "reorderPoint": 1322,
+      "recommendedOrderQuantity": 830,
       "turnoverRate": 14.22,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10183,11 +14099,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -10207,12 +14143,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-09",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 104,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 36,
       "turnoverRate": 14.29,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10263,11 +14207,34 @@ export const analyticsReport = {
         "upper": 5500
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          5500,
+          5500,
+          5500,
+          5500,
+          5500,
+          5500,
+          5500,
+          5500
+        ],
+        "forecast": [
+          5500,
+          5500,
+          5500
+        ],
+        "lower95": [
+          5500,
+          5500,
+          5500
+        ],
+        "upper95": [
+          5500,
+          5500,
+          5500
+        ],
         "points": [
           {
             "period": 1,
@@ -10287,12 +14254,20 @@ export const analyticsReport = {
             "lower": 5500,
             "upper": 5500
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-08",
-      "safetyStock": 0,
-      "reorderPoint": 10842,
-      "recommendedOrderQuantity": 23012,
+      "safetyStock": 1626,
+      "reorderPoint": 12468,
+      "recommendedOrderQuantity": 8059,
       "turnoverRate": 3.9,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10343,11 +14318,31 @@ export const analyticsReport = {
         "upper": 56846
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          56846,
+          56846,
+          56846,
+          56846,
+          56846
+        ],
+        "forecast": [
+          56846,
+          56846,
+          56846
+        ],
+        "lower95": [
+          56846,
+          56846,
+          56846
+        ],
+        "upper95": [
+          56846,
+          56846,
+          56846
+        ],
         "points": [
           {
             "period": 1,
@@ -10367,12 +14362,20 @@ export const analyticsReport = {
             "lower": 56846,
             "upper": 56846
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-07",
-      "safetyStock": 0,
-      "reorderPoint": 112058,
-      "recommendedOrderQuantity": 238629,
+      "safetyStock": 16809,
+      "reorderPoint": 128866,
+      "recommendedOrderQuantity": 84082,
       "turnoverRate": 6.82,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10423,11 +14426,32 @@ export const analyticsReport = {
         "upper": 20
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "forecast": [
+          20,
+          20,
+          20
+        ],
+        "lower95": [
+          20,
+          20,
+          20
+        ],
+        "upper95": [
+          20,
+          20,
+          20
+        ],
         "points": [
           {
             "period": 1,
@@ -10447,12 +14471,20 @@ export const analyticsReport = {
             "lower": 20,
             "upper": 20
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-06",
-      "safetyStock": 0,
-      "reorderPoint": 39,
-      "recommendedOrderQuantity": 85,
+      "safetyStock": 6,
+      "reorderPoint": 45,
+      "recommendedOrderQuantity": 30,
       "turnoverRate": 6.42,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10503,11 +14535,34 @@ export const analyticsReport = {
         "upper": 72
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72
+        ],
+        "forecast": [
+          72,
+          72,
+          72
+        ],
+        "lower95": [
+          72,
+          72,
+          72
+        ],
+        "upper95": [
+          72,
+          72,
+          72
+        ],
         "points": [
           {
             "period": 1,
@@ -10527,12 +14582,20 @@ export const analyticsReport = {
             "lower": 72,
             "upper": 72
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-07",
-      "safetyStock": 0,
-      "reorderPoint": 142,
-      "recommendedOrderQuantity": 304,
+      "safetyStock": 21,
+      "reorderPoint": 163,
+      "recommendedOrderQuantity": 108,
       "turnoverRate": 11.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10583,11 +14646,32 @@ export const analyticsReport = {
         "upper": 172
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          172,
+          172,
+          172,
+          172,
+          172,
+          172
+        ],
+        "forecast": [
+          172,
+          172,
+          172
+        ],
+        "lower95": [
+          172,
+          172,
+          172
+        ],
+        "upper95": [
+          172,
+          172,
+          172
+        ],
         "points": [
           {
             "period": 1,
@@ -10607,12 +14691,20 @@ export const analyticsReport = {
             "lower": 172,
             "upper": 172
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-09",
-      "safetyStock": 0,
-      "reorderPoint": 339,
-      "recommendedOrderQuantity": 716,
+      "safetyStock": 51,
+      "reorderPoint": 390,
+      "recommendedOrderQuantity": 248,
       "turnoverRate": 12.19,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10663,11 +14755,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -10687,12 +14802,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-07",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 72,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 26,
       "turnoverRate": 15.69,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10743,11 +14866,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -10767,12 +14913,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-07",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 72,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 26,
       "turnoverRate": 15.69,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10823,11 +14977,34 @@ export const analyticsReport = {
         "upper": 62963
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          62963,
+          62963,
+          62963,
+          62963,
+          62963,
+          62963,
+          62963,
+          62963
+        ],
+        "forecast": [
+          62963,
+          62963,
+          62963
+        ],
+        "lower95": [
+          62963,
+          62963,
+          62963
+        ],
+        "upper95": [
+          62963,
+          62963,
+          62963
+        ],
         "points": [
           {
             "period": 1,
@@ -10847,12 +15024,20 @@ export const analyticsReport = {
             "lower": 62963,
             "upper": 62963
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-07",
-      "safetyStock": 0,
-      "reorderPoint": 124116,
-      "recommendedOrderQuantity": 266213,
+      "safetyStock": 18617,
+      "reorderPoint": 142733,
+      "recommendedOrderQuantity": 95036,
       "turnoverRate": 5.07,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10903,11 +15088,31 @@ export const analyticsReport = {
         "upper": 30
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        "forecast": [
+          30,
+          30,
+          30
+        ],
+        "lower95": [
+          30,
+          30,
+          30
+        ],
+        "upper95": [
+          30,
+          30,
+          30
+        ],
         "points": [
           {
             "period": 1,
@@ -10927,12 +15132,20 @@ export const analyticsReport = {
             "lower": 30,
             "upper": 30
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-11",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 123,
+      "safetyStock": 9,
+      "reorderPoint": 68,
+      "recommendedOrderQuantity": 41,
       "turnoverRate": 12.41,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -10983,11 +15196,34 @@ export const analyticsReport = {
         "upper": 2441
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2441,
+          2441,
+          2441,
+          2441,
+          2441,
+          2441,
+          2441,
+          2441
+        ],
+        "forecast": [
+          2441,
+          2441,
+          2441
+        ],
+        "lower95": [
+          2441,
+          2441,
+          2441
+        ],
+        "upper95": [
+          2441,
+          2441,
+          2441
+        ],
         "points": [
           {
             "period": 1,
@@ -11007,12 +15243,20 @@ export const analyticsReport = {
             "lower": 2441,
             "upper": 2441
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-10",
-      "safetyStock": 0,
-      "reorderPoint": 4812,
-      "recommendedOrderQuantity": 10010,
+      "safetyStock": 722,
+      "reorderPoint": 5534,
+      "recommendedOrderQuantity": 3374,
       "turnoverRate": 9.42,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11063,11 +15307,32 @@ export const analyticsReport = {
         "upper": 258
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          258,
+          258,
+          258,
+          258,
+          258,
+          258
+        ],
+        "forecast": [
+          258,
+          258,
+          258
+        ],
+        "lower95": [
+          258,
+          258,
+          258
+        ],
+        "upper95": [
+          258,
+          258,
+          258
+        ],
         "points": [
           {
             "period": 1,
@@ -11087,12 +15352,20 @@ export const analyticsReport = {
             "lower": 258,
             "upper": 258
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-12",
-      "safetyStock": 0,
-      "reorderPoint": 509,
-      "recommendedOrderQuantity": 1041,
+      "safetyStock": 76,
+      "reorderPoint": 585,
+      "recommendedOrderQuantity": 340,
       "turnoverRate": 11.47,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11143,11 +15416,34 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -11167,12 +15463,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-12",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 106,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 35,
       "turnoverRate": 8.85,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11223,11 +15527,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -11247,12 +15574,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-10",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 70,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 24,
       "turnoverRate": 13.6,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11303,11 +15638,34 @@ export const analyticsReport = {
         "upper": 426
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          426,
+          426,
+          426,
+          426,
+          426,
+          426,
+          426,
+          426
+        ],
+        "forecast": [
+          426,
+          426,
+          426
+        ],
+        "lower95": [
+          426,
+          426,
+          426
+        ],
+        "upper95": [
+          426,
+          426,
+          426
+        ],
         "points": [
           {
             "period": 1,
@@ -11327,12 +15685,20 @@ export const analyticsReport = {
             "lower": 426,
             "upper": 426
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-10",
-      "safetyStock": 0,
-      "reorderPoint": 840,
-      "recommendedOrderQuantity": 1760,
+      "safetyStock": 126,
+      "reorderPoint": 966,
+      "recommendedOrderQuantity": 602,
       "turnoverRate": 7.88,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11383,11 +15749,31 @@ export const analyticsReport = {
         "upper": 30
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        "forecast": [
+          30,
+          30,
+          30
+        ],
+        "lower95": [
+          30,
+          30,
+          30
+        ],
+        "upper95": [
+          30,
+          30,
+          30
+        ],
         "points": [
           {
             "period": 1,
@@ -11407,12 +15793,20 @@ export const analyticsReport = {
             "lower": 30,
             "upper": 30
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-13",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 121,
+      "safetyStock": 9,
+      "reorderPoint": 68,
+      "recommendedOrderQuantity": 39,
       "turnoverRate": 12.41,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11463,11 +15857,30 @@ export const analyticsReport = {
         "upper": 15081
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          15081,
+          15081,
+          15081,
+          15081
+        ],
+        "forecast": [
+          15081,
+          15081,
+          15081
+        ],
+        "lower95": [
+          15081,
+          15081,
+          15081
+        ],
+        "upper95": [
+          15081,
+          15081,
+          15081
+        ],
         "points": [
           {
             "period": 1,
@@ -11487,12 +15900,20 @@ export const analyticsReport = {
             "lower": 15081,
             "upper": 15081
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-13",
-      "safetyStock": 0,
-      "reorderPoint": 29728,
-      "recommendedOrderQuantity": 60441,
+      "safetyStock": 4459,
+      "reorderPoint": 34188,
+      "recommendedOrderQuantity": 19441,
       "turnoverRate": 12.18,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11543,11 +15964,29 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -11567,12 +16006,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-13",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 105,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 34,
       "turnoverRate": 7.93,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11601,6 +16048,117 @@ export const analyticsReport = {
       "priorityScore": 180
     },
     {
+      "sku": "RN0039",
+      "description": "Fresenius: Catheter Extension Line 32cm (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 12,
+      "ami": 11,
+      "mos": 1.1,
+      "status": "understocked",
+      "daysOfSupply": 30,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 12.05,
+      "usageRates": {
+        "daily": 0.4,
+        "weekly": 2.77,
+        "monthly": 12.05
+      },
+      "forecastRange": {
+        "lower": 5.98,
+        "upper": 18.11
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          11.92,
+          12.019200000000001,
+          12.057792000000003
+        ],
+        "forecast": [
+          12.046353920000001,
+          12.246474240000001,
+          12.446594560000003
+        ],
+        "lower95": [
+          5.982374533959108,
+          3.6707123503100956,
+          1.9434741673268494
+        ],
+        "upper95": [
+          18.110333306040893,
+          20.822236129689905,
+          22.949714952673155
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 12.046353920000001,
+            "lower": 5.982374533959108,
+            "upper": 18.110333306040893
+          },
+          {
+            "period": 2,
+            "value": 12.246474240000001,
+            "lower": 3.6707123503100956,
+            "upper": 20.822236129689905
+          },
+          {
+            "period": 3,
+            "value": 12.446594560000003,
+            "lower": 1.9434741673268494,
+            "upper": 22.949714952673155
+          }
+        ],
+        "residualStdDev": 3.0938670336943335,
+        "rmse": 3.0938670336943335,
+        "mape": 10.241403751803755,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2026-08-14",
+      "safetyStock": 4,
+      "reorderPoint": 28,
+      "recommendedOrderQuantity": 16,
+      "turnoverRate": 6.53,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 1.83,
+        "wape": 0.155,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.733,
+        "demandChange": 0.1,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 180
+    },
+    {
       "sku": "MS0572",
       "description": "Syringe Disposable 5ml w/out Needle (1)",
       "programme": "Medical Supplies",
@@ -11623,11 +16181,33 @@ export const analyticsReport = {
         "upper": 132
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          132,
+          132,
+          132,
+          132,
+          132,
+          132,
+          132
+        ],
+        "forecast": [
+          132,
+          132,
+          132
+        ],
+        "lower95": [
+          132,
+          132,
+          132
+        ],
+        "upper95": [
+          132,
+          132,
+          132
+        ],
         "points": [
           {
             "period": 1,
@@ -11647,12 +16227,20 @@ export const analyticsReport = {
             "lower": 132,
             "upper": 132
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-21",
-      "safetyStock": 0,
-      "reorderPoint": 260,
-      "recommendedOrderQuantity": 494,
+      "safetyStock": 39,
+      "reorderPoint": 299,
+      "recommendedOrderQuantity": 135,
       "turnoverRate": 9.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -11694,48 +16282,78 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 34,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1371.88,
+      "forecastMonthlyDemand": 1379.62,
       "usageRates": {
-        "daily": 45.07,
-        "weekly": 315.5,
-        "monthly": 1371.88
+        "daily": 45.33,
+        "weekly": 317.28,
+        "monthly": 1379.62
       },
       "forecastRange": {
-        "lower": 7.99,
-        "upper": 2735.78
+        "lower": 131.3,
+        "upper": 2627.94
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 695.8660506280405,
+        "fitted": [
+          1717,
+          1717,
+          1717.0000000000002,
+          1717.0000000000005,
+          1717.0000000000005,
+          1717.0000000000005,
+          1352.9200000000003
+        ],
+        "forecast": [
+          1379.6192000000003,
+          1333.5024000000003,
+          1287.3856000000003
+        ],
+        "lower95": [
+          131.29684477211003,
+          0,
+          0
+        ],
+        "upper95": [
+          2627.9415552278906,
+          3098.8968049768073,
+          3449.54334347875
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1371.8825,
-            "lower": 7.985040769040552,
-            "upper": 2735.7799592309593
+            "value": 1379.6192000000003,
+            "lower": 131.29684477211003,
+            "upper": 2627.9415552278906
           },
           {
             "period": 2,
-            "value": 1371.8825,
+            "value": 1333.5024000000003,
             "lower": 0,
-            "upper": 3300.7247845306283
+            "upper": 3098.8968049768073
           },
           {
             "period": 3,
-            "value": 1371.8825,
+            "value": 1287.3856000000003,
             "lower": 0,
-            "upper": 3734.222195702123
+            "upper": 3449.54334347875
           }
-        ]
+        ],
+        "residualStdDev": 636.8991608305563,
+        "rmse": 636.8991608305563,
+        "mape": 129.95073772083097,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-08-18",
-      "safetyStock": 1324,
-      "reorderPoint": 4029,
-      "recommendedOrderQuantity": 5305,
-      "turnoverRate": 9.92,
+      "expectedStockoutDate": "2026-08-17",
+      "safetyStock": 401,
+      "reorderPoint": 3075,
+      "recommendedOrderQuantity": 1540,
+      "turnoverRate": 9.97,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -11744,8 +16362,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 409.59,
-        "wape": 0.29,
+        "mae": 449.03,
+        "wape": 0.318,
         "observations": 5
       },
       "historicalTrend": {
@@ -11776,48 +16394,78 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 43,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1341.63,
+      "forecastMonthlyDemand": 1350.04,
       "usageRates": {
-        "daily": 44.08,
-        "weekly": 308.55,
-        "monthly": 1341.63
+        "daily": 44.35,
+        "weekly": 310.48,
+        "monthly": 1350.04
       },
       "forecastRange": {
         "lower": 0,
-        "upper": 2825.1
+        "upper": 2707.81
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 756.8747419487587,
+        "fitted": [
+          1717,
+          1717,
+          1717.0000000000002,
+          1717.0000000000005,
+          1717.0000000000005,
+          1717.0000000000005,
+          1321.0000000000005
+        ],
+        "forecast": [
+          1350.0400000000006,
+          1299.8800000000006,
+          1249.7200000000007
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          2707.8065696282265,
+          3220.051897305031,
+          3601.440683414594
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1341.625,
+            "value": 1350.0400000000006,
             "lower": 0,
-            "upper": 2825.099494219567
+            "upper": 2707.8065696282265
           },
           {
             "period": 2,
-            "value": 1341.625,
+            "value": 1299.8800000000006,
             "lower": 0,
-            "upper": 3439.5747491598795
+            "upper": 3220.051897305031
           },
           {
             "period": 3,
-            "value": 1341.625,
+            "value": 1249.7200000000007,
             "lower": 0,
-            "upper": 3911.078195720833
+            "upper": 3601.440683414594
           }
-        ]
+        ],
+        "residualStdDev": 692.7380457286868,
+        "rmse": 692.7380457286868,
+        "mape": 414.291674997175,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-08-27",
-      "safetyStock": 1440,
-      "reorderPoint": 4085,
-      "recommendedOrderQuantity": 4789,
-      "turnoverRate": 7.36,
+      "expectedStockoutDate": "2026-08-26",
+      "safetyStock": 392,
+      "reorderPoint": 3004,
+      "recommendedOrderQuantity": 1104,
+      "turnoverRate": 7.41,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -11826,341 +16474,13 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 445.5,
-        "wape": 0.321,
+        "mae": 488.4,
+        "wape": 0.352,
         "observations": 5
       },
       "historicalTrend": {
         "stockOnHandChange": -0.21,
         "demandChange": 0,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 160
-    },
-    {
-      "sku": "RN0178",
-      "description": "Enoxaparin Sodium Injection 60mg(1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 2531,
-      "ami": 2271,
-      "mos": 1.1,
-      "status": "understocked",
-      "daysOfSupply": 45,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1725.82,
-      "usageRates": {
-        "daily": 56.7,
-        "weekly": 396.9,
-        "monthly": 1725.82
-      },
-      "forecastRange": {
-        "lower": 773.95,
-        "upper": 2677.69
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 485.6482627756668,
-        "points": [
-          {
-            "period": 1,
-            "value": 1725.823217403125,
-            "lower": 773.952622362818,
-            "upper": 2677.693812443432
-          },
-          {
-            "period": 2,
-            "value": 1725.823217403125,
-            "lower": 379.67491227297455,
-            "upper": 3071.9715225332757
-          },
-          {
-            "period": 3,
-            "value": 1725.823217403125,
-            "lower": 77.13498456249363,
-            "upper": 3374.5114502437564
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 1888,
-      "reorderPoint": 5290,
-      "recommendedOrderQuantity": 6073,
-      "turnoverRate": 2.91,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 636.01,
-        "wape": 0.467,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.753,
-        "demandChange": 5.47,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 160
-    },
-    {
-      "sku": "RN0354",
-      "description": "Permanent catheter 14.5F x 19cm (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 26,
-      "ami": 22,
-      "mos": 1.2,
-      "status": "understocked",
-      "daysOfSupply": 50,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 15.96,
-      "usageRates": {
-        "daily": 0.52,
-        "weekly": 3.67,
-        "monthly": 15.96
-      },
-      "forecastRange": {
-        "lower": 6.52,
-        "upper": 25.4
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 7,
-        "residualStdDev": 4.81656082731205,
-        "points": [
-          {
-            "period": 1,
-            "value": 15.95951221875,
-            "lower": 6.519052997218381,
-            "upper": 25.399971440281618
-          },
-          {
-            "period": 2,
-            "value": 15.95951221875,
-            "lower": 2.6086867526298327,
-            "upper": 29.310337684870166
-          },
-          {
-            "period": 3,
-            "value": 15.95951221875,
-            "lower": 0,
-            "upper": 32.3108672372249
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-09-02",
-      "safetyStock": 19,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 54,
-      "turnoverRate": 5.98,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 7.58,
-        "wape": 0.544,
-        "observations": 5
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 0.182,
-        "demandChange": 10,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 160
-    },
-    {
-      "sku": "RN0156",
-      "description": "Fresenius: AV-Set SRB-R 4008 (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 2738,
-      "ami": 2053,
-      "mos": 1.3,
-      "status": "understocked",
-      "daysOfSupply": 44,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1881.92,
-      "usageRates": {
-        "daily": 61.83,
-        "weekly": 432.8,
-        "monthly": 1881.92
-      },
-      "forecastRange": {
-        "lower": 1202.23,
-        "upper": 2561.61
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 346.7807095882258,
-        "points": [
-          {
-            "period": 1,
-            "value": 1881.9240896882814,
-            "lower": 1202.2338988953588,
-            "upper": 2561.614280481204
-          },
-          {
-            "period": 2,
-            "value": 1881.9240896882814,
-            "lower": 920.6970036569735,
-            "upper": 2843.1511757195894
-          },
-          {
-            "period": 3,
-            "value": 1881.9240896882814,
-            "lower": 704.6661458287556,
-            "upper": 3059.182033547807
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 749,
-      "reorderPoint": 4459,
-      "recommendedOrderQuantity": 6645,
-      "turnoverRate": 3.93,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 259.17,
-        "wape": 0.14,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.603,
-        "demandChange": 0.815,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 160
-    },
-    {
-      "sku": "RN0045",
-      "description": "Fresenius: Dialysis Fistula Needle 16G (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 1825,
-      "ami": 1259,
-      "mos": 1.4,
-      "status": "understocked",
-      "daysOfSupply": 50,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1113.34,
-      "usageRates": {
-        "daily": 36.58,
-        "weekly": 256.04,
-        "monthly": 1113.34
-      },
-      "forecastRange": {
-        "lower": 913.24,
-        "upper": 1313.43
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 102.09022393948558,
-        "points": [
-          {
-            "period": 1,
-            "value": 1113.3377786585938,
-            "lower": 913.2409397372021,
-            "upper": 1313.4346175799856
-          },
-          {
-            "period": 2,
-            "value": 1113.3377786585938,
-            "lower": 830.358115267977,
-            "upper": 1396.3174420492105
-          },
-          {
-            "period": 3,
-            "value": 1113.3377786585938,
-            "lower": 766.7598872128177,
-            "upper": 1459.9156701043698
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-09-02",
-      "safetyStock": 608,
-      "reorderPoint": 2802,
-      "recommendedOrderQuantity": 3726,
-      "turnoverRate": 4.33,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 241.42,
-        "wape": 0.232,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.455,
-        "demandChange": 1.702,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -12184,50 +16504,81 @@ export const analyticsReport = {
       "ami": 260,
       "mos": 1.4,
       "status": "understocked",
-      "daysOfSupply": 52,
+      "daysOfSupply": 36,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 209.68,
+      "forecastMonthlyDemand": 300.43,
       "usageRates": {
-        "daily": 6.89,
-        "weekly": 48.22,
-        "monthly": 209.68
+        "daily": 9.87,
+        "weekly": 69.09,
+        "monthly": 300.43
       },
       "forecastRange": {
-        "lower": 146.16,
-        "upper": 273.19
+        "lower": 227.34,
+        "upper": 373.52
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 32.40498047865989,
+        "fitted": [
+          69,
+          122,
+          175,
+          177.12,
+          168.72480000000002,
+          183.569792,
+          209.77562368,
+          289.21269022719997
+        ],
+        "forecast": [
+          300.426073100288,
+          335.009608155136,
+          369.593143209984
+        ],
+        "lower95": [
+          227.33560007168427,
+          231.64406991781965,
+          242.99673037519963
+        ],
+        "upper95": [
+          373.5165461288918,
+          438.37514639245234,
+          496.18955604476844
+        ],
         "points": [
           {
             "period": 1,
-            "value": 209.67727546796874,
-            "lower": 146.16351372979537,
-            "upper": 273.19103720614214
+            "value": 300.426073100288,
+            "lower": 227.33560007168427,
+            "upper": 373.5165461288918
           },
           {
             "period": 2,
-            "value": 209.67727546796874,
-            "lower": 119.85525222051058,
-            "upper": 299.4992987154269
+            "value": 335.009608155136,
+            "lower": 231.64406991781965,
+            "upper": 438.37514639245234
           },
           {
             "period": 3,
-            "value": 209.67727546796874,
-            "lower": 99.66821315762829,
-            "upper": 319.68633777830917
+            "value": 369.593143209984,
+            "lower": 242.99673037519963,
+            "upper": 496.18955604476844
           }
-        ]
+        ],
+        "residualStdDev": 37.29105766765498,
+        "rmse": 37.29105766765498,
+        "mape": 19.641529419424735,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-09-04",
-      "safetyStock": 159,
-      "reorderPoint": 572,
-      "recommendedOrderQuantity": 688,
-      "turnoverRate": 4.02,
+      "expectedStockoutDate": "2026-08-20",
+      "safetyStock": 94,
+      "reorderPoint": 720,
+      "recommendedOrderQuantity": 363,
+      "turnoverRate": 5.76,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -12236,95 +16587,13 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 58.16,
-        "wape": 0.321,
+        "mae": 49.81,
+        "wape": 0.275,
         "observations": 6
       },
       "historicalTrend": {
         "stockOnHandChange": 0.069,
         "demandChange": 2.768,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 160
-    },
-    {
-      "sku": "RN0059",
-      "description": "Fresenius: FX60 Dialysers (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 1476,
-      "ami": 956,
-      "mos": 1.5,
-      "status": "understocked",
-      "daysOfSupply": 55,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 822.63,
-      "usageRates": {
-        "daily": 27.03,
-        "weekly": 189.19,
-        "monthly": 822.63
-      },
-      "forecastRange": {
-        "lower": 674.07,
-        "upper": 971.19
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 75.79390535643691,
-        "points": [
-          {
-            "period": 1,
-            "value": 822.630766965625,
-            "lower": 674.0747124670086,
-            "upper": 971.1868214642413
-          },
-          {
-            "period": 2,
-            "value": 822.630766965625,
-            "lower": 612.5407799210451,
-            "upper": 1032.720754010205
-          },
-          {
-            "period": 3,
-            "value": 822.630766965625,
-            "lower": 565.3241328020504,
-            "upper": 1079.9374011291995
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-09-07",
-      "safetyStock": 448,
-      "reorderPoint": 2070,
-      "recommendedOrderQuantity": 2625,
-      "turnoverRate": 3.84,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 175.44,
-        "wape": 0.231,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.157,
-        "demandChange": 1.612,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -12361,11 +16630,32 @@ export const analyticsReport = {
         "upper": 2420
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          2420,
+          2420,
+          2420,
+          2420,
+          2420,
+          2420
+        ],
+        "forecast": [
+          2420,
+          2420,
+          2420
+        ],
+        "lower95": [
+          2420,
+          2420,
+          2420
+        ],
+        "upper95": [
+          2420,
+          2420,
+          2420
+        ],
         "points": [
           {
             "period": 1,
@@ -12385,12 +16675,20 @@ export const analyticsReport = {
             "lower": 2420,
             "upper": 2420
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-15",
-      "safetyStock": 0,
-      "reorderPoint": 4770,
-      "recommendedOrderQuantity": 9548,
+      "safetyStock": 716,
+      "reorderPoint": 5486,
+      "recommendedOrderQuantity": 2969,
       "turnoverRate": 11.12,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12441,11 +16739,34 @@ export const analyticsReport = {
         "upper": 27
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          27,
+          27,
+          27,
+          27,
+          27,
+          27,
+          27,
+          27
+        ],
+        "forecast": [
+          27,
+          27,
+          27
+        ],
+        "lower95": [
+          27,
+          27,
+          27
+        ],
+        "upper95": [
+          27,
+          27,
+          27
+        ],
         "points": [
           {
             "period": 1,
@@ -12465,12 +16786,20 @@ export const analyticsReport = {
             "lower": 27,
             "upper": 27
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-15",
-      "safetyStock": 0,
-      "reorderPoint": 53,
-      "recommendedOrderQuantity": 107,
+      "safetyStock": 8,
+      "reorderPoint": 61,
+      "recommendedOrderQuantity": 33,
       "turnoverRate": 4.42,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12521,11 +16850,31 @@ export const analyticsReport = {
         "upper": 187
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          187,
+          187,
+          187,
+          187,
+          187
+        ],
+        "forecast": [
+          187,
+          187,
+          187
+        ],
+        "lower95": [
+          187,
+          187,
+          187
+        ],
+        "upper95": [
+          187,
+          187,
+          187
+        ],
         "points": [
           {
             "period": 1,
@@ -12545,12 +16894,20 @@ export const analyticsReport = {
             "lower": 187,
             "upper": 187
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-16",
-      "safetyStock": 0,
-      "reorderPoint": 369,
-      "recommendedOrderQuantity": 735,
+      "safetyStock": 55,
+      "reorderPoint": 424,
+      "recommendedOrderQuantity": 227,
       "turnoverRate": 10.56,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12601,11 +16958,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -12625,12 +17002,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-16",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 98,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 30,
       "turnoverRate": 11.11,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12681,11 +17066,31 @@ export const analyticsReport = {
         "upper": 46840
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          46840,
+          46840,
+          46840,
+          46840,
+          46840
+        ],
+        "forecast": [
+          46840,
+          46840,
+          46840
+        ],
+        "lower95": [
+          46840,
+          46840,
+          46840
+        ],
+        "upper95": [
+          46840,
+          46840,
+          46840
+        ],
         "points": [
           {
             "period": 1,
@@ -12705,12 +17110,20 @@ export const analyticsReport = {
             "lower": 46840,
             "upper": 46840
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-16",
-      "safetyStock": 0,
-      "reorderPoint": 92333,
-      "recommendedOrderQuantity": 184190,
+      "safetyStock": 13850,
+      "reorderPoint": 106183,
+      "recommendedOrderQuantity": 56846,
       "turnoverRate": 25.01,
       "stockoutFrequency": 0.2,
       "stockAgeDays": null,
@@ -12761,11 +17174,34 @@ export const analyticsReport = {
         "upper": 211
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          211,
+          211,
+          211,
+          211,
+          211,
+          211,
+          211,
+          211
+        ],
+        "forecast": [
+          211,
+          211,
+          211
+        ],
+        "lower95": [
+          211,
+          211,
+          211
+        ],
+        "upper95": [
+          211,
+          211,
+          211
+        ],
         "points": [
           {
             "period": 1,
@@ -12785,12 +17221,20 @@ export const analyticsReport = {
             "lower": 211,
             "upper": 211
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-18",
-      "safetyStock": 0,
-      "reorderPoint": 416,
-      "recommendedOrderQuantity": 812,
+      "safetyStock": 62,
+      "reorderPoint": 478,
+      "recommendedOrderQuantity": 238,
       "turnoverRate": 8.75,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12841,11 +17285,34 @@ export const analyticsReport = {
         "upper": 439
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          439,
+          439,
+          439,
+          439,
+          439,
+          439,
+          439,
+          439
+        ],
+        "forecast": [
+          439,
+          439,
+          439
+        ],
+        "lower95": [
+          439,
+          439,
+          439
+        ],
+        "upper95": [
+          439,
+          439,
+          439
+        ],
         "points": [
           {
             "period": 1,
@@ -12865,12 +17332,20 @@ export const analyticsReport = {
             "lower": 439,
             "upper": 439
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-15",
-      "safetyStock": 0,
-      "reorderPoint": 865,
-      "recommendedOrderQuantity": 1728,
+      "safetyStock": 130,
+      "reorderPoint": 995,
+      "recommendedOrderQuantity": 534,
       "turnoverRate": 0.55,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -12921,11 +17396,33 @@ export const analyticsReport = {
         "upper": 56830
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          56830,
+          56830,
+          56830,
+          56830,
+          56830,
+          56830,
+          56830
+        ],
+        "forecast": [
+          56830,
+          56830,
+          56830
+        ],
+        "lower95": [
+          56830,
+          56830,
+          56830
+        ],
+        "upper95": [
+          56830,
+          56830,
+          56830
+        ],
         "points": [
           {
             "period": 1,
@@ -12945,12 +17442,20 @@ export const analyticsReport = {
             "lower": 56830,
             "upper": 56830
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-17",
-      "safetyStock": 0,
-      "reorderPoint": 112026,
-      "recommendedOrderQuantity": 220113,
+      "safetyStock": 16804,
+      "reorderPoint": 128830,
+      "recommendedOrderQuantity": 65610,
       "turnoverRate": 16.3,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -13001,11 +17506,30 @@ export const analyticsReport = {
         "upper": 310
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          310,
+          310,
+          310,
+          310
+        ],
+        "forecast": [
+          310,
+          310,
+          310
+        ],
+        "lower95": [
+          310,
+          310,
+          310
+        ],
+        "upper95": [
+          310,
+          310,
+          310
+        ],
         "points": [
           {
             "period": 1,
@@ -13025,12 +17549,20 @@ export const analyticsReport = {
             "lower": 310,
             "upper": 310
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-16",
-      "safetyStock": 0,
-      "reorderPoint": 611,
-      "recommendedOrderQuantity": 1216,
+      "safetyStock": 92,
+      "reorderPoint": 703,
+      "recommendedOrderQuantity": 373,
       "turnoverRate": 11.1,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13081,11 +17613,34 @@ export const analyticsReport = {
         "upper": 131
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          131,
+          131,
+          131,
+          131,
+          131,
+          131,
+          131,
+          131
+        ],
+        "forecast": [
+          131,
+          131,
+          131
+        ],
+        "lower95": [
+          131,
+          131,
+          131
+        ],
+        "upper95": [
+          131,
+          131,
+          131
+        ],
         "points": [
           {
             "period": 1,
@@ -13105,12 +17660,20 @@ export const analyticsReport = {
             "lower": 131,
             "upper": 131
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-18",
-      "safetyStock": 0,
-      "reorderPoint": 258,
-      "recommendedOrderQuantity": 504,
+      "safetyStock": 39,
+      "reorderPoint": 297,
+      "recommendedOrderQuantity": 148,
       "turnoverRate": 11.15,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13148,50 +17711,81 @@ export const analyticsReport = {
       "ami": 169589,
       "mos": 1.1,
       "status": "understocked",
-      "daysOfSupply": 32,
+      "daysOfSupply": 34,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 175607.59,
+      "forecastMonthlyDemand": 161833.83,
       "usageRates": {
-        "daily": 5769.45,
-        "weekly": 40386.14,
-        "monthly": 175607.59
+        "daily": 5316.92,
+        "weekly": 37218.46,
+        "monthly": 161833.83
       },
       "forecastRange": {
-        "lower": 118703.67,
-        "upper": 232511.51
+        "lower": 83994.23,
+        "upper": 239673.42
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 29032.61263731762,
+        "fitted": [
+          120995,
+          169589,
+          218183,
+          214295.48,
+          191281.3616,
+          171663.380672,
+          224175.28557823997,
+          184892.6304631808
+        ],
+        "forecast": [
+          161833.8257948303,
+          147957.19940438832,
+          134080.5730139463
+        ],
+        "lower95": [
+          83994.23113866812,
+          37875.38895201945,
+          0
+        ],
+        "upper95": [
+          239673.42045099247,
+          258039.00985675718,
+          268902.7057989861
+        ],
         "points": [
           {
             "period": 1,
-            "value": 175607.5901288297,
-            "lower": 118703.66935968716,
-            "upper": 232511.51089797224
+            "value": 161833.8257948303,
+            "lower": 83994.23113866812,
+            "upper": 239673.42045099247
           },
           {
             "period": 2,
-            "value": 175607.5901288297,
-            "lower": 95133.29362490428,
-            "upper": 256081.8866327551
+            "value": 147957.19940438832,
+            "lower": 37875.38895201945,
+            "upper": 258039.00985675718
           },
           {
             "period": 3,
-            "value": 175607.5901288297,
-            "lower": 77047.10820680097,
-            "upper": 274168.0720508584
+            "value": 134080.5730139463,
+            "lower": 0,
+            "upper": 268902.7057989861
           }
-        ]
+        ],
+        "residualStdDev": 39714.0789062052,
+        "rmse": 39714.0789062052,
+        "mape": 19.027821110364034,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-08-15",
-      "safetyStock": 65210,
-      "reorderPoint": 411377,
-      "recommendedOrderQuantity": 693008,
-      "turnoverRate": 9.15,
+      "expectedStockoutDate": "2026-08-18",
+      "safetyStock": 45801,
+      "reorderPoint": 351139,
+      "recommendedOrderQuantity": 168633,
+      "turnoverRate": 8.43,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -13200,8 +17794,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 25741.85,
-        "wape": 0.144,
+        "mae": 47784.91,
+        "wape": 0.267,
         "observations": 6
       },
       "historicalTrend": {
@@ -13241,11 +17835,34 @@ export const analyticsReport = {
         "upper": 2638
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2638,
+          2638,
+          2638,
+          2638,
+          2638,
+          2638,
+          2638,
+          2638
+        ],
+        "forecast": [
+          2638,
+          2638,
+          2638
+        ],
+        "lower95": [
+          2638,
+          2638,
+          2638
+        ],
+        "upper95": [
+          2638,
+          2638,
+          2638
+        ],
         "points": [
           {
             "period": 1,
@@ -13265,12 +17882,20 @@ export const analyticsReport = {
             "lower": 2638,
             "upper": 2638
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-18",
-      "safetyStock": 0,
-      "reorderPoint": 5200,
-      "recommendedOrderQuantity": 10131,
+      "safetyStock": 780,
+      "reorderPoint": 5980,
+      "recommendedOrderQuantity": 2959,
       "turnoverRate": 3.14,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13287,86 +17912,6 @@ export const analyticsReport = {
       "historicalTrend": {
         "stockOnHandChange": -0.788,
         "demandChange": 0,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 150
-    },
-    {
-      "sku": "RN0039",
-      "description": "Fresenius: Catheter Extension Line 32cm (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 12,
-      "ami": 11,
-      "mos": 1.1,
-      "status": "understocked",
-      "daysOfSupply": 32,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 11.49,
-      "usageRates": {
-        "daily": 0.38,
-        "weekly": 2.64,
-        "monthly": 11.49
-      },
-      "forecastRange": {
-        "lower": 4.97,
-        "upper": 18.02
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 3.3312452680212976,
-        "points": [
-          {
-            "period": 1,
-            "value": 11.494325,
-            "lower": 4.965084274678257,
-            "upper": 18.023565725321742
-          },
-          {
-            "period": 2,
-            "value": 11.494325,
-            "lower": 2.260584214251246,
-            "upper": 20.728065785748754
-          },
-          {
-            "period": 3,
-            "value": 11.494325,
-            "lower": 0.1853483288948734,
-            "upper": 22.803301671105125
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-08-15",
-      "safetyStock": 6,
-      "reorderPoint": 29,
-      "recommendedOrderQuantity": 45,
-      "turnoverRate": 6.23,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 1.96,
-        "wape": 0.165,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.733,
-        "demandChange": 0.1,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -13401,11 +17946,31 @@ export const analyticsReport = {
         "upper": 167
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          167,
+          167,
+          167,
+          167,
+          167
+        ],
+        "forecast": [
+          167,
+          167,
+          167
+        ],
+        "lower95": [
+          167,
+          167,
+          167
+        ],
+        "upper95": [
+          167,
+          167,
+          167
+        ],
         "points": [
           {
             "period": 1,
@@ -13425,12 +17990,20 @@ export const analyticsReport = {
             "lower": 167,
             "upper": 167
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-20",
-      "safetyStock": 0,
-      "reorderPoint": 329,
-      "recommendedOrderQuantity": 634,
+      "safetyStock": 49,
+      "reorderPoint": 379,
+      "recommendedOrderQuantity": 180,
       "turnoverRate": 9.93,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13459,6 +18032,117 @@ export const analyticsReport = {
       "priorityScore": 150
     },
     {
+      "sku": "RN0156",
+      "description": "Fresenius: AV-Set SRB-R 4008 (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 2738,
+      "ami": 2053,
+      "mos": 1.3,
+      "status": "understocked",
+      "daysOfSupply": 37,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 2254.92,
+      "usageRates": {
+        "daily": 74.08,
+        "weekly": 518.59,
+        "monthly": 2254.92
+      },
+      "forecastRange": {
+        "lower": 1220.38,
+        "upper": 3289.46
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          1131,
+          2058,
+          2985,
+          2336.6400000000003,
+          1921.7584000000002,
+          1381.336704,
+          1447.6448742400003,
+          2197.3737887744
+        ],
+        "forecast": [
+          2254.920346865664,
+          2427.9659359764482,
+          2601.0115250872323
+        ],
+        "lower95": [
+          1220.3849165886504,
+          964.9118997232097,
+          809.1435976173148
+        ],
+        "upper95": [
+          3289.455777142678,
+          3891.0199722296866,
+          4392.87945255715
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 2254.920346865664,
+            "lower": 1220.3849165886504,
+            "upper": 3289.455777142678
+          },
+          {
+            "period": 2,
+            "value": 2427.9659359764482,
+            "lower": 964.9118997232097,
+            "upper": 3891.0199722296866
+          },
+          {
+            "period": 3,
+            "value": 2601.0115250872323,
+            "lower": 809.1435976173148,
+            "upper": 4392.87945255715
+          }
+        ],
+        "residualStdDev": 527.8241991209254,
+        "rmse": 527.8241991209254,
+        "mape": 21.941442321709097,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-08-20",
+      "safetyStock": 692,
+      "reorderPoint": 5308,
+      "recommendedOrderQuantity": 2570,
+      "turnoverRate": 4.71,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 695.38,
+        "wape": 0.376,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.603,
+        "demandChange": 0.815,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 150
+    },
+    {
       "sku": "DEN0192",
       "description": "Denture Polishers, Pack of 3 (1)",
       "programme": "Dental",
@@ -13481,11 +18165,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -13505,12 +18209,20 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-26",
-      "safetyStock": 0,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 90,
+      "safetyStock": 7,
+      "reorderPoint": 57,
+      "recommendedOrderQuantity": 22,
       "turnoverRate": 8.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13561,11 +18273,33 @@ export const analyticsReport = {
         "upper": 4913
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          4913,
+          4913,
+          4913,
+          4913,
+          4913,
+          4913,
+          4913
+        ],
+        "forecast": [
+          4913,
+          4913,
+          4913
+        ],
+        "lower95": [
+          4913,
+          4913,
+          4913
+        ],
+        "upper95": [
+          4913,
+          4913,
+          4913
+        ],
         "points": [
           {
             "period": 1,
@@ -13585,12 +18319,20 @@ export const analyticsReport = {
             "lower": 4913,
             "upper": 4913
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-27",
-      "safetyStock": 0,
-      "reorderPoint": 9685,
-      "recommendedOrderQuantity": 17519,
+      "safetyStock": 1453,
+      "reorderPoint": 11137,
+      "recommendedOrderQuantity": 4162,
       "turnoverRate": 6.08,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13607,6 +18349,117 @@ export const analyticsReport = {
       "historicalTrend": {
         "stockOnHandChange": -0.327,
         "demandChange": 0,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 150
+    },
+    {
+      "sku": "RN0045",
+      "description": "Fresenius: Dialysis Fistula Needle 16G (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 1825,
+      "ami": 1259,
+      "mos": 1.4,
+      "status": "understocked",
+      "daysOfSupply": 41,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 1357.84,
+      "usageRates": {
+        "daily": 44.61,
+        "weekly": 312.28,
+        "monthly": 1357.84
+      },
+      "forecastRange": {
+        "lower": 941.03,
+        "upper": 1774.66
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          466,
+          867,
+          1268,
+          1091.56,
+          912.5535999999998,
+          856.2380160000002,
+          1227.2225689600002,
+          1424.1570354176
+        ],
+        "forecast": [
+          1357.843426041856,
+          1423.6554450001918,
+          1489.4674639585278
+        ],
+        "lower95": [
+          941.0274883288537,
+          834.1886928732047,
+          767.5210824351434
+        ],
+        "upper95": [
+          1774.6593637548583,
+          2013.1221971271789,
+          2211.413845481912
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 1357.843426041856,
+            "lower": 941.0274883288537,
+            "upper": 1774.6593637548583
+          },
+          {
+            "period": 2,
+            "value": 1423.6554450001918,
+            "lower": 834.1886928732047,
+            "upper": 2013.1221971271789
+          },
+          {
+            "period": 3,
+            "value": 1489.4674639585278,
+            "lower": 767.5210824351434,
+            "upper": 2211.413845481912
+          }
+        ],
+        "residualStdDev": 212.66119271071545,
+        "rmse": 212.66119271071545,
+        "mape": 16.659838787215303,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-08-24",
+      "safetyStock": 411,
+      "reorderPoint": 3153,
+      "recommendedOrderQuantity": 1328,
+      "turnoverRate": 5.28,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 269.67,
+        "wape": 0.259,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.455,
+        "demandChange": 1.702,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -13641,11 +18494,32 @@ export const analyticsReport = {
         "upper": 70
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "forecast": [
+          70,
+          70,
+          70
+        ],
+        "lower95": [
+          70,
+          70,
+          70
+        ],
+        "upper95": [
+          70,
+          70,
+          70
+        ],
         "points": [
           {
             "period": 1,
@@ -13665,12 +18539,20 @@ export const analyticsReport = {
             "lower": 70,
             "upper": 70
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-27",
-      "safetyStock": 0,
-      "reorderPoint": 138,
-      "recommendedOrderQuantity": 249,
+      "safetyStock": 21,
+      "reorderPoint": 159,
+      "recommendedOrderQuantity": 59,
       "turnoverRate": 8.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13721,11 +18603,31 @@ export const analyticsReport = {
         "upper": 37500
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          37500,
+          37500,
+          37500,
+          37500,
+          37500
+        ],
+        "forecast": [
+          37500,
+          37500,
+          37500
+        ],
+        "lower95": [
+          37500,
+          37500,
+          37500
+        ],
+        "upper95": [
+          37500,
+          37500,
+          37500
+        ],
         "points": [
           {
             "period": 1,
@@ -13745,12 +18647,20 @@ export const analyticsReport = {
             "lower": 37500,
             "upper": 37500
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 0,
-      "reorderPoint": 73922,
-      "recommendedOrderQuantity": 131761,
+      "safetyStock": 11088,
+      "reorderPoint": 85010,
+      "recommendedOrderQuantity": 29810,
       "turnoverRate": 6.08,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13788,50 +18698,76 @@ export const analyticsReport = {
       "ami": 25,
       "mos": 1.5,
       "status": "understocked",
-      "daysOfSupply": 46,
+      "daysOfSupply": 47,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 25.13,
+      "forecastMonthlyDemand": 24.47,
       "usageRates": {
-        "daily": 0.83,
-        "weekly": 5.78,
-        "monthly": 25.13
+        "daily": 0.8,
+        "weekly": 5.63,
+        "monthly": 24.47
       },
       "forecastRange": {
-        "lower": 24.98,
-        "upper": 25.27
+        "lower": 24.06,
+        "upper": 24.89
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0.0742462120245878,
+        "fitted": [
+          25.3,
+          25,
+          24.7
+        ],
+        "forecast": [
+          24.472,
+          24.184,
+          23.896
+        ],
+        "lower95": [
+          24.05622121266231,
+          23.596,
+          23.175850015621744
+        ],
+        "upper95": [
+          24.88777878733769,
+          24.772000000000002,
+          24.616149984378257
+        ],
         "points": [
           {
             "period": 1,
-            "value": 25.12675,
-            "lower": 24.981227424431808,
-            "upper": 25.272272575568195
+            "value": 24.472,
+            "lower": 24.05622121266231,
+            "upper": 24.88777878733769
           },
           {
             "period": 2,
-            "value": 25.12675,
-            "lower": 24.92095,
-            "upper": 25.33255
+            "value": 24.184,
+            "lower": 23.596,
+            "upper": 24.772000000000002
           },
           {
             "period": 3,
-            "value": 25.12675,
-            "lower": 24.874697505467612,
-            "upper": 25.37880249453239
+            "value": 23.896,
+            "lower": 23.175850015621744,
+            "upper": 24.616149984378257
           }
-        ]
+        ],
+        "residualStdDev": 0.21213203435596475,
+        "rmse": 0.21213203435596475,
+        "mape": 0.6000000000000014,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-08-30",
-      "safetyStock": 0,
-      "reorderPoint": 50,
-      "recommendedOrderQuantity": 87,
-      "turnoverRate": 3.57,
+      "expectedStockoutDate": "2026-08-31",
+      "safetyStock": 7,
+      "reorderPoint": 55,
+      "recommendedOrderQuantity": 17,
+      "turnoverRate": 3.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -13840,8 +18776,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.2,
-        "wape": 0.008,
+        "mae": 0.3,
+        "wape": 0.012,
         "observations": 1
       },
       "historicalTrend": {
@@ -13881,11 +18817,34 @@ export const analyticsReport = {
         "upper": 92
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          92,
+          92,
+          92,
+          92,
+          92,
+          92,
+          92,
+          92
+        ],
+        "forecast": [
+          92,
+          92,
+          92
+        ],
+        "lower95": [
+          92,
+          92,
+          92
+        ],
+        "upper95": [
+          92,
+          92,
+          92
+        ],
         "points": [
           {
             "period": 1,
@@ -13905,12 +18864,20 @@ export const analyticsReport = {
             "lower": 92,
             "upper": 92
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 0,
-      "reorderPoint": 181,
-      "recommendedOrderQuantity": 324,
+      "safetyStock": 27,
+      "reorderPoint": 209,
+      "recommendedOrderQuantity": 74,
       "turnoverRate": 5.27,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -13961,11 +18928,34 @@ export const analyticsReport = {
         "upper": 26
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26,
+          26
+        ],
+        "forecast": [
+          26,
+          26,
+          26
+        ],
+        "lower95": [
+          26,
+          26,
+          26
+        ],
+        "upper95": [
+          26,
+          26,
+          26
+        ],
         "points": [
           {
             "period": 1,
@@ -13985,12 +18975,20 @@ export const analyticsReport = {
             "lower": 26,
             "upper": 26
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 0,
-      "reorderPoint": 51,
-      "recommendedOrderQuantity": 92,
+      "safetyStock": 8,
+      "reorderPoint": 59,
+      "recommendedOrderQuantity": 21,
       "turnoverRate": 8.21,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14007,6 +19005,117 @@ export const analyticsReport = {
       "historicalTrend": {
         "stockOnHandChange": 0,
         "demandChange": 0,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 150
+    },
+    {
+      "sku": "RN0059",
+      "description": "Fresenius: FX60 Dialysers (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 1476,
+      "ami": 956,
+      "mos": 1.5,
+      "status": "understocked",
+      "daysOfSupply": 42,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 1066.35,
+      "usageRates": {
+        "daily": 35.03,
+        "weekly": 245.24,
+        "monthly": 1066.35
+      },
+      "forecastRange": {
+        "lower": 789.78,
+        "upper": 1342.92
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          366,
+          618,
+          870,
+          759.1199999999999,
+          646.6271999999999,
+          690.767232,
+          762.7842099200001,
+          1084.0457111552
+        ],
+        "forecast": [
+          1066.348756262912,
+          1151.088370294784,
+          1235.8279843266562
+        ],
+        "lower95": [
+          789.775144666654,
+          759.9542177808471,
+          756.7884370091165
+        ],
+        "upper95": [
+          1342.9223678591702,
+          1542.222522808721,
+          1714.8675316441959
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 1066.348756262912,
+            "lower": 789.775144666654,
+            "upper": 1342.9223678591702
+          },
+          {
+            "period": 2,
+            "value": 1151.088370294784,
+            "lower": 759.9542177808471,
+            "upper": 1542.222522808721
+          },
+          {
+            "period": 3,
+            "value": 1235.8279843266562,
+            "lower": 756.7884370091165,
+            "upper": 1714.8675316441959
+          }
+        ],
+        "residualStdDev": 141.10898550829492,
+        "rmse": 141.10898550829492,
+        "mape": 15.240952239268973,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-08-26",
+      "safetyStock": 328,
+      "reorderPoint": 2513,
+      "recommendedOrderQuantity": 1037,
+      "turnoverRate": 4.98,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 180.56,
+        "wape": 0.238,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.157,
+        "demandChange": 1.612,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -14041,11 +19150,34 @@ export const analyticsReport = {
         "upper": 578
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          578,
+          578,
+          578,
+          578,
+          578,
+          578,
+          578,
+          578
+        ],
+        "forecast": [
+          578,
+          578,
+          578
+        ],
+        "lower95": [
+          578,
+          578,
+          578
+        ],
+        "upper95": [
+          578,
+          578,
+          578
+        ],
         "points": [
           {
             "period": 1,
@@ -14065,12 +19197,20 @@ export const analyticsReport = {
             "lower": 578,
             "upper": 578
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-31",
-      "safetyStock": 0,
-      "reorderPoint": 1139,
-      "recommendedOrderQuantity": 1983,
+      "safetyStock": 171,
+      "reorderPoint": 1310,
+      "recommendedOrderQuantity": 411,
       "turnoverRate": 5.78,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14121,11 +19261,34 @@ export const analyticsReport = {
         "upper": 12562
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          12562,
+          12562,
+          12562,
+          12562,
+          12562,
+          12562,
+          12562,
+          12562
+        ],
+        "forecast": [
+          12562,
+          12562,
+          12562
+        ],
+        "lower95": [
+          12562,
+          12562,
+          12562
+        ],
+        "upper95": [
+          12562,
+          12562,
+          12562
+        ],
         "points": [
           {
             "period": 1,
@@ -14145,12 +19308,20 @@ export const analyticsReport = {
             "lower": 12562,
             "upper": 12562
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-31",
-      "safetyStock": 0,
-      "reorderPoint": 24763,
-      "recommendedOrderQuantity": 42978,
+      "safetyStock": 3714,
+      "reorderPoint": 28477,
+      "recommendedOrderQuantity": 8826,
       "turnoverRate": 2.79,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14201,11 +19372,34 @@ export const analyticsReport = {
         "upper": 4042
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          4042,
+          4042,
+          4042,
+          4042,
+          4042,
+          4042,
+          4042,
+          4042
+        ],
+        "forecast": [
+          4042,
+          4042,
+          4042
+        ],
+        "lower95": [
+          4042,
+          4042,
+          4042
+        ],
+        "upper95": [
+          4042,
+          4042,
+          4042
+        ],
         "points": [
           {
             "period": 1,
@@ -14225,12 +19419,20 @@ export const analyticsReport = {
             "lower": 4042,
             "upper": 4042
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-03",
-      "safetyStock": 0,
-      "reorderPoint": 7968,
-      "recommendedOrderQuantity": 13512,
+      "safetyStock": 1195,
+      "reorderPoint": 9163,
+      "recommendedOrderQuantity": 2523,
       "turnoverRate": 2.16,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14281,11 +19483,34 @@ export const analyticsReport = {
         "upper": 75882
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          75882,
+          75882,
+          75882,
+          75882,
+          75882,
+          75882,
+          75882,
+          75882
+        ],
+        "forecast": [
+          75882,
+          75882,
+          75882
+        ],
+        "lower95": [
+          75882,
+          75882,
+          75882
+        ],
+        "upper95": [
+          75882,
+          75882,
+          75882
+        ],
         "points": [
           {
             "period": 1,
@@ -14305,12 +19530,20 @@ export const analyticsReport = {
             "lower": 75882,
             "upper": 75882
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-02",
-      "safetyStock": 0,
-      "reorderPoint": 149583,
-      "recommendedOrderQuantity": 254053,
+      "safetyStock": 22437,
+      "reorderPoint": 172020,
+      "recommendedOrderQuantity": 47754,
       "turnoverRate": 8.67,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14361,11 +19594,33 @@ export const analyticsReport = {
         "upper": 1600
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1600,
+          1600,
+          1600,
+          1600,
+          1600,
+          1600,
+          1600
+        ],
+        "forecast": [
+          1600,
+          1600,
+          1600
+        ],
+        "lower95": [
+          1600,
+          1600,
+          1600
+        ],
+        "upper95": [
+          1600,
+          1600,
+          1600
+        ],
         "points": [
           {
             "period": 1,
@@ -14385,12 +19640,20 @@ export const analyticsReport = {
             "lower": 1600,
             "upper": 1600
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-01",
-      "safetyStock": 0,
-      "reorderPoint": 3154,
-      "recommendedOrderQuantity": 5427,
+      "safetyStock": 473,
+      "reorderPoint": 3627,
+      "recommendedOrderQuantity": 1077,
       "turnoverRate": 4.56,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14441,11 +19704,30 @@ export const analyticsReport = {
         "upper": 3427
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          3427,
+          3427,
+          3427,
+          3427
+        ],
+        "forecast": [
+          3427,
+          3427,
+          3427
+        ],
+        "lower95": [
+          3427,
+          3427,
+          3427
+        ],
+        "upper95": [
+          3427,
+          3427,
+          3427
+        ],
         "points": [
           {
             "period": 1,
@@ -14465,12 +19747,20 @@ export const analyticsReport = {
             "lower": 3427,
             "upper": 3427
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-01",
-      "safetyStock": 0,
-      "reorderPoint": 6755,
-      "recommendedOrderQuantity": 11598,
+      "safetyStock": 1013,
+      "reorderPoint": 7769,
+      "recommendedOrderQuantity": 2281,
       "turnoverRate": 5.64,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14521,11 +19811,29 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -14545,12 +19853,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-02",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 338,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 66,
       "turnoverRate": 5.87,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14601,11 +19917,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -14625,12 +19964,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-01",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 58,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 12,
       "turnoverRate": 7.49,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14668,50 +20015,81 @@ export const analyticsReport = {
       "ami": 679,
       "mos": 1.6,
       "status": "understocked",
-      "daysOfSupply": 46,
+      "daysOfSupply": 50,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 715.27,
+      "forecastMonthlyDemand": 655.23,
       "usageRates": {
-        "daily": 23.5,
-        "weekly": 164.5,
-        "monthly": 715.27
+        "daily": 21.53,
+        "weekly": 150.69,
+        "monthly": 655.23
       },
       "forecastRange": {
-        "lower": 580.1,
-        "upper": 850.44
+        "lower": 462.82,
+        "upper": 847.64
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 68.96486003920297,
+        "fitted": [
+          888,
+          942,
+          996,
+          803.6,
+          756.288,
+          640.0134399999998,
+          704.1142271999998,
+          657.697831936
+        ],
+        "forecast": [
+          655.23124666368,
+          635.7229269401602,
+          616.2146072166402
+        ],
+        "lower95": [
+          462.81976518067574,
+          363.6120002705958,
+          282.94814532847846
+        ],
+        "upper95": [
+          847.6427281466844,
+          907.8338536097245,
+          949.4810691048019
+        ],
         "points": [
           {
             "period": 1,
-            "value": 715.2669640328124,
-            "lower": 580.0958383559746,
-            "upper": 850.4380897096503
+            "value": 655.23124666368,
+            "lower": 462.81976518067574,
+            "upper": 847.6427281466844
           },
           {
             "period": 2,
-            "value": 715.2669640328124,
-            "lower": 524.1061248593903,
-            "upper": 906.4278032062346
+            "value": 635.7229269401602,
+            "lower": 363.6120002705958,
+            "upper": 907.8338536097245
           },
           {
             "period": 3,
-            "value": 715.2669640328124,
-            "lower": 481.1437066442513,
-            "upper": 949.3902214213736
+            "value": 616.2146072166402,
+            "lower": 282.94814532847846,
+            "upper": 949.4810691048019
           }
-        ]
+        ],
+        "residualStdDev": 98.16912320561445,
+        "rmse": 98.16912320561445,
+        "mape": 9.235255199719026,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2026-08-29",
-      "safetyStock": 231,
-      "reorderPoint": 1641,
-      "recommendedOrderQuantity": 2496,
-      "turnoverRate": 3.8,
+      "expectedStockoutDate": "2026-09-02",
+      "safetyStock": 191,
+      "reorderPoint": 1463,
+      "recommendedOrderQuantity": 393,
+      "turnoverRate": 3.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -14720,8 +20098,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 91.25,
-        "wape": 0.127,
+        "mae": 111.59,
+        "wape": 0.155,
         "observations": 6
       },
       "historicalTrend": {
@@ -14761,11 +20139,34 @@ export const analyticsReport = {
         "upper": 199
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          199,
+          199,
+          199,
+          199,
+          199,
+          199,
+          199,
+          199
+        ],
+        "forecast": [
+          199,
+          199,
+          199
+        ],
+        "lower95": [
+          199,
+          199,
+          199
+        ],
+        "upper95": [
+          199,
+          199,
+          199
+        ],
         "points": [
           {
             "period": 1,
@@ -14785,12 +20186,20 @@ export const analyticsReport = {
             "lower": 199,
             "upper": 199
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-31",
-      "safetyStock": 0,
-      "reorderPoint": 392,
-      "recommendedOrderQuantity": 682,
+      "safetyStock": 59,
+      "reorderPoint": 451,
+      "recommendedOrderQuantity": 141,
       "turnoverRate": 9.24,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14841,11 +20250,31 @@ export const analyticsReport = {
         "upper": 30
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        "forecast": [
+          30,
+          30,
+          30
+        ],
+        "lower95": [
+          30,
+          30,
+          30
+        ],
+        "upper95": [
+          30,
+          30,
+          30
+        ],
         "points": [
           {
             "period": 1,
@@ -14865,12 +20294,20 @@ export const analyticsReport = {
             "lower": 30,
             "upper": 30
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-03",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 100,
+      "safetyStock": 9,
+      "reorderPoint": 68,
+      "recommendedOrderQuantity": 18,
       "turnoverRate": 8.49,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -14908,50 +20345,81 @@ export const analyticsReport = {
       "ami": 2144,
       "mos": 1.7,
       "status": "understocked",
-      "daysOfSupply": 55,
+      "daysOfSupply": 49,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 2009.56,
+      "forecastMonthlyDemand": 2247.92,
       "usageRates": {
-        "daily": 66.02,
-        "weekly": 462.16,
-        "monthly": 2009.56
+        "daily": 73.85,
+        "weekly": 516.98,
+        "monthly": 2247.92
       },
       "forecastRange": {
-        "lower": 1527.62,
-        "upper": 2491.5
+        "lower": 1502.85,
+        "upper": 2993
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 245.88763513757752,
+        "fitted": [
+          1118,
+          1911,
+          2704,
+          2427.08,
+          2073.4048,
+          1662.890688,
+          1953.4978252800001,
+          2261.5406445568
+        ],
+        "forecast": [
+          2247.923195895808,
+          2328.338262880256,
+          2408.753329864704
+        ],
+        "lower95": [
+          1502.8494861321349,
+          1274.6449175648343,
+          1118.2478091701948
+        ],
+        "upper95": [
+          2992.996905659481,
+          3382.031608195678,
+          3699.258850559213
+        ],
         "points": [
           {
             "period": 1,
-            "value": 2009.559925796094,
-            "lower": 1527.620160926442,
-            "upper": 2491.4996906657457
+            "value": 2247.923195895808,
+            "lower": 1502.8494861321349,
+            "upper": 2992.996905659481
           },
           {
             "period": 2,
-            "value": 2009.559925796094,
-            "lower": 1327.9941740705317,
-            "upper": 2691.125677521656
+            "value": 2328.338262880256,
+            "lower": 1274.6449175648343,
+            "upper": 3382.031608195678
           },
           {
             "period": 3,
-            "value": 2009.559925796094,
-            "lower": 1174.8157668540584,
-            "upper": 2844.3040847381294
+            "value": 2408.753329864704,
+            "lower": 1118.2478091701948,
+            "upper": 3699.258850559213
           }
-        ]
+        ],
+        "residualStdDev": 380.13964783860877,
+        "rmse": 380.13964783860877,
+        "mape": 15.574349972321825,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-09-07",
-      "safetyStock": 759,
-      "reorderPoint": 4720,
-      "recommendedOrderQuantity": 6415,
-      "turnoverRate": 3.26,
+      "expectedStockoutDate": "2026-09-01",
+      "safetyStock": 677,
+      "reorderPoint": 5187,
+      "recommendedOrderQuantity": 1583,
+      "turnoverRate": 3.65,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -14960,8 +20428,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 292.39,
-        "wape": 0.147,
+        "mae": 499.75,
+        "wape": 0.251,
         "observations": 6
       },
       "historicalTrend": {
@@ -14974,86 +20442,6 @@ export const analyticsReport = {
         }
       },
       "observations": 8,
-      "dataQualityFlags": [],
-      "action": "Expedite replenishment and verify pipeline or redistribution options.",
-      "priorityScore": 150
-    },
-    {
-      "sku": "RN0430",
-      "description": "Peritonial Dialysis Catheter 57cm PD (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 11,
-      "ami": 6,
-      "mos": 1.7,
-      "status": "understocked",
-      "daysOfSupply": 49,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 6.87,
-      "usageRates": {
-        "daily": 0.23,
-        "weekly": 1.58,
-        "monthly": 6.87
-      },
-      "forecastRange": {
-        "lower": 4.49,
-        "upper": 9.24
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 6,
-        "residualStdDev": 1.21220934145056,
-        "points": [
-          {
-            "period": 1,
-            "value": 6.8682375,
-            "lower": 4.492307190756903,
-            "upper": 9.244167809243098
-          },
-          {
-            "period": 2,
-            "value": 6.8682375,
-            "lower": 3.50816463341511,
-            "upper": 10.228310366584891
-          },
-          {
-            "period": 3,
-            "value": 6.8682375,
-            "lower": 2.753005489148122,
-            "upper": 10.98346951085188
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-09-01",
-      "safetyStock": 4,
-      "reorderPoint": 17,
-      "recommendedOrderQuantity": 23,
-      "turnoverRate": 3.53,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 1.52,
-        "wape": 0.223,
-        "observations": 4
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.686,
-        "demandChange": -0.333,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
       "dataQualityFlags": [],
       "action": "Expedite replenishment and verify pipeline or redistribution options.",
       "priorityScore": 150
@@ -15081,11 +20469,34 @@ export const analyticsReport = {
         "upper": 408
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          408,
+          408,
+          408,
+          408,
+          408,
+          408,
+          408,
+          408
+        ],
+        "forecast": [
+          408,
+          408,
+          408
+        ],
+        "lower95": [
+          408,
+          408,
+          408
+        ],
+        "upper95": [
+          408,
+          408,
+          408
+        ],
         "points": [
           {
             "period": 1,
@@ -15105,12 +20516,20 @@ export const analyticsReport = {
             "lower": 408,
             "upper": 408
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-04",
-      "safetyStock": 0,
-      "reorderPoint": 804,
-      "recommendedOrderQuantity": 1348,
+      "safetyStock": 121,
+      "reorderPoint": 925,
+      "recommendedOrderQuantity": 239,
       "turnoverRate": 5.51,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15161,11 +20580,34 @@ export const analyticsReport = {
         "upper": 807
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          807,
+          807,
+          807,
+          807,
+          807,
+          807,
+          807,
+          807
+        ],
+        "forecast": [
+          807,
+          807,
+          807
+        ],
+        "lower95": [
+          807,
+          807,
+          807
+        ],
+        "upper95": [
+          807,
+          807,
+          807
+        ],
         "points": [
           {
             "period": 1,
@@ -15185,12 +20627,20 @@ export const analyticsReport = {
             "lower": 807,
             "upper": 807
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-08",
-      "safetyStock": 0,
-      "reorderPoint": 1591,
-      "recommendedOrderQuantity": 2539,
+      "safetyStock": 239,
+      "reorderPoint": 1829,
+      "recommendedOrderQuantity": 345,
       "turnoverRate": 1.07,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15241,11 +20691,34 @@ export const analyticsReport = {
         "upper": 2040
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2040,
+          2040,
+          2040,
+          2040,
+          2040,
+          2040,
+          2040,
+          2040
+        ],
+        "forecast": [
+          2040,
+          2040,
+          2040
+        ],
+        "lower95": [
+          2040,
+          2040,
+          2040
+        ],
+        "upper95": [
+          2040,
+          2040,
+          2040
+        ],
         "points": [
           {
             "period": 1,
@@ -15265,12 +20738,20 @@ export const analyticsReport = {
             "lower": 2040,
             "upper": 2040
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-06",
-      "safetyStock": 0,
-      "reorderPoint": 4021,
-      "recommendedOrderQuantity": 6575,
+      "safetyStock": 603,
+      "reorderPoint": 4625,
+      "recommendedOrderQuantity": 1029,
       "turnoverRate": 2.38,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15321,11 +20802,32 @@ export const analyticsReport = {
         "upper": 215
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          215,
+          215,
+          215,
+          215,
+          215,
+          215
+        ],
+        "forecast": [
+          215,
+          215,
+          215
+        ],
+        "lower95": [
+          215,
+          215,
+          215
+        ],
+        "upper95": [
+          215,
+          215,
+          215
+        ],
         "points": [
           {
             "period": 1,
@@ -15345,12 +20847,20 @@ export const analyticsReport = {
             "lower": 215,
             "upper": 215
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-09",
-      "safetyStock": 0,
-      "reorderPoint": 424,
-      "recommendedOrderQuantity": 675,
+      "safetyStock": 64,
+      "reorderPoint": 487,
+      "recommendedOrderQuantity": 90,
       "turnoverRate": 5.65,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15367,6 +20877,117 @@ export const analyticsReport = {
       "historicalTrend": {
         "stockOnHandChange": -0.143,
         "demandChange": 0,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Expedite replenishment and verify pipeline or redistribution options.",
+      "priorityScore": 150
+    },
+    {
+      "sku": "RN0044",
+      "description": "Fresenius: Dialysis Fistula Needle 15G (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 1891,
+      "ami": 1038,
+      "mos": 1.8,
+      "status": "understocked",
+      "daysOfSupply": 51,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 1127.8,
+      "usageRates": {
+        "daily": 37.05,
+        "weekly": 259.37,
+        "monthly": 1127.8
+      },
+      "forecastRange": {
+        "lower": 711.08,
+        "upper": 1544.52
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          460,
+          881,
+          1302,
+          1116.76,
+          928.8256,
+          738.230336,
+          828.23586816,
+          1123.4460189696001
+        ],
+        "forecast": [
+          1127.8025969909759,
+          1200.5159901880318,
+          1273.2293833850877
+        ],
+        "lower95": [
+          711.0835665601095,
+          611.186285653734,
+          551.450850197986
+        ],
+        "upper95": [
+          1544.5216274218424,
+          1789.8456947223294,
+          1995.0079165721893
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 1127.8025969909759,
+            "lower": 711.0835665601095,
+            "upper": 1544.5216274218424
+          },
+          {
+            "period": 2,
+            "value": 1200.5159901880318,
+            "lower": 611.186285653734,
+            "upper": 1789.8456947223294
+          },
+          {
+            "period": 3,
+            "value": 1273.2293833850877,
+            "lower": 551.450850197986,
+            "upper": 1995.0079165721893
+          }
+        ],
+        "residualStdDev": 212.6117502198298,
+        "rmse": 212.6117502198298,
+        "mape": 19.109051282458786,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-09-04",
+      "safetyStock": 344,
+      "reorderPoint": 2639,
+      "recommendedOrderQuantity": 748,
+      "turnoverRate": 4.17,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 268.34,
+        "wape": 0.293,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.569,
+        "demandChange": 1.257,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -15401,11 +21022,31 @@ export const analyticsReport = {
         "upper": 60
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          60,
+          60,
+          60,
+          60,
+          60
+        ],
+        "forecast": [
+          60,
+          60,
+          60
+        ],
+        "lower95": [
+          60,
+          60,
+          60
+        ],
+        "upper95": [
+          60,
+          60,
+          60
+        ],
         "points": [
           {
             "period": 1,
@@ -15425,12 +21066,20 @@ export const analyticsReport = {
             "lower": 60,
             "upper": 60
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-07",
-      "safetyStock": 0,
-      "reorderPoint": 118,
-      "recommendedOrderQuantity": 192,
+      "safetyStock": 18,
+      "reorderPoint": 136,
+      "recommendedOrderQuantity": 29,
       "turnoverRate": 5.82,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15481,11 +21130,33 @@ export const analyticsReport = {
         "upper": 2107
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          2107,
+          2107,
+          2107,
+          2107,
+          2107,
+          2107,
+          2107
+        ],
+        "forecast": [
+          2107,
+          2107,
+          2107
+        ],
+        "lower95": [
+          2107,
+          2107,
+          2107
+        ],
+        "upper95": [
+          2107,
+          2107,
+          2107
+        ],
         "points": [
           {
             "period": 1,
@@ -15505,12 +21176,20 @@ export const analyticsReport = {
             "lower": 2107,
             "upper": 2107
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-09",
-      "safetyStock": 0,
-      "reorderPoint": 4153,
-      "recommendedOrderQuantity": 6610,
+      "safetyStock": 623,
+      "reorderPoint": 4776,
+      "recommendedOrderQuantity": 881,
       "turnoverRate": 3.34,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15561,11 +21240,31 @@ export const analyticsReport = {
         "upper": 30
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        "forecast": [
+          30,
+          30,
+          30
+        ],
+        "lower95": [
+          30,
+          30,
+          30
+        ],
+        "upper95": [
+          30,
+          30,
+          30
+        ],
         "points": [
           {
             "period": 1,
@@ -15585,12 +21284,20 @@ export const analyticsReport = {
             "lower": 30,
             "upper": 30
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-10",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 93,
+      "safetyStock": 9,
+      "reorderPoint": 68,
+      "recommendedOrderQuantity": 11,
       "turnoverRate": 6.32,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15637,40 +21344,68 @@ export const analyticsReport = {
         "monthly": 32.75
       },
       "forecastRange": {
-        "lower": 32.38,
-        "upper": 33.12
+        "lower": 32.42,
+        "upper": 33.08
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0.18711986841660933,
+        "fitted": [
+          32.67,
+          32.67,
+          32.67,
+          32.6772,
+          32.755872
+        ],
+        "forecast": [
+          32.74937472,
+          32.76005184,
+          32.77072896
+        ],
+        "lower95": [
+          32.42071094605344,
+          32.295251073424055,
+          32.20146660491723
+        ],
+        "upper95": [
+          33.07803849394656,
+          33.22485260657595,
+          33.33999131508277
+        ],
         "points": [
           {
             "period": 1,
-            "value": 32.74951125,
-            "lower": 32.38275630790344,
-            "upper": 33.11626619209655
+            "value": 32.74937472,
+            "lower": 32.42071094605344,
+            "upper": 33.07803849394656
           },
           {
             "period": 2,
-            "value": 32.74951125,
-            "lower": 32.23084143681969,
-            "upper": 33.26818106318031
+            "value": 32.76005184,
+            "lower": 32.295251073424055,
+            "upper": 33.22485260657595
           },
           {
             "period": 3,
-            "value": 32.74951125,
-            "lower": 32.11427305636178,
-            "upper": 33.38474944363821
+            "value": 32.77072896,
+            "lower": 32.20146660491723,
+            "upper": 33.33999131508277
           }
-        ]
+        ],
+        "residualStdDev": 0.16768559895232488,
+        "rmse": 0.16768559895232488,
+        "mape": 0.3331928964372643,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-11",
-      "safetyStock": 0,
-      "reorderPoint": 65,
-      "recommendedOrderQuantity": 100,
+      "safetyStock": 10,
+      "reorderPoint": 74,
+      "recommendedOrderQuantity": 11,
       "turnoverRate": 5.83,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15680,8 +21415,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.16,
-        "wape": 0.005,
+        "mae": 0.28,
+        "wape": 0.008,
         "observations": 3
       },
       "historicalTrend": {
@@ -15721,11 +21456,29 @@ export const analyticsReport = {
         "upper": 6206
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          6206,
+          6206,
+          6206
+        ],
+        "forecast": [
+          6206,
+          6206,
+          6206
+        ],
+        "lower95": [
+          6206,
+          6206,
+          6206
+        ],
+        "upper95": [
+          6206,
+          6206,
+          6206
+        ],
         "points": [
           {
             "period": 1,
@@ -15745,12 +21498,20 @@ export const analyticsReport = {
             "lower": 6206,
             "upper": 6206
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 12234,
-      "recommendedOrderQuantity": 30910,
+      "safetyStock": 1835,
+      "reorderPoint": 14069,
+      "recommendedOrderQuantity": 14038,
       "turnoverRate": 2402.32,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -15792,48 +21553,79 @@ export const analyticsReport = {
       "status": "understocked",
       "daysOfSupply": 62,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 491.54,
+      "forecastMonthlyDemand": 494.78,
       "usageRates": {
-        "daily": 16.15,
-        "weekly": 113.04,
-        "monthly": 491.54
+        "daily": 16.26,
+        "weekly": 113.79,
+        "monthly": 494.78
       },
       "forecastRange": {
-        "lower": 0,
-        "upper": 1015.19
+        "lower": 11,
+        "upper": 978.55
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 267.17115412266736,
+        "fitted": [
+          636,
+          636,
+          636,
+          636,
+          636,
+          636,
+          636,
+          483.6
+        ],
+        "forecast": [
+          494.77600000000007,
+          475.47200000000004,
+          456.16800000000006
+        ],
+        "lower95": [
+          11.00314308469109,
+          0,
+          0
+        ],
+        "upper95": [
+          978.548856915309,
+          1159.6301353576089,
+          1294.0871675000637
+        ],
         "points": [
           {
             "period": 1,
-            "value": 491.5375,
-            "lower": 0,
-            "upper": 1015.1929620804281
+            "value": 494.77600000000007,
+            "lower": 11.00314308469109,
+            "upper": 978.548856915309
           },
           {
             "period": 2,
-            "value": 491.5375,
+            "value": 475.47200000000004,
             "lower": 0,
-            "upper": 1232.0981564848914
+            "upper": 1159.6301353576089
           },
           {
             "period": 3,
-            "value": 491.5375,
+            "value": 456.16800000000006,
             "lower": 0,
-            "upper": 1398.535365984259
+            "upper": 1294.0871675000637
           }
-        ]
+        ],
+        "residualStdDev": 246.8228861812801,
+        "rmse": 246.8228861812801,
+        "mape": 9074.851752021563,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-15",
-      "safetyStock": 519,
-      "reorderPoint": 1487,
-      "recommendedOrderQuantity": 1442,
-      "turnoverRate": 6.31,
+      "safetyStock": 143,
+      "reorderPoint": 1100,
+      "recommendedOrderQuantity": 91,
+      "turnoverRate": 6.35,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -15842,8 +21634,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 142.88,
-        "wape": 0.269,
+        "mae": 131.23,
+        "wape": 0.248,
         "observations": 6
       },
       "historicalTrend": {
@@ -15863,59 +21655,88 @@ export const analyticsReport = {
       "priorityScore": 135
     },
     {
-      "sku": "RN0044",
-      "description": "Fresenius: Dialysis Fistula Needle 15G (1)",
+      "sku": "RN0430",
+      "description": "Peritonial Dialysis Catheter 57cm PD (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 1891,
-      "ami": 1038,
-      "mos": 1.8,
+      "stockOnHand": 11,
+      "ami": 6,
+      "mos": 1.7,
       "status": "understocked",
       "daysOfSupply": 61,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 939.65,
+      "forecastMonthlyDemand": 5.49,
       "usageRates": {
-        "daily": 30.87,
-        "weekly": 216.1,
-        "monthly": 939.65
+        "daily": 0.18,
+        "weekly": 1.26,
+        "monthly": 5.49
       },
       "forecastRange": {
-        "lower": 686.1,
-        "upper": 1193.2
+        "lower": 3.06,
+        "upper": 7.91
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 129.36260428015575,
+        "observations": 6,
+        "fitted": [
+          9,
+          9,
+          9,
+          9,
+          6.4079999999999995,
+          5.58432
+        ],
+        "forecast": [
+          5.486092800000001,
+          5.0553216,
+          4.6245504
+        ],
+        "lower95": [
+          3.0649962865253375,
+          1.6313740748299161,
+          0.4310882286340174
+        ],
+        "upper95": [
+          7.907189313474664,
+          8.479269125170084,
+          8.818012571365983
+        ],
         "points": [
           {
             "period": 1,
-            "value": 939.6501393304687,
-            "lower": 686.0994349413635,
-            "upper": 1193.200843719574
+            "value": 5.486092800000001,
+            "lower": 3.0649962865253375,
+            "upper": 7.907189313474664
           },
           {
             "period": 2,
-            "value": 939.6501393304687,
-            "lower": 581.0752944341446,
-            "upper": 1298.224984226793
+            "value": 5.0553216,
+            "lower": 1.6313740748299161,
+            "upper": 8.479269125170084
           },
           {
             "period": 3,
-            "value": 939.6501393304687,
-            "lower": 500.4874370336613,
-            "upper": 1378.8128416272762
+            "value": 4.6245504,
+            "lower": 0.4310882286340174,
+            "upper": 8.818012571365983
           }
-        ]
+        ],
+        "residualStdDev": 1.2352533232013587,
+        "rmse": 1.2352533232013587,
+        "mape": 11.317028571428569,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-14",
-      "safetyStock": 417,
-      "reorderPoint": 2270,
-      "recommendedOrderQuantity": 2794,
-      "turnoverRate": 3.47,
+      "safetyStock": 2,
+      "reorderPoint": 12,
+      "recommendedOrderQuantity": 1,
+      "turnoverRate": 2.82,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -15924,20 +21745,20 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 158.24,
-        "wape": 0.173,
-        "observations": 6
+        "mae": 1.48,
+        "wape": 0.217,
+        "observations": 4
       },
       "historicalTrend": {
-        "stockOnHandChange": -0.569,
-        "demandChange": 1.257,
+        "stockOnHandChange": -0.686,
+        "demandChange": -0.333,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
           "score": null
         }
       },
-      "observations": 8,
+      "observations": 6,
       "dataQualityFlags": [
         "mos_reconciliation"
       ],
@@ -15967,11 +21788,29 @@ export const analyticsReport = {
         "upper": 9584
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          9584,
+          9584,
+          9584
+        ],
+        "forecast": [
+          9584,
+          9584,
+          9584
+        ],
+        "lower95": [
+          9584,
+          9584,
+          9584
+        ],
+        "upper95": [
+          9584,
+          9584,
+          9584
+        ],
         "points": [
           {
             "period": 1,
@@ -15991,12 +21830,20 @@ export const analyticsReport = {
             "lower": 9584,
             "upper": 9584
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-28",
-      "safetyStock": 0,
-      "reorderPoint": 18892,
-      "recommendedOrderQuantity": 33796,
+      "safetyStock": 2834,
+      "reorderPoint": 21726,
+      "recommendedOrderQuantity": 7740,
       "turnoverRate": 8.21,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -16049,11 +21896,34 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -16073,12 +21943,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 498,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 226,
       "turnoverRate": 8.85,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -16131,11 +22009,29 @@ export const analyticsReport = {
         "upper": 7943
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          7943,
+          7943,
+          7943
+        ],
+        "forecast": [
+          7943,
+          7943,
+          7943
+        ],
+        "lower95": [
+          7943,
+          7943,
+          7943
+        ],
+        "upper95": [
+          7943,
+          7943,
+          7943
+        ],
         "points": [
           {
             "period": 1,
@@ -16155,12 +22051,20 @@ export const analyticsReport = {
             "lower": 7943,
             "upper": 7943
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-07-15",
-      "safetyStock": 0,
-      "reorderPoint": 15658,
-      "recommendedOrderQuantity": 39599,
+      "safetyStock": 2349,
+      "reorderPoint": 18006,
+      "recommendedOrderQuantity": 18004,
       "turnoverRate": 47658,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -16200,50 +22104,75 @@ export const analyticsReport = {
       "ami": 759,
       "mos": 12.2,
       "status": "excess",
-      "daysOfSupply": 374,
+      "daysOfSupply": 370,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 755.1,
+      "forecastMonthlyDemand": 765,
       "usageRates": {
-        "daily": 24.81,
-        "weekly": 173.66,
-        "monthly": 755.1
+        "daily": 25.13,
+        "weekly": 175.93,
+        "monthly": 765
       },
       "forecastRange": {
-        "lower": 755.1,
-        "upper": 755.1
+        "lower": 765,
+        "upper": 765
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          753,
+          759
+        ],
+        "forecast": [
+          765,
+          771,
+          777
+        ],
+        "lower95": [
+          765,
+          771,
+          777
+        ],
+        "upper95": [
+          765,
+          771,
+          777
+        ],
         "points": [
           {
             "period": 1,
-            "value": 755.0999999999999,
-            "lower": 755.0999999999999,
-            "upper": 755.0999999999999
+            "value": 765,
+            "lower": 765,
+            "upper": 765
           },
           {
             "period": 2,
-            "value": 755.0999999999999,
-            "lower": 755.0999999999999,
-            "upper": 755.0999999999999
+            "value": 771,
+            "lower": 771,
+            "upper": 771
           },
           {
             "period": 3,
-            "value": 755.0999999999999,
-            "lower": 755.0999999999999,
-            "upper": 755.0999999999999
+            "value": 777,
+            "lower": 777,
+            "upper": 777
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2027-07-24",
-      "safetyStock": 10,
-      "reorderPoint": 1498,
+      "expectedStockoutDate": "2027-07-19",
+      "safetyStock": 227,
+      "reorderPoint": 1741,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.98,
+      "turnoverRate": 0.99,
       "stockoutFrequency": 0.5,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16282,50 +22211,79 @@ export const analyticsReport = {
       "ami": 421,
       "mos": 12.5,
       "status": "excess",
-      "daysOfSupply": 516,
+      "daysOfSupply": 313,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 310.66,
+      "forecastMonthlyDemand": 512.69,
       "usageRates": {
-        "daily": 10.21,
-        "weekly": 71.45,
-        "monthly": 310.66
+        "daily": 16.84,
+        "weekly": 117.91,
+        "monthly": 512.69
       },
       "forecastRange": {
-        "lower": 54.45,
-        "upper": 566.87
+        "lower": 267.91,
+        "upper": 757.47
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 130.72089318845516,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          357.504,
+          510.76351999999997
+        ],
+        "forecast": [
+          512.6910975999999,
+          586.4294912,
+          660.1678847999999
+        ],
+        "lower95": [
+          267.91209470007095,
+          240.2597055147573,
+          236.19821515127342
+        ],
+        "upper95": [
+          757.4701004999289,
+          932.5992768852427,
+          1084.1375544487264
+        ],
         "points": [
           {
             "period": 1,
-            "value": 310.66201249999995,
-            "lower": 54.44906185062786,
-            "upper": 566.874963149372
+            "value": 512.6910975999999,
+            "lower": 267.91209470007095,
+            "upper": 757.4701004999289
           },
           {
             "period": 2,
-            "value": 310.66201249999995,
-            "lower": 0,
-            "upper": 673.0018421639704
+            "value": 586.4294912,
+            "lower": 240.2597055147573,
+            "upper": 932.5992768852427
           },
           {
             "period": 3,
-            "value": 310.66201249999995,
-            "lower": 0,
-            "upper": 754.4358605818497
+            "value": 660.1678847999999,
+            "lower": 236.19821515127342,
+            "upper": 1084.1375544487264
           }
-        ]
+        ],
+        "residualStdDev": 124.88724637751478,
+        "rmse": 124.88724637751478,
+        "mape": 22.995460279611777,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2027-12-13",
-      "safetyStock": 412,
-      "reorderPoint": 1024,
+      "expectedStockoutDate": "2027-05-23",
+      "safetyStock": 162,
+      "reorderPoint": 1246,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.59,
+      "turnoverRate": 0.97,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16334,8 +22292,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 171.9,
-        "wape": 0.555,
+        "mae": 175.54,
+        "wape": 0.567,
         "observations": 4
       },
       "historicalTrend": {
@@ -16377,35 +22335,60 @@ export const analyticsReport = {
         "upper": 63
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          63,
+          63
+        ],
+        "forecast": [
+          63.00000000000001,
+          63.00000000000001,
+          63.000000000000014
+        ],
+        "lower95": [
+          63.00000000000001,
+          63.00000000000001,
+          63.000000000000014
+        ],
+        "upper95": [
+          63.00000000000001,
+          63.00000000000001,
+          63.000000000000014
+        ],
         "points": [
           {
             "period": 1,
-            "value": 63,
-            "lower": 63,
-            "upper": 63
+            "value": 63.00000000000001,
+            "lower": 63.00000000000001,
+            "upper": 63.00000000000001
           },
           {
             "period": 2,
-            "value": 63,
-            "lower": 63,
-            "upper": 63
+            "value": 63.00000000000001,
+            "lower": 63.00000000000001,
+            "upper": 63.00000000000001
           },
           {
             "period": 3,
-            "value": 63,
-            "lower": 63,
-            "upper": 63
+            "value": 63.000000000000014,
+            "lower": 63.000000000000014,
+            "upper": 63.000000000000014
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-08-10",
-      "safetyStock": 0,
-      "reorderPoint": 124,
+      "safetyStock": 19,
+      "reorderPoint": 143,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.93,
       "stockoutFrequency": 0,
@@ -16446,50 +22429,81 @@ export const analyticsReport = {
       "ami": 28,
       "mos": 13.6,
       "status": "excess",
-      "daysOfSupply": 299,
+      "daysOfSupply": 378,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 38.37,
+      "forecastMonthlyDemand": 30.36,
       "usageRates": {
-        "daily": 1.26,
-        "weekly": 8.82,
-        "monthly": 38.37
+        "daily": 1,
+        "weekly": 6.98,
+        "monthly": 30.36
       },
       "forecastRange": {
         "lower": 0,
-        "upper": 100.23
+        "upper": 96.95
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 31.557585843692568,
+        "fitted": [
+          86,
+          97,
+          108,
+          103.16000000000001,
+          98.2496,
+          0,
+          0,
+          19.447648153600007
+        ],
+        "forecast": [
+          30.357396054016007,
+          34.42526247731201,
+          38.49312890060801
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          96.95244345469607,
+          128.60488169823287,
+          153.83913453104356
+        ],
         "points": [
           {
             "period": 1,
-            "value": 38.37287368203125,
+            "value": 30.357396054016007,
             "lower": 0,
-            "upper": 100.22574193566868
+            "upper": 96.95244345469607
           },
           {
             "period": 2,
-            "value": 38.37287368203125,
+            "value": 34.42526247731201,
             "lower": 0,
-            "upper": 125.84603883800156
+            "upper": 128.60488169823287
           },
           {
             "period": 3,
-            "value": 38.37287368203125,
+            "value": 38.49312890060801,
             "lower": 0,
-            "upper": 145.50518409119533
+            "upper": 153.83913453104356
           }
-        ]
+        ],
+        "residualStdDev": 33.97706500034697,
+        "rmse": 33.97706500034697,
+        "mape": 99.1522780711055,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2027-05-10",
-      "safetyStock": 86,
-      "reorderPoint": 162,
+      "expectedStockoutDate": "2027-07-27",
+      "safetyStock": 10,
+      "reorderPoint": 73,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.33,
+      "turnoverRate": 1.05,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16498,8 +22512,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 28.45,
-        "wape": 0.583,
+        "mae": 28.25,
+        "wape": 0.579,
         "observations": 6
       },
       "historicalTrend": {
@@ -16519,6 +22533,114 @@ export const analyticsReport = {
       "priorityScore": 65
     },
     {
+      "sku": "LAB0578",
+      "description": "Sysmex Cell Pack, 20L (1)",
+      "programme": "Laboratory Services",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 513,
+      "ami": 37,
+      "mos": 13.7,
+      "status": "excess",
+      "daysOfSupply": 428,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 36.47,
+      "usageRates": {
+        "daily": 1.2,
+        "weekly": 8.39,
+        "monthly": 36.47
+      },
+      "forecastRange": {
+        "lower": 36.06,
+        "upper": 36.89
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 3,
+        "fitted": [
+          37.3,
+          37,
+          36.7
+        ],
+        "forecast": [
+          36.47200000000001,
+          36.18400000000001,
+          35.896000000000015
+        ],
+        "lower95": [
+          36.05622121266232,
+          35.59600000000002,
+          35.17585001562177
+        ],
+        "upper95": [
+          36.887778787337695,
+          36.772000000000006,
+          36.61614998437826
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 36.47200000000001,
+            "lower": 36.05622121266232,
+            "upper": 36.887778787337695
+          },
+          {
+            "period": 2,
+            "value": 36.18400000000001,
+            "lower": 35.59600000000002,
+            "upper": 36.772000000000006
+          },
+          {
+            "period": 3,
+            "value": 35.896000000000015,
+            "lower": 35.17585001562177,
+            "upper": 36.61614998437826
+          }
+        ],
+        "residualStdDev": 0.21213203435596223,
+        "rmse": 0.21213203435596223,
+        "mape": 0.40540540540540154,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2027-09-16",
+      "safetyStock": 11,
+      "reorderPoint": 82,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 1.33,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 0.3,
+        "wape": 0.008,
+        "observations": 1
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 6.125,
+        "demandChange": -0.008,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 4,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
+      "priorityScore": 65
+    },
+    {
       "sku": "RN0176",
       "description": "Temporary Catheter Set 12F X 20CM (1) Curved",
       "programme": "Renal",
@@ -16528,50 +22650,81 @@ export const analyticsReport = {
       "ami": 101,
       "mos": 14.3,
       "status": "excess",
-      "daysOfSupply": 499,
+      "daysOfSupply": 385,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 88.3,
+      "forecastMonthlyDemand": 114.4,
       "usageRates": {
-        "daily": 2.9,
-        "weekly": 20.31,
-        "monthly": 88.3
+        "daily": 3.76,
+        "weekly": 26.31,
+        "monthly": 114.4
       },
       "forecastRange": {
-        "lower": 58.25,
-        "upper": 118.35
+        "lower": 69.02,
+        "upper": 159.79
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 15.33197163617682,
+        "fitted": [
+          43,
+          78,
+          113,
+          106.24,
+          90.6544,
+          53.038464,
+          69.17065984,
+          113.56787671040001
+        ],
+        "forecast": [
+          114.40387898982401,
+          125.294182637568,
+          136.184486285312
+        ],
+        "lower95": [
+          69.01601159698419,
+          61.10604500342234,
+          57.57039391371467
+        ],
+        "upper95": [
+          159.79174638266383,
+          189.48232027171366,
+          214.79857865690934
+        ],
         "points": [
           {
             "period": 1,
-            "value": 88.29983814453125,
-            "lower": 58.24917373762469,
-            "upper": 118.35050255143781
+            "value": 114.40387898982401,
+            "lower": 69.01601159698419,
+            "upper": 159.79174638266383
           },
           {
             "period": 2,
-            "value": 88.29983814453125,
-            "lower": 45.80178098196154,
-            "upper": 130.79789530710096
+            "value": 125.294182637568,
+            "lower": 61.10604500342234,
+            "upper": 189.48232027171366
           },
           {
             "period": 3,
-            "value": 88.29983814453125,
-            "lower": 36.25056059056742,
-            "upper": 140.3491156984951
+            "value": 136.184486285312,
+            "lower": 57.57039391371467,
+            "upper": 214.79857865690934
           }
-        ]
+        ],
+        "residualStdDev": 23.157075200428483,
+        "rmse": 23.157075200428483,
+        "mape": 25.447937354516508,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2027-11-26",
-      "safetyStock": 44,
-      "reorderPoint": 218,
+      "expectedStockoutDate": "2027-08-04",
+      "safetyStock": 35,
+      "reorderPoint": 272,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.58,
+      "turnoverRate": 2.05,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16580,8 +22733,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 18.69,
-        "wape": 0.221,
+        "mae": 30.01,
+        "wape": 0.354,
         "observations": 6
       },
       "historicalTrend": {
@@ -16623,11 +22776,28 @@ export const analyticsReport = {
         "upper": 1084
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          1084,
+          1084
+        ],
+        "forecast": [
+          1084,
+          1084,
+          1084
+        ],
+        "lower95": [
+          1084,
+          1084,
+          1084
+        ],
+        "upper95": [
+          1084,
+          1084,
+          1084
+        ],
         "points": [
           {
             "period": 1,
@@ -16647,11 +22817,19 @@ export const analyticsReport = {
             "lower": 1084,
             "upper": 1084
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-10-23",
-      "safetyStock": 0,
-      "reorderPoint": 2137,
+      "safetyStock": 321,
+      "reorderPoint": 2457,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.27,
       "stockoutFrequency": 0.333,
@@ -16693,50 +22871,80 @@ export const analyticsReport = {
       "ami": 44,
       "mos": 16,
       "status": "excess",
-      "daysOfSupply": 460,
+      "daysOfSupply": 514,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 46.34,
+      "forecastMonthlyDemand": 41.48,
       "usageRates": {
-        "daily": 1.52,
-        "weekly": 10.66,
-        "monthly": 46.34
+        "daily": 1.36,
+        "weekly": 9.54,
+        "monthly": 41.48
       },
       "forecastRange": {
-        "lower": 4.04,
-        "upper": 88.63
+        "lower": 0,
+        "upper": 91.39
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 21.578139912550395,
+        "fitted": [
+          26,
+          70,
+          114,
+          94.63999999999999,
+          53.398399999999995,
+          29.903104,
+          34.46605824
+        ],
+        "forecast": [
+          41.4803718144,
+          40.8675319808,
+          40.254692147200004
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          91.3931170425594,
+          111.45481321773602,
+          126.70610282761311
+        ],
         "points": [
           {
             "period": 1,
-            "value": 46.3356750625,
-            "lower": 4.042520833901229,
-            "upper": 88.62882929109878
+            "value": 41.4803718144,
+            "lower": 0,
+            "upper": 91.3931170425594
           },
           {
             "period": 2,
-            "value": 46.3356750625,
+            "value": 40.8675319808,
             "lower": 0,
-            "upper": 106.1472273681214
+            "upper": 111.45481321773602
           },
           {
             "period": 3,
-            "value": 46.3356750625,
+            "value": 40.254692147200004,
             "lower": 0,
-            "upper": 119.58956699877957
+            "upper": 126.70610282761311
           }
-        ]
+        ],
+        "residualStdDev": 25.46568634089765,
+        "rmse": 25.46568634089765,
+        "mape": 35.138242432642855,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2027-10-17",
-      "safetyStock": 37,
-      "reorderPoint": 128,
+      "expectedStockoutDate": "2027-12-10",
+      "safetyStock": 12,
+      "reorderPoint": 93,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.29,
+      "turnoverRate": 1.15,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16745,8 +22953,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 10.06,
-        "wape": 0.196,
+        "mae": 33.95,
+        "wape": 0.661,
         "observations": 5
       },
       "historicalTrend": {
@@ -16775,50 +22983,78 @@ export const analyticsReport = {
       "ami": 90,
       "mos": 18.4,
       "status": "excess",
-      "daysOfSupply": 464,
+      "daysOfSupply": 440,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 108.62,
+      "forecastMonthlyDemand": 114.67,
       "usageRates": {
-        "daily": 3.57,
-        "weekly": 24.98,
-        "monthly": 108.62
+        "daily": 3.77,
+        "weekly": 26.37,
+        "monthly": 114.67
       },
       "forecastRange": {
         "lower": 0,
-        "upper": 292.8
+        "upper": 239.84
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 93.97095319864803,
+        "fitted": [
+          239,
+          7,
+          0,
+          0,
+          100.69600000000001
+        ],
+        "forecast": [
+          114.66976,
+          137.20032,
+          159.73088
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          239.84305587865936,
+          314.2220926785403,
+          376.53738821268996
+        ],
         "points": [
           {
             "period": 1,
-            "value": 108.619575,
+            "value": 114.66976,
             "lower": 0,
-            "upper": 292.80264326935014
+            "upper": 239.84305587865936
           },
           {
             "period": 2,
-            "value": 108.619575,
+            "value": 137.20032,
             "lower": 0,
-            "upper": 369.09376810600463
+            "upper": 314.2220926785403
           },
           {
             "period": 3,
-            "value": 108.619575,
+            "value": 159.73088,
             "lower": 0,
-            "upper": 427.63400713644154
+            "upper": 376.53738821268996
           }
-        ]
+        ],
+        "residualStdDev": 63.86392646870375,
+        "rmse": 63.86392646870375,
+        "mape": 52.971111111111114,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2027-10-22",
-      "safetyStock": 194,
-      "reorderPoint": 408,
+      "expectedStockoutDate": "2027-09-27",
+      "safetyStock": 37,
+      "reorderPoint": 285,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.96,
+      "turnoverRate": 1.01,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -16827,8 +23063,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 46.84,
-        "wape": 0.52,
+        "mae": 90,
+        "wape": 1,
         "observations": 3
       },
       "historicalTrend": {
@@ -16870,11 +23106,27 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -16894,7 +23146,11 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2028-07-14",
       "safetyStock": 0,
@@ -16931,88 +23187,6 @@ export const analyticsReport = {
       "priorityScore": 65
     },
     {
-      "sku": "RN0159",
-      "description": "Clip for Stay Safe Organizer (Sleep Safe) (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 40,
-      "ami": 2,
-      "mos": 24,
-      "status": "excess",
-      "daysOfSupply": 285,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 4.28,
-      "usageRates": {
-        "daily": 0.14,
-        "weekly": 0.98,
-        "monthly": 4.28
-      },
-      "forecastRange": {
-        "lower": 0,
-        "upper": 14.03
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 6,
-        "residualStdDev": 4.977361868688573,
-        "points": [
-          {
-            "period": 1,
-            "value": 4.27621875,
-            "lower": 0,
-            "upper": 14.031848012629602
-          },
-          {
-            "period": 2,
-            "value": 4.27621875,
-            "lower": 0,
-            "upper": 18.07276196269462
-          },
-          {
-            "period": 3,
-            "value": 4.27621875,
-            "lower": 0,
-            "upper": 21.173464292680173
-          }
-        ]
-      },
-      "expectedStockoutDate": "2027-04-25",
-      "safetyStock": 16,
-      "reorderPoint": 24,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.26,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 7.66,
-        "wape": 3.979,
-        "observations": 4
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.111,
-        "demandChange": -0.867,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
-      "priorityScore": 65
-    },
-    {
       "sku": "EPS0274",
       "description": "Over Boots (1)",
       "programme": "Epidemic / PPE Supplies",
@@ -17022,50 +23196,79 @@ export const analyticsReport = {
       "ami": 3.33,
       "mos": 25.53,
       "status": "excess",
-      "daysOfSupply": 819,
+      "daysOfSupply": 802,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 3.16,
+      "forecastMonthlyDemand": 3.22,
       "usageRates": {
-        "daily": 0.1,
-        "weekly": 0.73,
-        "monthly": 3.16
+        "daily": 0.11,
+        "weekly": 0.74,
+        "monthly": 3.22
       },
       "forecastRange": {
-        "lower": 2.81,
-        "upper": 3.51
+        "lower": 2.89,
+        "upper": 3.56
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.17875538453428472,
+        "fitted": [
+          3,
+          3,
+          3.000000000000001,
+          3.0000000000000013,
+          3.108000000000002,
+          3.1171200000000017
+        ],
+        "forecast": [
+          3.2244768000000015,
+          3.289257600000002,
+          3.3540384000000016
+        ],
+        "lower95": [
+          2.888427504352165,
+          2.8140121284689052,
+          2.771983946090214
+        ],
+        "upper95": [
+          3.560526095647838,
+          3.7645030715310983,
+          3.9360928539097895
+        ],
         "points": [
           {
             "period": 1,
-            "value": 3.1598625,
-            "lower": 2.809501946312802,
-            "upper": 3.510223053687198
+            "value": 3.2244768000000015,
+            "lower": 2.888427504352165,
+            "upper": 3.560526095647838
           },
           {
             "period": 2,
-            "value": 3.1598625,
-            "lower": 2.6643778532550177,
-            "upper": 3.6553471467449823
+            "value": 3.289257600000002,
+            "lower": 2.8140121284689052,
+            "upper": 3.7645030715310983
           },
           {
             "period": 3,
-            "value": 3.1598625,
-            "lower": 2.5530202200458096,
-            "upper": 3.7667047799541904
+            "value": 3.3540384000000016,
+            "lower": 2.771983946090214,
+            "upper": 3.9360928539097895
           }
-        ]
+        ],
+        "residualStdDev": 0.1714537222693044,
+        "rmse": 0.1714537222693044,
+        "mape": 3.816740376740376,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2028-10-10",
-      "safetyStock": 0,
+      "expectedStockoutDate": "2028-09-24",
+      "safetyStock": 1,
       "reorderPoint": 7,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.45,
+      "turnoverRate": 0.46,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -17074,8 +23277,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
-        "wape": 0.053,
+        "mae": 0.16,
+        "wape": 0.052,
         "observations": 4
       },
       "historicalTrend": {
@@ -17117,11 +23320,31 @@ export const analyticsReport = {
         "upper": 3
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "forecast": [
+          3,
+          3,
+          3
+        ],
+        "lower95": [
+          3,
+          3,
+          3
+        ],
+        "upper95": [
+          3,
+          3,
+          3
+        ],
         "points": [
           {
             "period": 1,
@@ -17141,11 +23364,19 @@ export const analyticsReport = {
             "lower": 3,
             "upper": 3
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-06-14",
-      "safetyStock": 0,
-      "reorderPoint": 6,
+      "safetyStock": 1,
+      "reorderPoint": 7,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.52,
       "stockoutFrequency": 0,
@@ -17186,50 +23417,81 @@ export const analyticsReport = {
       "ami": 180,
       "mos": 30.8,
       "status": "excess",
-      "daysOfSupply": 848,
+      "daysOfSupply": 821,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 199.18,
+      "forecastMonthlyDemand": 205.87,
       "usageRates": {
-        "daily": 6.54,
-        "weekly": 45.81,
-        "monthly": 199.18
+        "daily": 6.76,
+        "weekly": 47.34,
+        "monthly": 205.87
       },
       "forecastRange": {
-        "lower": 87.95,
-        "upper": 310.41
+        "lower": 104.77,
+        "upper": 306.96
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 56.7516020417622,
+        "fitted": [
+          180,
+          180,
+          180,
+          180,
+          180,
+          180,
+          211.128,
+          208.84528
+        ],
+        "forecast": [
+          205.86529280000002,
+          208.65436160000004,
+          211.44343040000004
+        ],
+        "lower95": [
+          104.76953028653764,
+          65.68336315501202,
+          36.34043329676612
+        ],
+        "upper95": [
+          306.9610553134624,
+          351.62536004498804,
+          386.546427503234
+        ],
         "points": [
           {
             "period": 1,
-            "value": 199.1793875,
-            "lower": 87.94624749814608,
-            "upper": 310.4125275018539
+            "value": 205.86529280000002,
+            "lower": 104.76953028653764,
+            "upper": 306.9610553134624
           },
           {
             "period": 2,
-            "value": 199.1793875,
-            "lower": 41.87197232403295,
-            "upper": 356.48680267596706
+            "value": 208.65436160000004,
+            "lower": 65.68336315501202,
+            "upper": 351.62536004498804
           },
           {
             "period": 3,
-            "value": 199.1793875,
-            "lower": 6.517937531366954,
-            "upper": 391.840837468633
+            "value": 211.44343040000004,
+            "lower": 36.34043329676612,
+            "upper": 386.546427503234
           }
-        ]
+        ],
+        "residualStdDev": 51.579470670133865,
+        "rmse": 51.579470670133865,
+        "mape": 10.742532408731439,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2028-11-09",
-      "safetyStock": 106,
-      "reorderPoint": 499,
+      "expectedStockoutDate": "2028-10-12",
+      "safetyStock": 61,
+      "reorderPoint": 470,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.68,
+      "turnoverRate": 0.7,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -17238,13 +23500,126 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 34.1,
-        "wape": 0.169,
+        "mae": 31.61,
+        "wape": 0.157,
         "observations": 6
       },
       "historicalTrend": {
         "stockOnHandChange": 8.238,
         "demandChange": 0,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
+      "priorityScore": 65
+    },
+    {
+      "sku": "RN0177",
+      "description": "Dual CAP (350)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 211,
+      "ami": 7,
+      "mos": 31.6,
+      "status": "excess",
+      "daysOfSupply": 906,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 7.09,
+      "usageRates": {
+        "daily": 0.23,
+        "weekly": 1.63,
+        "monthly": 7.09
+      },
+      "forecastRange": {
+        "lower": 5.23,
+        "upper": 8.94
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          4,
+          6,
+          8,
+          7.120000000000001,
+          6.2272,
+          7.3432319999999995,
+          6.91476992,
+          7.1236247552
+        ],
+        "forecast": [
+          7.086275878912001,
+          7.147826806784002,
+          7.209377734656002
+        ],
+        "lower95": [
+          5.228640964979358,
+          4.520734317562681,
+          3.9918596818108263
+        ],
+        "upper95": [
+          8.943910792844644,
+          9.774919296005322,
+          10.426895787501177
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 7.086275878912001,
+            "lower": 5.228640964979358,
+            "upper": 8.943910792844644
+          },
+          {
+            "period": 2,
+            "value": 7.147826806784002,
+            "lower": 4.520734317562681,
+            "upper": 9.774919296005322
+          },
+          {
+            "period": 3,
+            "value": 7.209377734656002,
+            "lower": 3.9918596818108263,
+            "upper": 10.426895787501177
+          }
+        ],
+        "residualStdDev": 0.9477729152717564,
+        "rmse": 0.9477729152717564,
+        "mape": 10.803445444971063,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2029-01-06",
+      "safetyStock": 2,
+      "reorderPoint": 16,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 0.46,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 1.11,
+        "wape": 0.168,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 1.425,
+        "demandChange": 0.75,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -17281,11 +23656,30 @@ export const analyticsReport = {
         "upper": 4
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          4,
+          4,
+          4,
+          4
+        ],
+        "forecast": [
+          4,
+          4,
+          4
+        ],
+        "lower95": [
+          4,
+          4,
+          4
+        ],
+        "upper95": [
+          4,
+          4,
+          4
+        ],
         "points": [
           {
             "period": 1,
@@ -17305,11 +23699,19 @@ export const analyticsReport = {
             "lower": 4,
             "upper": 4
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2029-05-07",
-      "safetyStock": 0,
-      "reorderPoint": 8,
+      "safetyStock": 1,
+      "reorderPoint": 9,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.28,
       "stockoutFrequency": 0,
@@ -17350,50 +23752,76 @@ export const analyticsReport = {
       "ami": 744,
       "mos": 38.5,
       "status": "excess",
-      "daysOfSupply": 1657,
+      "daysOfSupply": 528,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 525.99,
+      "forecastMonthlyDemand": 1652.16,
       "usageRates": {
-        "daily": 17.28,
-        "weekly": 120.97,
-        "monthly": 525.99
+        "daily": 54.28,
+        "weekly": 379.96,
+        "monthly": 1652.16
       },
       "forecastRange": {
-        "lower": 275.69,
-        "upper": 776.29
+        "lower": 937.02,
+        "upper": 2367.3
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 127.7034846822905,
+        "fitted": [
+          228,
+          744,
+          1260
+        ],
+        "forecast": [
+          1652.1599999999999,
+          2147.52,
+          2642.88
+        ],
+        "lower95": [
+          937.0204857791732,
+          1136.1599999999999,
+          1404.2220268694027
+        ],
+        "upper95": [
+          2367.2995142208265,
+          3158.88,
+          3881.5379731305975
+        ],
         "points": [
           {
             "period": 1,
-            "value": 525.99,
-            "lower": 275.69117002271065,
-            "upper": 776.2888299772894
+            "value": 1652.1599999999999,
+            "lower": 937.0204857791732,
+            "upper": 2367.2995142208265
           },
           {
             "period": 2,
-            "value": 525.99,
-            "lower": 172.01399999999995,
-            "upper": 879.9660000000001
+            "value": 2147.52,
+            "lower": 1136.1599999999999,
+            "upper": 3158.88
           },
           {
             "period": 3,
-            "value": 525.99,
-            "lower": 92.45970940429089,
-            "upper": 959.5202905957092
+            "value": 2642.88,
+            "lower": 1404.2220268694027,
+            "upper": 3881.5379731305975
           }
-        ]
+        ],
+        "residualStdDev": 364.8670990922585,
+        "rmse": 364.8670990922585,
+        "mape": 34.67741935483871,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2031-01-27",
-      "safetyStock": 688,
-      "reorderPoint": 1725,
+      "expectedStockoutDate": "2027-12-24",
+      "safetyStock": 562,
+      "reorderPoint": 4307,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.21,
+      "turnoverRate": 0.64,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -17402,8 +23830,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 335.4,
-        "wape": 0.451,
+        "mae": 516,
+        "wape": 0.694,
         "observations": 1
       },
       "historicalTrend": {
@@ -17445,11 +23873,31 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -17469,7 +23917,15 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-09-13",
       "safetyStock": 0,
@@ -17505,89 +23961,6 @@ export const analyticsReport = {
       "priorityScore": 65
     },
     {
-      "sku": "EM0916",
-      "description": "Misoprostol 200mcg Tablet (4)",
-      "programme": "Other Essential Medicines",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 63164,
-      "ami": null,
-      "mos": 40.36,
-      "status": "excess",
-      "daysOfSupply": 1228,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1565.2,
-      "usageRates": {
-        "daily": 51.42,
-        "weekly": 359.96,
-        "monthly": 1565.2
-      },
-      "forecastRange": {
-        "lower": 1565.2,
-        "upper": 1565.2
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "limited_history",
-        "alpha": 0.35,
-        "observations": 2,
-        "residualStdDev": 0,
-        "points": [
-          {
-            "period": 1,
-            "value": 1565.2,
-            "lower": 1565.2,
-            "upper": 1565.2
-          },
-          {
-            "period": 2,
-            "value": 1565.2,
-            "lower": 1565.2,
-            "upper": 1565.2
-          },
-          {
-            "period": 3,
-            "value": 1565.2,
-            "lower": 1565.2,
-            "upper": 1565.2
-          }
-        ]
-      },
-      "expectedStockoutDate": "2029-11-24",
-      "safetyStock": 3933,
-      "reorderPoint": 7018,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.24,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "insufficient_history",
-        "mae": null,
-        "wape": null,
-        "observations": 0
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.271,
-        "demandChange": -1,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
-      "dataQualityFlags": [
-        "estimated_mos",
-        "limited_history"
-      ],
-      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
-      "priorityScore": 65
-    },
-    {
       "sku": "TB0121",
       "description": "Rifabutin 150mg Capsule (100)",
       "programme": "Anti-TB Medicines",
@@ -17610,11 +23983,31 @@ export const analyticsReport = {
         "upper": 54
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          54,
+          54,
+          54,
+          54,
+          54
+        ],
+        "forecast": [
+          54,
+          54,
+          54
+        ],
+        "lower95": [
+          54,
+          54,
+          54
+        ],
+        "upper95": [
+          54,
+          54,
+          54
+        ],
         "points": [
           {
             "period": 1,
@@ -17634,11 +24027,19 @@ export const analyticsReport = {
             "lower": 54,
             "upper": 54
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2029-12-09",
-      "safetyStock": 0,
-      "reorderPoint": 106,
+      "safetyStock": 16,
+      "reorderPoint": 122,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.29,
       "stockoutFrequency": 0,
@@ -17679,50 +24080,81 @@ export const analyticsReport = {
       "ami": 5,
       "mos": 45,
       "status": "excess",
-      "daysOfSupply": 132,
+      "daysOfSupply": 2694,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 52.06,
+      "forecastMonthlyDemand": 2.54,
       "usageRates": {
-        "daily": 1.71,
-        "weekly": 11.97,
-        "monthly": 52.06
+        "daily": 0.08,
+        "weekly": 0.58,
+        "monthly": 2.54
       },
       "forecastRange": {
         "lower": 0,
-        "upper": 243
+        "upper": 184.62
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 97.42121260839106,
+        "fitted": [
+          258,
+          263,
+          268,
+          265.8,
+          263.568,
+          0,
+          0,
+          0
+        ],
+        "forecast": [
+          2.542403297280007,
+          9.20088221696001,
+          15.859361136640015
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          184.62431251412448,
+          266.7035876942081,
+          331.23447903935846
+        ],
         "points": [
           {
             "period": 1,
-            "value": 52.059044855468755,
+            "value": 2.542403297280007,
             "lower": 0,
-            "upper": 243.00462156791522
+            "upper": 184.62431251412448
           },
           {
             "period": 2,
-            "value": 52.059044855468755,
+            "value": 9.20088221696001,
             "lower": 0,
-            "upper": 322.0968691173628
+            "upper": 266.7035876942081
           },
           {
             "period": 3,
-            "value": 52.059044855468755,
+            "value": 15.859361136640015,
             "lower": 0,
-            "upper": 382.7864852019666
+            "upper": 331.23447903935846
           }
-        ]
+        ],
+        "residualStdDev": 92.89893327390024,
+        "rmse": 92.89893327390024,
+        "mape": 238.17606373347817,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-11-23",
-      "safetyStock": 313,
-      "reorderPoint": 416,
-      "recommendedOrderQuantity": 35,
-      "turnoverRate": 2.75,
+      "expectedStockoutDate": "2033-11-28",
+      "safetyStock": 2,
+      "reorderPoint": 13,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 0.13,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -17731,8 +24163,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 100.69,
-        "wape": 1.081,
+        "mae": 45.73,
+        "wape": 0.491,
         "observations": 6
       },
       "historicalTrend": {
@@ -17761,48 +24193,73 @@ export const analyticsReport = {
       "ami": 86.33,
       "mos": 54.2,
       "status": "excess",
-      "daysOfSupply": 1655,
+      "daysOfSupply": 1645,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 86.12,
+      "forecastMonthlyDemand": 86.66,
       "usageRates": {
-        "daily": 2.83,
-        "weekly": 19.8,
-        "monthly": 86.12
+        "daily": 2.85,
+        "weekly": 19.93,
+        "monthly": 86.66
       },
       "forecastRange": {
-        "lower": 86.12,
-        "upper": 86.12
+        "lower": 86.66,
+        "upper": 86.66
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          86,
+          86.33
+        ],
+        "forecast": [
+          86.66000000000001,
+          86.99000000000001,
+          87.32000000000002
+        ],
+        "lower95": [
+          86.66000000000001,
+          86.99000000000001,
+          87.32000000000002
+        ],
+        "upper95": [
+          86.66000000000001,
+          86.99000000000001,
+          87.32000000000002
+        ],
         "points": [
           {
             "period": 1,
-            "value": 86.1155,
-            "lower": 86.1155,
-            "upper": 86.1155
+            "value": 86.66000000000001,
+            "lower": 86.66000000000001,
+            "upper": 86.66000000000001
           },
           {
             "period": 2,
-            "value": 86.1155,
-            "lower": 86.1155,
-            "upper": 86.1155
+            "value": 86.99000000000001,
+            "lower": 86.99000000000001,
+            "upper": 86.99000000000001
           },
           {
             "period": 3,
-            "value": 86.1155,
-            "lower": 86.1155,
-            "upper": 86.1155
+            "value": 87.32000000000002,
+            "lower": 87.32000000000002,
+            "upper": 87.32000000000002
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2031-01-25",
-      "safetyStock": 1,
-      "reorderPoint": 170,
+      "expectedStockoutDate": "2031-01-14",
+      "safetyStock": 26,
+      "reorderPoint": 197,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.22,
       "stockoutFrequency": 0,
@@ -17842,52 +24299,80 @@ export const analyticsReport = {
       "asOfDate": "2026-07-15",
       "stockOnHand": 317,
       "ami": null,
-      "mos": 64.04,
+      "mos": 69.52,
       "status": "excess",
-      "daysOfSupply": 1949,
+      "daysOfSupply": 2116,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 4.95,
+      "forecastMonthlyDemand": 4.56,
       "usageRates": {
-        "daily": 0.16,
-        "weekly": 1.14,
-        "monthly": 4.95
+        "daily": 0.15,
+        "weekly": 1.05,
+        "monthly": 4.56
       },
       "forecastRange": {
-        "lower": 2.01,
-        "upper": 7.89
+        "lower": 1.62,
+        "upper": 7.5
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 1.5,
+        "fitted": [
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "forecast": [
+          4.56,
+          4.319999999999999,
+          4.08
+        ],
+        "lower95": [
+          1.6199999999999997,
+          0.1622121266230998,
+          0
+        ],
+        "upper95": [
+          7.5,
+          8.477787873376899,
+          9.172229374252499
+        ],
         "points": [
           {
             "period": 1,
-            "value": 4.95,
-            "lower": 2.0100000000000002,
-            "upper": 7.890000000000001
+            "value": 4.56,
+            "lower": 1.6199999999999997,
+            "upper": 7.5
           },
           {
             "period": 2,
-            "value": 4.95,
-            "lower": 0.7922121266231006,
-            "upper": 9.1077878733769
+            "value": 4.319999999999999,
+            "lower": 0.1622121266230998,
+            "upper": 8.477787873376899
           },
           {
             "period": 3,
-            "value": 4.95,
+            "value": 4.08,
             "lower": 0,
-            "upper": 10.0422293742525
+            "upper": 9.172229374252499
           }
-        ]
+        ],
+        "residualStdDev": 1.5,
+        "rmse": 1.5,
+        "mape": 25,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2031-11-15",
-      "safetyStock": 3,
-      "reorderPoint": 13,
+      "expectedStockoutDate": "2032-04-29",
+      "safetyStock": 1,
+      "reorderPoint": 10,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.24,
+      "turnoverRate": 0.22,
       "stockoutFrequency": 0.125,
       "stockAgeDays": null,
       "stagnant": false,
@@ -17917,6 +24402,115 @@ export const analyticsReport = {
       "priorityScore": 65
     },
     {
+      "sku": "PC0054",
+      "description": "Safety Goggles (1)",
+      "programme": "Epidemic / PPE Supplies",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 22998,
+      "ami": 183.33,
+      "mos": 125.45,
+      "status": "excess",
+      "daysOfSupply": 3823,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 183.08,
+      "usageRates": {
+        "daily": 6.01,
+        "weekly": 42.1,
+        "monthly": 183.08
+      },
+      "forecastRange": {
+        "lower": 182.71,
+        "upper": 183.45
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 4,
+        "fitted": [
+          183,
+          183,
+          183,
+          183
+        ],
+        "forecast": [
+          183.07920000000001,
+          183.0924,
+          183.1056
+        ],
+        "lower95": [
+          182.70576984588814,
+          182.56429001145594,
+          182.4588
+        ],
+        "upper95": [
+          183.4526301541119,
+          183.62050998854406,
+          183.75240000000002
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 183.07920000000001,
+            "lower": 182.70576984588814,
+            "upper": 183.4526301541119
+          },
+          {
+            "period": 2,
+            "value": 183.0924,
+            "lower": 182.56429001145594,
+            "upper": 183.62050998854406
+          },
+          {
+            "period": 3,
+            "value": 183.1056,
+            "lower": 182.4588,
+            "upper": 183.75240000000002
+          }
+        ],
+        "residualStdDev": 0.19052558883258372,
+        "rmse": 0.19052558883258372,
+        "mape": 0.060001090928928254,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2037-01-01",
+      "safetyStock": 54,
+      "reorderPoint": 415,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 0.1,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 0.17,
+        "wape": 0.001,
+        "observations": 2
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 0,
+        "demandChange": 0.002,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 7,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
+      "priorityScore": 65
+    },
+    {
       "sku": "IMAG0224",
       "description": "CD Cover (50)",
       "programme": "Imaging",
@@ -17939,11 +24533,28 @@ export const analyticsReport = {
         "upper": 21.33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          21.33,
+          21.33
+        ],
+        "forecast": [
+          21.33,
+          21.33,
+          21.33
+        ],
+        "lower95": [
+          21.33,
+          21.33,
+          21.33
+        ],
+        "upper95": [
+          21.33,
+          21.33,
+          21.33
+        ],
         "points": [
           {
             "period": 1,
@@ -17963,11 +24574,19 @@ export const analyticsReport = {
             "lower": 21.33,
             "upper": 21.33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2057-07-05",
-      "safetyStock": 0,
-      "reorderPoint": 42,
+      "safetyStock": 6,
+      "reorderPoint": 48,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.03,
       "stockoutFrequency": 0,
@@ -18021,11 +24640,28 @@ export const analyticsReport = {
         "upper": 21.33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          21.33,
+          21.33
+        ],
+        "forecast": [
+          21.33,
+          21.33,
+          21.33
+        ],
+        "lower95": [
+          21.33,
+          21.33,
+          21.33
+        ],
+        "upper95": [
+          21.33,
+          21.33,
+          21.33
+        ],
         "points": [
           {
             "period": 1,
@@ -18045,11 +24681,19 @@ export const analyticsReport = {
             "lower": 21.33,
             "upper": 21.33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2057-11-03",
-      "safetyStock": 0,
-      "reorderPoint": 42,
+      "safetyStock": 6,
+      "reorderPoint": 48,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.03,
       "stockoutFrequency": 0,
@@ -18103,11 +24747,30 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -18127,7 +24790,15 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2067-11-14",
       "safetyStock": 0,
@@ -18185,11 +24856,27 @@ export const analyticsReport = {
         "upper": 7
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          7
+        ],
+        "forecast": [
+          7,
+          7,
+          7
+        ],
+        "lower95": [
+          7,
+          7,
+          7
+        ],
+        "upper95": [
+          7,
+          7,
+          7
+        ],
         "points": [
           {
             "period": 1,
@@ -18209,11 +24896,15 @@ export const analyticsReport = {
             "lower": 7,
             "upper": 7
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "4632-07-04",
-      "safetyStock": 0,
-      "reorderPoint": 14,
+      "safetyStock": 2,
+      "reorderPoint": 16,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0,
       "stockoutFrequency": 0,
@@ -18268,11 +24959,29 @@ export const analyticsReport = {
         "upper": 138
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          138,
+          138,
+          138
+        ],
+        "forecast": [
+          138,
+          138,
+          138
+        ],
+        "lower95": [
+          138,
+          138,
+          138
+        ],
+        "upper95": [
+          138,
+          138,
+          138
+        ],
         "points": [
           {
             "period": 1,
@@ -18292,12 +25001,20 @@ export const analyticsReport = {
             "lower": 138,
             "upper": 138
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-04",
-      "safetyStock": 0,
-      "reorderPoint": 272,
-      "recommendedOrderQuantity": 453,
+      "safetyStock": 41,
+      "reorderPoint": 313,
+      "recommendedOrderQuantity": 78,
       "turnoverRate": 3.71,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -18350,11 +25067,30 @@ export const analyticsReport = {
         "upper": 16
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          16,
+          16,
+          16,
+          16
+        ],
+        "forecast": [
+          16,
+          16,
+          16
+        ],
+        "lower95": [
+          16,
+          16,
+          16
+        ],
+        "upper95": [
+          16,
+          16,
+          16
+        ],
         "points": [
           {
             "period": 1,
@@ -18374,12 +25110,20 @@ export const analyticsReport = {
             "lower": 16,
             "upper": 16
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-08-29",
-      "safetyStock": 0,
-      "reorderPoint": 32,
-      "recommendedOrderQuantity": 56,
+      "safetyStock": 5,
+      "reorderPoint": 36,
+      "recommendedOrderQuantity": 12,
       "turnoverRate": 6.86,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -18410,6 +25154,117 @@ export const analyticsReport = {
       "priorityScore": 60
     },
     {
+      "sku": "RN0357",
+      "description": "Permanent catheter 14.5F x 55cm (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 46,
+      "ami": 22,
+      "mos": 2.1,
+      "status": "adequate",
+      "daysOfSupply": 52,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 26.9,
+      "usageRates": {
+        "daily": 0.88,
+        "weekly": 6.19,
+        "monthly": 26.9
+      },
+      "forecastRange": {
+        "lower": 19.29,
+        "upper": 34.51
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 6,
+        "fitted": [
+          8,
+          8,
+          8,
+          14.480000000000002,
+          16.5176,
+          24.944192
+        ],
+        "forecast": [
+          26.90161664,
+          30.62555648,
+          34.34949632
+        ],
+        "lower95": [
+          19.29371681985691,
+          19.86636137317781,
+          21.172227292618047
+        ],
+        "upper95": [
+          34.50951646014309,
+          41.38475158682219,
+          47.526765347381954
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 26.90161664,
+            "lower": 19.29371681985691,
+            "upper": 34.50951646014309
+          },
+          {
+            "period": 2,
+            "value": 30.62555648,
+            "lower": 19.86636137317781,
+            "upper": 41.38475158682219
+          },
+          {
+            "period": 3,
+            "value": 34.34949632,
+            "lower": 21.172227292618047,
+            "upper": 47.526765347381954
+          }
+        ],
+        "residualStdDev": 3.8815815408893313,
+        "rmse": 3.8815815408893313,
+        "mape": 17.370652884633618,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-09-05",
+      "safetyStock": 9,
+      "reorderPoint": 65,
+      "recommendedOrderQuantity": 19,
+      "turnoverRate": 9.26,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 4.84,
+        "wape": 0.27,
+        "observations": 4
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 1.091,
+        "demandChange": 1.75,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 7,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 60
+    },
+    {
       "sku": "EM2381",
       "description": "Naloxone HCL 0.4mg/ml Injection, 1ml (5)",
       "programme": "Other Essential Medicines",
@@ -18432,11 +25287,33 @@ export const analyticsReport = {
         "upper": 28
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          28,
+          28
+        ],
+        "forecast": [
+          28,
+          28,
+          28
+        ],
+        "lower95": [
+          28,
+          28,
+          28
+        ],
+        "upper95": [
+          28,
+          28,
+          28
+        ],
         "points": [
           {
             "period": 1,
@@ -18456,11 +25333,19 @@ export const analyticsReport = {
             "lower": 28,
             "upper": 28
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-07-19",
-      "safetyStock": 0,
-      "reorderPoint": 55,
+      "safetyStock": 8,
+      "reorderPoint": 63,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.65,
       "stockoutFrequency": 0,
@@ -18512,11 +25397,34 @@ export const analyticsReport = {
         "upper": 6722
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          6722,
+          6722,
+          6722,
+          6722,
+          6722,
+          6722,
+          6722,
+          6722
+        ],
+        "forecast": [
+          6722,
+          6722,
+          6722
+        ],
+        "lower95": [
+          6722,
+          6722,
+          6722
+        ],
+        "upper95": [
+          6722,
+          6722,
+          6722
+        ],
         "points": [
           {
             "period": 1,
@@ -18536,11 +25444,19 @@ export const analyticsReport = {
             "lower": 6722,
             "upper": 6722
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-07-30",
-      "safetyStock": 0,
-      "reorderPoint": 13251,
+      "safetyStock": 1988,
+      "reorderPoint": 15238,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.94,
       "stockoutFrequency": 0,
@@ -18570,86 +25486,6 @@ export const analyticsReport = {
       "priorityScore": 55
     },
     {
-      "sku": "LAB0578",
-      "description": "Sysmex Cell Pack, 20L (1)",
-      "programme": "Laboratory Services",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 513,
-      "ami": 37,
-      "mos": 13.7,
-      "status": "excess",
-      "daysOfSupply": 421,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 37.13,
-      "usageRates": {
-        "daily": 1.22,
-        "weekly": 8.54,
-        "monthly": 37.13
-      },
-      "forecastRange": {
-        "lower": 36.98,
-        "upper": 37.27
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 3,
-        "residualStdDev": 0.07424621202459031,
-        "points": [
-          {
-            "period": 1,
-            "value": 37.126749999999994,
-            "lower": 36.9812274244318,
-            "upper": 37.27227257556819
-          },
-          {
-            "period": 2,
-            "value": 37.126749999999994,
-            "lower": 36.92094999999998,
-            "upper": 37.332550000000005
-          },
-          {
-            "period": 3,
-            "value": 37.126749999999994,
-            "lower": 36.874697505467594,
-            "upper": 37.378802494532394
-          }
-        ]
-      },
-      "expectedStockoutDate": "2027-09-08",
-      "safetyStock": 0,
-      "reorderPoint": 74,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.35,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.19,
-        "wape": 0.005,
-        "observations": 1
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 6.125,
-        "demandChange": -0.008,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 4,
-      "dataQualityFlags": [],
-      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
-      "priorityScore": 55
-    },
-    {
       "sku": "DEN0173",
       "description": "Screw Post, Assorted (120)",
       "programme": "Dental",
@@ -18672,11 +25508,31 @@ export const analyticsReport = {
         "upper": 2
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "forecast": [
+          2,
+          2,
+          2
+        ],
+        "lower95": [
+          2,
+          2,
+          2
+        ],
+        "upper95": [
+          2,
+          2,
+          2
+        ],
         "points": [
           {
             "period": 1,
@@ -18696,11 +25552,19 @@ export const analyticsReport = {
             "lower": 2,
             "upper": 2
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-09-14",
-      "safetyStock": 0,
-      "reorderPoint": 4,
+      "safetyStock": 1,
+      "reorderPoint": 5,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.86,
       "stockoutFrequency": 0,
@@ -18752,11 +25616,31 @@ export const analyticsReport = {
         "upper": 70
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          70,
+          70,
+          70,
+          70,
+          70
+        ],
+        "forecast": [
+          70,
+          70,
+          70
+        ],
+        "lower95": [
+          70,
+          70,
+          70
+        ],
+        "upper95": [
+          70,
+          70,
+          70
+        ],
         "points": [
           {
             "period": 1,
@@ -18776,11 +25660,19 @@ export const analyticsReport = {
             "lower": 70,
             "upper": 70
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-09-27",
-      "safetyStock": 0,
-      "reorderPoint": 138,
+      "safetyStock": 21,
+      "reorderPoint": 159,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.86,
       "stockoutFrequency": 0,
@@ -18832,11 +25724,34 @@ export const analyticsReport = {
         "upper": 373
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373
+        ],
+        "forecast": [
+          373,
+          373,
+          373
+        ],
+        "lower95": [
+          373,
+          373,
+          373
+        ],
+        "upper95": [
+          373,
+          373,
+          373
+        ],
         "points": [
           {
             "period": 1,
@@ -18856,11 +25771,19 @@ export const analyticsReport = {
             "lower": 373,
             "upper": 373
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-11-30",
-      "safetyStock": 0,
-      "reorderPoint": 735,
+      "safetyStock": 110,
+      "reorderPoint": 846,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.64,
       "stockoutFrequency": 0,
@@ -18912,11 +25835,34 @@ export const analyticsReport = {
         "upper": 3963
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3963,
+          3963,
+          3963,
+          3963,
+          3963,
+          3963,
+          3963,
+          3963
+        ],
+        "forecast": [
+          3963,
+          3963,
+          3963
+        ],
+        "lower95": [
+          3963,
+          3963,
+          3963
+        ],
+        "upper95": [
+          3963,
+          3963,
+          3963
+        ],
         "points": [
           {
             "period": 1,
@@ -18936,11 +25882,19 @@ export const analyticsReport = {
             "lower": 3963,
             "upper": 3963
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-12-20",
-      "safetyStock": 0,
-      "reorderPoint": 7812,
+      "safetyStock": 1172,
+      "reorderPoint": 8984,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.6,
       "stockoutFrequency": 0,
@@ -18992,11 +25946,34 @@ export const analyticsReport = {
         "upper": 24
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          24,
+          24,
+          24,
+          24,
+          24,
+          24,
+          24,
+          24
+        ],
+        "forecast": [
+          24,
+          24,
+          24
+        ],
+        "lower95": [
+          24,
+          24,
+          24
+        ],
+        "upper95": [
+          24,
+          24,
+          24
+        ],
         "points": [
           {
             "period": 1,
@@ -19016,11 +25993,19 @@ export const analyticsReport = {
             "lower": 24,
             "upper": 24
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-01-04",
-      "safetyStock": 0,
-      "reorderPoint": 47,
+      "safetyStock": 7,
+      "reorderPoint": 54,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.34,
       "stockoutFrequency": 0,
@@ -19072,11 +26057,32 @@ export const analyticsReport = {
         "upper": 164
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          164,
+          164,
+          164,
+          164,
+          164,
+          164
+        ],
+        "forecast": [
+          164,
+          164,
+          164
+        ],
+        "lower95": [
+          164,
+          164,
+          164
+        ],
+        "upper95": [
+          164,
+          164,
+          164
+        ],
         "points": [
           {
             "period": 1,
@@ -19096,11 +26102,19 @@ export const analyticsReport = {
             "lower": 164,
             "upper": 164
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-03-22",
-      "safetyStock": 0,
-      "reorderPoint": 323,
+      "safetyStock": 48,
+      "reorderPoint": 372,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.52,
       "stockoutFrequency": 0,
@@ -19152,11 +26166,34 @@ export const analyticsReport = {
         "upper": 969
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          969,
+          969,
+          969,
+          969,
+          969,
+          969,
+          969,
+          969
+        ],
+        "forecast": [
+          969,
+          969,
+          969
+        ],
+        "lower95": [
+          969,
+          969,
+          969
+        ],
+        "upper95": [
+          969,
+          969,
+          969
+        ],
         "points": [
           {
             "period": 1,
@@ -19176,11 +26213,19 @@ export const analyticsReport = {
             "lower": 969,
             "upper": 969
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-04-10",
-      "safetyStock": 0,
-      "reorderPoint": 1910,
+      "safetyStock": 287,
+      "reorderPoint": 2197,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.56,
       "stockoutFrequency": 0,
@@ -19232,11 +26277,34 @@ export const analyticsReport = {
         "upper": 75
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75
+        ],
+        "forecast": [
+          75,
+          75,
+          75
+        ],
+        "lower95": [
+          75,
+          75,
+          75
+        ],
+        "upper95": [
+          75,
+          75,
+          75
+        ],
         "points": [
           {
             "period": 1,
@@ -19256,11 +26324,19 @@ export const analyticsReport = {
             "lower": 75,
             "upper": 75
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-06-03",
-      "safetyStock": 0,
-      "reorderPoint": 148,
+      "safetyStock": 22,
+      "reorderPoint": 170,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.3,
       "stockoutFrequency": 0,
@@ -19312,11 +26388,34 @@ export const analyticsReport = {
         "upper": 707
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          707,
+          707,
+          707,
+          707,
+          707,
+          707,
+          707,
+          707
+        ],
+        "forecast": [
+          707,
+          707,
+          707
+        ],
+        "lower95": [
+          707,
+          707,
+          707
+        ],
+        "upper95": [
+          707,
+          707,
+          707
+        ],
         "points": [
           {
             "period": 1,
@@ -19336,11 +26435,19 @@ export const analyticsReport = {
             "lower": 707,
             "upper": 707
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-06-24",
-      "safetyStock": 0,
-      "reorderPoint": 1394,
+      "safetyStock": 209,
+      "reorderPoint": 1603,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.45,
       "stockoutFrequency": 0,
@@ -19370,6 +26477,115 @@ export const analyticsReport = {
       "priorityScore": 55
     },
     {
+      "sku": "RN0159",
+      "description": "Clip for Stay Safe Organizer (Sleep Safe) (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 40,
+      "ami": 2,
+      "mos": 24,
+      "status": "excess",
+      "daysOfSupply": null,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 0,
+      "usageRates": {
+        "daily": 0,
+        "weekly": 0,
+        "monthly": 0
+      },
+      "forecastRange": {
+        "lower": 0,
+        "upper": 11.68
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 6,
+        "fitted": [
+          15,
+          15,
+          15,
+          0.96,
+          0,
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          11.679613522373074,
+          16.5174678466162,
+          20.229684033518662
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 0,
+            "lower": 0,
+            "upper": 11.679613522373074
+          },
+          {
+            "period": 2,
+            "value": 0,
+            "lower": 0,
+            "upper": 16.5174678466162
+          },
+          {
+            "period": 3,
+            "value": 0,
+            "lower": 0,
+            "upper": 20.229684033518662
+          }
+        ],
+        "residualStdDev": 5.95898649100667,
+        "rmse": 5.95898649100667,
+        "mape": 178.7058823529412,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": null,
+      "safetyStock": 0,
+      "reorderPoint": 0,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 0,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 6.79,
+        "wape": 3.53,
+        "observations": 4
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.111,
+        "demandChange": -0.867,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 6,
+      "dataQualityFlags": [],
+      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
+      "priorityScore": 55
+    },
+    {
       "sku": "MS0787",
       "description": "Urine bags, pediatrics 500mls (10)",
       "programme": "Medical Supplies",
@@ -19392,11 +26608,31 @@ export const analyticsReport = {
         "upper": 201
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          201,
+          201,
+          201,
+          201,
+          201
+        ],
+        "forecast": [
+          201,
+          201,
+          201
+        ],
+        "lower95": [
+          201,
+          201,
+          201
+        ],
+        "upper95": [
+          201,
+          201,
+          201
+        ],
         "points": [
           {
             "period": 1,
@@ -19416,11 +26652,19 @@ export const analyticsReport = {
             "lower": 201,
             "upper": 201
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-08-10",
-      "safetyStock": 0,
-      "reorderPoint": 396,
+      "safetyStock": 59,
+      "reorderPoint": 456,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.4,
       "stockoutFrequency": 0,
@@ -19472,11 +26716,33 @@ export const analyticsReport = {
         "upper": 1839
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1839,
+          1839,
+          1839,
+          1839,
+          1839,
+          1839,
+          1839
+        ],
+        "forecast": [
+          1839,
+          1839,
+          1839
+        ],
+        "lower95": [
+          1839,
+          1839,
+          1839
+        ],
+        "upper95": [
+          1839,
+          1839,
+          1839
+        ],
         "points": [
           {
             "period": 1,
@@ -19496,11 +26762,19 @@ export const analyticsReport = {
             "lower": 1839,
             "upper": 1839
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-08-25",
-      "safetyStock": 0,
-      "reorderPoint": 3625,
+      "safetyStock": 544,
+      "reorderPoint": 4169,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.45,
       "stockoutFrequency": 0,
@@ -19552,11 +26826,31 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -19576,7 +26870,15 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-09-13",
       "safetyStock": 0,
@@ -19632,11 +26934,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -19656,11 +26978,19 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2028-12-11",
-      "safetyStock": 0,
-      "reorderPoint": 49,
+      "safetyStock": 7,
+      "reorderPoint": 57,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.52,
       "stockoutFrequency": 0,
@@ -19690,86 +27020,6 @@ export const analyticsReport = {
       "priorityScore": 55
     },
     {
-      "sku": "RN0177",
-      "description": "Dual CAP (350)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 211,
-      "ami": 7,
-      "mos": 31.6,
-      "status": "excess",
-      "daysOfSupply": 962,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 6.68,
-      "usageRates": {
-        "daily": 0.22,
-        "weekly": 1.54,
-        "monthly": 6.68
-      },
-      "forecastRange": {
-        "lower": 5.62,
-        "upper": 7.74
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 0.5407524516281611,
-        "points": [
-          {
-            "period": 1,
-            "value": 6.6790866921875,
-            "lower": 5.619211886996304,
-            "upper": 7.738961497378696
-          },
-          {
-            "period": 2,
-            "value": 6.6790866921875,
-            "lower": 5.180197368268569,
-            "upper": 8.177976016106431
-          },
-          {
-            "period": 3,
-            "value": 6.6790866921875,
-            "lower": 4.843329679934183,
-            "upper": 8.514843704440818
-          }
-        ]
-      },
-      "expectedStockoutDate": "2029-03-02",
-      "safetyStock": 2,
-      "reorderPoint": 15,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.43,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.94,
-        "wape": 0.142,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 1.425,
-        "demandChange": 0.75,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [],
-      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
-      "priorityScore": 55
-    },
-    {
       "sku": "MS2963",
       "description": "Syringe Disposable 3ml(150)",
       "programme": "Medical Supplies",
@@ -19792,11 +27042,34 @@ export const analyticsReport = {
         "upper": 153
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          153,
+          153,
+          153,
+          153,
+          153,
+          153,
+          153,
+          153
+        ],
+        "forecast": [
+          153,
+          153,
+          153
+        ],
+        "lower95": [
+          153,
+          153,
+          153
+        ],
+        "upper95": [
+          153,
+          153,
+          153
+        ],
         "points": [
           {
             "period": 1,
@@ -19816,11 +27089,19 @@ export const analyticsReport = {
             "lower": 153,
             "upper": 153
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2030-01-25",
-      "safetyStock": 0,
-      "reorderPoint": 302,
+      "safetyStock": 45,
+      "reorderPoint": 347,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.22,
       "stockoutFrequency": 0,
@@ -19872,11 +27153,31 @@ export const analyticsReport = {
         "upper": 48
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          48,
+          48,
+          48,
+          48,
+          48
+        ],
+        "forecast": [
+          48,
+          48,
+          48
+        ],
+        "lower95": [
+          48,
+          48,
+          48
+        ],
+        "upper95": [
+          48,
+          48,
+          48
+        ],
         "points": [
           {
             "period": 1,
@@ -19896,11 +27197,19 @@ export const analyticsReport = {
             "lower": 48,
             "upper": 48
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2030-04-21",
-      "safetyStock": 0,
-      "reorderPoint": 95,
+      "safetyStock": 14,
+      "reorderPoint": 109,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.26,
       "stockoutFrequency": 0,
@@ -19952,11 +27261,34 @@ export const analyticsReport = {
         "upper": 900
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          900,
+          900,
+          900,
+          900,
+          900,
+          900,
+          900,
+          900
+        ],
+        "forecast": [
+          900,
+          900,
+          900
+        ],
+        "lower95": [
+          900,
+          900,
+          900
+        ],
+        "upper95": [
+          900,
+          900,
+          900
+        ],
         "points": [
           {
             "period": 1,
@@ -19976,11 +27308,19 @@ export const analyticsReport = {
             "lower": 900,
             "upper": 900
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2030-06-14",
-      "safetyStock": 0,
-      "reorderPoint": 1774,
+      "safetyStock": 266,
+      "reorderPoint": 2040,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.25,
       "stockoutFrequency": 0,
@@ -20032,11 +27372,34 @@ export const analyticsReport = {
         "upper": 342
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          342,
+          342,
+          342,
+          342,
+          342,
+          342,
+          342,
+          342
+        ],
+        "forecast": [
+          342,
+          342,
+          342
+        ],
+        "lower95": [
+          342,
+          342,
+          342
+        ],
+        "upper95": [
+          342,
+          342,
+          342
+        ],
         "points": [
           {
             "period": 1,
@@ -20056,11 +27419,19 @@ export const analyticsReport = {
             "lower": 342,
             "upper": 342
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2031-02-07",
-      "safetyStock": 0,
-      "reorderPoint": 674,
+      "safetyStock": 101,
+      "reorderPoint": 775,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.2,
       "stockoutFrequency": 0,
@@ -20112,11 +27483,32 @@ export const analyticsReport = {
         "upper": 75
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          75,
+          75,
+          75,
+          75,
+          75,
+          75
+        ],
+        "forecast": [
+          75,
+          75,
+          75
+        ],
+        "lower95": [
+          75,
+          75,
+          75
+        ],
+        "upper95": [
+          75,
+          75,
+          75
+        ],
         "points": [
           {
             "period": 1,
@@ -20136,11 +27528,19 @@ export const analyticsReport = {
             "lower": 75,
             "upper": 75
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2033-01-31",
-      "safetyStock": 0,
-      "reorderPoint": 148,
+      "safetyStock": 22,
+      "reorderPoint": 170,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.15,
       "stockoutFrequency": 0,
@@ -20192,11 +27592,34 @@ export const analyticsReport = {
         "upper": 113
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          113,
+          113,
+          113,
+          113,
+          113,
+          113,
+          113,
+          113
+        ],
+        "forecast": [
+          113,
+          113,
+          113
+        ],
+        "lower95": [
+          113,
+          113,
+          113
+        ],
+        "upper95": [
+          113,
+          113,
+          113
+        ],
         "points": [
           {
             "period": 1,
@@ -20216,11 +27639,19 @@ export const analyticsReport = {
             "lower": 113,
             "upper": 113
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2033-10-07",
-      "safetyStock": 0,
-      "reorderPoint": 223,
+      "safetyStock": 33,
+      "reorderPoint": 256,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.14,
       "stockoutFrequency": 0,
@@ -20272,11 +27703,33 @@ export const analyticsReport = {
         "upper": 155
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          155,
+          155,
+          155,
+          155,
+          155,
+          155,
+          155
+        ],
+        "forecast": [
+          155,
+          155,
+          155
+        ],
+        "lower95": [
+          155,
+          155,
+          155
+        ],
+        "upper95": [
+          155,
+          155,
+          155
+        ],
         "points": [
           {
             "period": 1,
@@ -20296,11 +27749,19 @@ export const analyticsReport = {
             "lower": 155,
             "upper": 155
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2033-11-11",
-      "safetyStock": 0,
-      "reorderPoint": 306,
+      "safetyStock": 46,
+      "reorderPoint": 351,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.13,
       "stockoutFrequency": 0,
@@ -20352,11 +27813,33 @@ export const analyticsReport = {
         "upper": 21
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21
+        ],
+        "forecast": [
+          21,
+          21,
+          21
+        ],
+        "lower95": [
+          21,
+          21,
+          21
+        ],
+        "upper95": [
+          21,
+          21,
+          21
+        ],
         "points": [
           {
             "period": 1,
@@ -20376,11 +27859,19 @@ export const analyticsReport = {
             "lower": 21,
             "upper": 21
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2034-06-17",
-      "safetyStock": 0,
-      "reorderPoint": 41,
+      "safetyStock": 6,
+      "reorderPoint": 48,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.13,
       "stockoutFrequency": 0,
@@ -20432,11 +27923,30 @@ export const analyticsReport = {
         "upper": 40
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          40,
+          40,
+          40,
+          40
+        ],
+        "forecast": [
+          40,
+          40,
+          40
+        ],
+        "lower95": [
+          40,
+          40,
+          40
+        ],
+        "upper95": [
+          40,
+          40,
+          40
+        ],
         "points": [
           {
             "period": 1,
@@ -20456,11 +27966,19 @@ export const analyticsReport = {
             "lower": 40,
             "upper": 40
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2035-01-15",
-      "safetyStock": 0,
-      "reorderPoint": 79,
+      "safetyStock": 12,
+      "reorderPoint": 91,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.12,
       "stockoutFrequency": 0,
@@ -20512,11 +28030,33 @@ export const analyticsReport = {
         "upper": 38
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          38,
+          38,
+          38,
+          38,
+          38,
+          38,
+          38
+        ],
+        "forecast": [
+          38,
+          38,
+          38
+        ],
+        "lower95": [
+          38,
+          38,
+          38
+        ],
+        "upper95": [
+          38,
+          38,
+          38
+        ],
         "points": [
           {
             "period": 1,
@@ -20536,11 +28076,19 @@ export const analyticsReport = {
             "lower": 38,
             "upper": 38
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2036-08-11",
-      "safetyStock": 0,
-      "reorderPoint": 75,
+      "safetyStock": 11,
+      "reorderPoint": 86,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.09,
       "stockoutFrequency": 0,
@@ -20570,86 +28118,6 @@ export const analyticsReport = {
       "priorityScore": 55
     },
     {
-      "sku": "PC0054",
-      "description": "Safety Goggles (1)",
-      "programme": "Epidemic / PPE Supplies",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 22998,
-      "ami": 183.33,
-      "mos": 125.45,
-      "status": "excess",
-      "daysOfSupply": 3823,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 183.12,
-      "usageRates": {
-        "daily": 6.02,
-        "weekly": 42.11,
-        "monthly": 183.12
-      },
-      "forecastRange": {
-        "lower": 182.74,
-        "upper": 183.49
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 4,
-        "residualStdDev": 0.19052558883258372,
-        "points": [
-          {
-            "period": 1,
-            "value": 183.1155,
-            "lower": 182.74206984588812,
-            "upper": 183.48893015411187
-          },
-          {
-            "period": 2,
-            "value": 183.1155,
-            "lower": 182.58739001145594,
-            "upper": 183.64360998854406
-          },
-          {
-            "period": 3,
-            "value": 183.1155,
-            "lower": 182.46869999999998,
-            "upper": 183.7623
-          }
-        ]
-      },
-      "expectedStockoutDate": "2036-12-31",
-      "safetyStock": 0,
-      "reorderPoint": 361,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 0.1,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.17,
-        "wape": 0.001,
-        "observations": 2
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 0,
-        "demandChange": 0.002,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 7,
-      "dataQualityFlags": [],
-      "action": "Stop or defer replenishment; review expiry exposure and redistribution.",
-      "priorityScore": 55
-    },
-    {
       "sku": "EM2050",
       "description": "Insulin Soluble Short Acting 100iu,10ml Inj(1)",
       "programme": "Endocrine",
@@ -20672,11 +28140,34 @@ export const analyticsReport = {
         "upper": 6718
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          6718,
+          6718,
+          6718,
+          6718,
+          6718,
+          6718,
+          6718,
+          6718
+        ],
+        "forecast": [
+          6718,
+          6718,
+          6718
+        ],
+        "lower95": [
+          6718,
+          6718,
+          6718
+        ],
+        "upper95": [
+          6718,
+          6718,
+          6718
+        ],
         "points": [
           {
             "period": 1,
@@ -20696,11 +28187,19 @@ export const analyticsReport = {
             "lower": 6718,
             "upper": 6718
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2038-08-24",
-      "safetyStock": 0,
-      "reorderPoint": 13243,
+      "safetyStock": 1986,
+      "reorderPoint": 15229,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.07,
       "stockoutFrequency": 0,
@@ -20752,11 +28251,31 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -20776,7 +28295,15 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2042-07-15",
       "safetyStock": 0,
@@ -20832,11 +28359,32 @@ export const analyticsReport = {
         "upper": 400
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          400,
+          400,
+          400,
+          400,
+          400,
+          400
+        ],
+        "forecast": [
+          400,
+          400,
+          400
+        ],
+        "lower95": [
+          400,
+          400,
+          400
+        ],
+        "upper95": [
+          400,
+          400,
+          400
+        ],
         "points": [
           {
             "period": 1,
@@ -20856,11 +28404,19 @@ export const analyticsReport = {
             "lower": 400,
             "upper": 400
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2048-03-20",
-      "safetyStock": 0,
-      "reorderPoint": 789,
+      "safetyStock": 118,
+      "reorderPoint": 907,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.05,
       "stockoutFrequency": 0,
@@ -20912,11 +28468,34 @@ export const analyticsReport = {
         "upper": 20
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "forecast": [
+          20,
+          20,
+          20
+        ],
+        "lower95": [
+          20,
+          20,
+          20
+        ],
+        "upper95": [
+          20,
+          20,
+          20
+        ],
         "points": [
           {
             "period": 1,
@@ -20936,11 +28515,19 @@ export const analyticsReport = {
             "lower": 20,
             "upper": 20
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2085-07-22",
-      "safetyStock": 0,
-      "reorderPoint": 39,
+      "safetyStock": 6,
+      "reorderPoint": 45,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.02,
       "stockoutFrequency": 0,
@@ -20992,11 +28579,33 @@ export const analyticsReport = {
         "upper": 270
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          270,
+          270,
+          270,
+          270,
+          270,
+          270,
+          270
+        ],
+        "forecast": [
+          270,
+          270,
+          270
+        ],
+        "lower95": [
+          270,
+          270,
+          270
+        ],
+        "upper95": [
+          270,
+          270,
+          270
+        ],
         "points": [
           {
             "period": 1,
@@ -21016,11 +28625,19 @@ export const analyticsReport = {
             "lower": 270,
             "upper": 270
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2177-07-16",
-      "safetyStock": 0,
-      "reorderPoint": 532,
+      "safetyStock": 80,
+      "reorderPoint": 612,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.01,
       "stockoutFrequency": 0.125,
@@ -21072,11 +28689,32 @@ export const analyticsReport = {
         "upper": 1000
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "forecast": [
+          1000,
+          1000,
+          1000
+        ],
+        "lower95": [
+          1000,
+          1000,
+          1000
+        ],
+        "upper95": [
+          1000,
+          1000,
+          1000
+        ],
         "points": [
           {
             "period": 1,
@@ -21096,12 +28734,20 @@ export const analyticsReport = {
             "lower": 1000,
             "upper": 1000
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-13",
-      "safetyStock": 0,
-      "reorderPoint": 1971,
-      "recommendedOrderQuantity": 2986,
+      "safetyStock": 296,
+      "reorderPoint": 2267,
+      "recommendedOrderQuantity": 267,
       "turnoverRate": 6,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -21152,11 +28798,31 @@ export const analyticsReport = {
         "upper": 43
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          43,
+          43,
+          43,
+          43,
+          43
+        ],
+        "forecast": [
+          43,
+          43,
+          43
+        ],
+        "lower95": [
+          43,
+          43,
+          43
+        ],
+        "upper95": [
+          43,
+          43,
+          43
+        ],
         "points": [
           {
             "period": 1,
@@ -21176,12 +28842,20 @@ export const analyticsReport = {
             "lower": 43,
             "upper": 43
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-09",
-      "safetyStock": 0,
-      "reorderPoint": 85,
-      "recommendedOrderQuantity": 134,
+      "safetyStock": 13,
+      "reorderPoint": 97,
+      "recommendedOrderQuantity": 17,
       "turnoverRate": 4.62,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -21232,11 +28906,30 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -21256,11 +28949,19 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-18",
-      "safetyStock": 0,
-      "reorderPoint": 65,
+      "safetyStock": 10,
+      "reorderPoint": 75,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.84,
       "stockoutFrequency": 0,
@@ -21314,11 +29015,30 @@ export const analyticsReport = {
         "upper": 42
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "forecast": [
+          42,
+          42,
+          42
+        ],
+        "lower95": [
+          42,
+          42,
+          42
+        ],
+        "upper95": [
+          42,
+          42,
+          42
+        ],
         "points": [
           {
             "period": 1,
@@ -21338,12 +29058,20 @@ export const analyticsReport = {
             "lower": 42,
             "upper": 42
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-05",
-      "safetyStock": 0,
-      "reorderPoint": 83,
-      "recommendedOrderQuantity": 11,
+      "safetyStock": 12,
+      "reorderPoint": 95,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.05,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -21396,11 +29124,30 @@ export const analyticsReport = {
         "upper": 42
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "forecast": [
+          42,
+          42,
+          42
+        ],
+        "lower95": [
+          42,
+          42,
+          42
+        ],
+        "upper95": [
+          42,
+          42,
+          42
+        ],
         "points": [
           {
             "period": 1,
@@ -21420,12 +29167,20 @@ export const analyticsReport = {
             "lower": 42,
             "upper": 42
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-03",
-      "safetyStock": 0,
-      "reorderPoint": 83,
-      "recommendedOrderQuantity": 14,
+      "safetyStock": 12,
+      "reorderPoint": 95,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.04,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -21478,11 +29233,30 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -21502,12 +29276,20 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-06",
-      "safetyStock": 0,
-      "reorderPoint": 65,
-      "recommendedOrderQuantity": 8,
+      "safetyStock": 10,
+      "reorderPoint": 75,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.99,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -21560,11 +29342,30 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -21584,11 +29385,19 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-20",
-      "safetyStock": 0,
-      "reorderPoint": 65,
+      "safetyStock": 10,
+      "reorderPoint": 75,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.85,
       "stockoutFrequency": 0,
@@ -21620,59 +29429,90 @@ export const analyticsReport = {
       "priorityScore": 45
     },
     {
-      "sku": "RN0116",
-      "description": "Nipro: Elisio Dialyser 17H (1)",
+      "sku": "RN0353",
+      "description": "Erythropoetin 2,000IU Injection 1ml Prefilled Syringe (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 4602,
-      "ami": 869,
-      "mos": 5.3,
+      "stockOnHand": 13080,
+      "ami": 2534,
+      "mos": 5.2,
       "status": "overstocked",
       "daysOfSupply": 167,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 838.47,
+      "forecastMonthlyDemand": 2383.11,
       "usageRates": {
-        "daily": 27.55,
-        "weekly": 192.83,
-        "monthly": 838.47
+        "daily": 78.3,
+        "weekly": 548.07,
+        "monthly": 2383.11
       },
       "forecastRange": {
-        "lower": 624.59,
-        "upper": 1052.35
+        "lower": 1128.49,
+        "upper": 3637.73
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 109.1217092725391,
+        "fitted": [
+          739,
+          2095,
+          3451,
+          2996.919999999999,
+          2392.2352,
+          3148.1077120000004,
+          3086.2052787200005,
+          2461.7734136832
+        ],
+        "forecast": [
+          2383.1120559185915,
+          2246.6694291005433,
+          2110.2268022824946
+        ],
+        "lower95": [
+          1128.4906289097526,
+          472.3667913807569,
+          0
+        ],
+        "upper95": [
+          3637.7334829274305,
+          4020.97206682033,
+          4283.294858126372
+        ],
         "points": [
           {
             "period": 1,
-            "value": 838.4718322101562,
-            "lower": 624.5932820359795,
-            "upper": 1052.3503823843328
+            "value": 2383.1120559185915,
+            "lower": 1128.4906289097526,
+            "upper": 3637.7334829274305
           },
           {
             "period": 2,
-            "value": 838.4718322101562,
-            "lower": 536.0018858531412,
-            "upper": 1140.9417785671712
+            "value": 2246.6694291005433,
+            "lower": 472.3667913807569,
+            "upper": 4020.97206682033
           },
           {
             "period": 3,
-            "value": 838.4718322101562,
-            "lower": 468.02331665931297,
-            "upper": 1208.9203477609994
+            "value": 2110.2268022824946,
+            "lower": 0,
+            "upper": 4283.294858126372
           }
-        ]
+        ],
+        "residualStdDev": 640.1129729636933,
+        "rmse": 640.1129729636933,
+        "mape": 20.851566734298647,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-12-29",
-      "safetyStock": 434,
-      "reorderPoint": 2087,
+      "safetyStock": 684,
+      "reorderPoint": 5248,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 3.25,
+      "turnoverRate": 2.7,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -21681,13 +29521,13 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 169.25,
-        "wape": 0.204,
+        "mae": 830.39,
+        "wape": 0.328,
         "observations": 6
       },
       "historicalTrend": {
-        "stockOnHandChange": 2.548,
-        "demandChange": 1.263,
+        "stockOnHandChange": 0.623,
+        "demandChange": 2.429,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -21724,11 +29564,31 @@ export const analyticsReport = {
         "upper": 40
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          40,
+          40,
+          40,
+          40,
+          40
+        ],
+        "forecast": [
+          40,
+          40,
+          40
+        ],
+        "lower95": [
+          40,
+          40,
+          40
+        ],
+        "upper95": [
+          40,
+          40,
+          40
+        ],
         "points": [
           {
             "period": 1,
@@ -21748,11 +29608,19 @@ export const analyticsReport = {
             "lower": 40,
             "upper": 40
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-01",
-      "safetyStock": 0,
-      "reorderPoint": 79,
+      "safetyStock": 12,
+      "reorderPoint": 91,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 3.09,
       "stockoutFrequency": 0,
@@ -21793,50 +29661,81 @@ export const analyticsReport = {
       "ami": 748,
       "mos": 6.1,
       "status": "overstocked",
-      "daysOfSupply": 219,
+      "daysOfSupply": 167,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 638.36,
+      "forecastMonthlyDemand": 835.11,
       "usageRates": {
-        "daily": 20.97,
-        "weekly": 146.81,
-        "monthly": 638.36
+        "daily": 27.44,
+        "weekly": 192.06,
+        "monthly": 835.11
       },
       "forecastRange": {
-        "lower": 438.38,
-        "upper": 838.35
+        "lower": 543.57,
+        "upper": 1126.65
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 102.03298849206332,
+        "fitted": [
+          292,
+          470,
+          648,
+          679.2800000000001,
+          633.6064,
+          435.957632,
+          630.3774361599999,
+          820.2606174207999
+        ],
+        "forecast": [
+          835.113856098304,
+          907.775588712448,
+          980.4373213265919
+        ],
+        "lower95": [
+          543.5743710068464,
+          495.4764949288397,
+          475.4761207357179
+        ],
+        "upper95": [
+          1126.6533411897617,
+          1320.0746824960563,
+          1485.398521917466
+        ],
         "points": [
           {
             "period": 1,
-            "value": 638.3610527453126,
-            "lower": 438.37639530086847,
-            "upper": 838.3457101897567
+            "value": 835.113856098304,
+            "lower": 543.5743710068464,
+            "upper": 1126.6533411897617
           },
           {
             "period": 2,
-            "value": 638.3610527453126,
-            "lower": 355.54003792084217,
-            "upper": 921.1820675697829
+            "value": 907.775588712448,
+            "lower": 495.4764949288397,
+            "upper": 1320.0746824960563
           },
           {
             "period": 3,
-            "value": 638.3610527453126,
-            "lower": 291.9774653172779,
-            "upper": 984.7446401733473
+            "value": 980.4373213265919,
+            "lower": 475.4761207357179,
+            "upper": 1485.398521917466
           }
-        ]
+        ],
+        "residualStdDev": 148.74463525074373,
+        "rmse": 148.74463525074373,
+        "mape": 25.15338107792226,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.4
+        }
       },
-      "expectedStockoutDate": "2027-02-18",
-      "safetyStock": 374,
-      "reorderPoint": 1632,
+      "expectedStockoutDate": "2026-12-29",
+      "safetyStock": 258,
+      "reorderPoint": 1976,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 2.71,
+      "turnoverRate": 3.55,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -21845,8 +29744,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 157.35,
-        "wape": 0.268,
+        "mae": 176.56,
+        "wape": 0.301,
         "observations": 6
       },
       "historicalTrend": {
@@ -21888,11 +29787,31 @@ export const analyticsReport = {
         "upper": 1
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "forecast": [
+          1,
+          1,
+          1
+        ],
+        "lower95": [
+          1,
+          1,
+          1
+        ],
+        "upper95": [
+          1,
+          1,
+          1
+        ],
         "points": [
           {
             "period": 1,
@@ -21912,7 +29831,15 @@ export const analyticsReport = {
             "lower": 1,
             "upper": 1
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-14",
       "safetyStock": 0,
@@ -21970,11 +29897,27 @@ export const analyticsReport = {
         "upper": 60
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          60
+        ],
+        "forecast": [
+          60,
+          60,
+          60
+        ],
+        "lower95": [
+          60,
+          60,
+          60
+        ],
+        "upper95": [
+          60,
+          60,
+          60
+        ],
         "points": [
           {
             "period": 1,
@@ -21994,11 +29937,15 @@ export const analyticsReport = {
             "lower": 60,
             "upper": 60
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2027-02-28",
-      "safetyStock": 0,
-      "reorderPoint": 118,
+      "safetyStock": 18,
+      "reorderPoint": 136,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.47,
       "stockoutFrequency": 0,
@@ -22030,6 +29977,114 @@ export const analyticsReport = {
       "priorityScore": 45
     },
     {
+      "sku": "LAB0573",
+      "description": "Sysmex Sulfolyser, 5L (1)",
+      "programme": "Laboratory Services",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 142,
+      "ami": 18,
+      "mos": 8,
+      "status": "overstocked",
+      "daysOfSupply": 233,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 18.53,
+      "usageRates": {
+        "daily": 0.61,
+        "weekly": 4.26,
+        "monthly": 18.53
+      },
+      "forecastRange": {
+        "lower": 18.11,
+        "upper": 18.94
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 3,
+        "fitted": [
+          17.7,
+          18,
+          18.3
+        ],
+        "forecast": [
+          18.528000000000002,
+          18.816000000000003,
+          19.104000000000006
+        ],
+        "lower95": [
+          18.112221212662313,
+          18.228,
+          18.38385001562175
+        ],
+        "upper95": [
+          18.943778787337692,
+          19.404000000000003,
+          19.824149984378263
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 18.528000000000002,
+            "lower": 18.112221212662313,
+            "upper": 18.943778787337692
+          },
+          {
+            "period": 2,
+            "value": 18.816000000000003,
+            "lower": 18.228,
+            "upper": 19.404000000000003
+          },
+          {
+            "period": 3,
+            "value": 19.104000000000006,
+            "lower": 18.38385001562175,
+            "upper": 19.824149984378263
+          }
+        ],
+        "residualStdDev": 0.21213203435596475,
+        "rmse": 0.21213203435596475,
+        "mape": 0.8333333333333353,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2027-03-05",
+      "safetyStock": 6,
+      "reorderPoint": 42,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 1.44,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 0.3,
+        "wape": 0.017,
+        "observations": 1
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 0.092,
+        "demandChange": 0.017,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 6,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Review incoming orders and redistribute before stock becomes excess.",
+      "priorityScore": 45
+    },
+    {
       "sku": "EM0235",
       "description": "Haloperidol 5mg Tablet (100)",
       "programme": "Other Essential Medicines",
@@ -22052,11 +30107,29 @@ export const analyticsReport = {
         "upper": 5168
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          5168,
+          5168,
+          5168
+        ],
+        "forecast": [
+          5168,
+          5168,
+          5168
+        ],
+        "lower95": [
+          5168,
+          5168,
+          5168
+        ],
+        "upper95": [
+          5168,
+          5168,
+          5168
+        ],
         "points": [
           {
             "period": 1,
@@ -22076,12 +30149,20 @@ export const analyticsReport = {
             "lower": 5168,
             "upper": 5168
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-24",
-      "safetyStock": 0,
-      "reorderPoint": 10187,
-      "recommendedOrderQuantity": 8607,
+      "safetyStock": 1528,
+      "reorderPoint": 11716,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.44,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -22134,11 +30215,27 @@ export const analyticsReport = {
         "upper": 2566
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          2566
+        ],
+        "forecast": [
+          2566,
+          2566,
+          2566
+        ],
+        "lower95": [
+          2566,
+          2566,
+          2566
+        ],
+        "upper95": [
+          2566,
+          2566,
+          2566
+        ],
         "points": [
           {
             "period": 1,
@@ -22158,11 +30255,15 @@ export const analyticsReport = {
             "lower": 2566,
             "upper": 2566
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2027-05-15",
-      "safetyStock": 0,
-      "reorderPoint": 5058,
+      "safetyStock": 759,
+      "reorderPoint": 5817,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.09,
       "stockoutFrequency": 0,
@@ -22216,11 +30317,27 @@ export const analyticsReport = {
         "upper": 12
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          12
+        ],
+        "forecast": [
+          12,
+          12,
+          12
+        ],
+        "lower95": [
+          12,
+          12,
+          12
+        ],
+        "upper95": [
+          12,
+          12,
+          12
+        ],
         "points": [
           {
             "period": 1,
@@ -22240,11 +30357,15 @@ export const analyticsReport = {
             "lower": 12,
             "upper": 12
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2027-05-15",
-      "safetyStock": 0,
-      "reorderPoint": 24,
+      "safetyStock": 4,
+      "reorderPoint": 27,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.73,
       "stockoutFrequency": 0,
@@ -22299,11 +30420,28 @@ export const analyticsReport = {
         "upper": 20055
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          20055,
+          20055
+        ],
+        "forecast": [
+          20055,
+          20055,
+          20055
+        ],
+        "lower95": [
+          20055,
+          20055,
+          20055
+        ],
+        "upper95": [
+          20055,
+          20055,
+          20055
+        ],
         "points": [
           {
             "period": 1,
@@ -22323,11 +30461,19 @@ export const analyticsReport = {
             "lower": 20055,
             "upper": 20055
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-05-15",
-      "safetyStock": 0,
-      "reorderPoint": 39533,
+      "safetyStock": 5930,
+      "reorderPoint": 45463,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.19,
       "stockoutFrequency": 0,
@@ -22368,50 +30514,79 @@ export const analyticsReport = {
       "ami": 64,
       "mos": 10,
       "status": "overstocked",
-      "daysOfSupply": 274,
+      "daysOfSupply": 336,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 71.19,
+      "forecastMonthlyDemand": 58.18,
       "usageRates": {
-        "daily": 2.34,
-        "weekly": 16.37,
-        "monthly": 71.19
+        "daily": 1.91,
+        "weekly": 13.38,
+        "monthly": 58.18
       },
       "forecastRange": {
-        "lower": 43.99,
-        "upper": 98.38
+        "lower": 22.75,
+        "upper": 93.62
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 13.875173895518111,
+        "fitted": [
+          110,
+          89,
+          68,
+          67.52000000000001,
+          37.7984,
+          46.286528
+        ],
+        "forecast": [
+          58.184245759999996,
+          59.45388031999999,
+          60.72351487999999
+        ],
+        "lower95": [
+          22.749946443391686,
+          9.342213653264821,
+          0
+        ],
+        "upper95": [
+          93.61854507660831,
+          109.56554698673516,
+          122.09752162696873
+        ],
         "points": [
           {
             "period": 1,
-            "value": 71.1876228125,
-            "lower": 43.9922819772845,
-            "upper": 98.38296364771548
+            "value": 58.184245759999996,
+            "lower": 22.749946443391686,
+            "upper": 93.61854507660831
           },
           {
             "period": 2,
-            "value": 71.1876228125,
-            "lower": 32.72760296997939,
-            "upper": 109.6476426550206
+            "value": 59.45388031999999,
+            "lower": 9.342213653264821,
+            "upper": 109.56554698673516
           },
           {
             "period": 3,
-            "value": 71.1876228125,
-            "lower": 24.08391075675413,
-            "upper": 118.29133486824585
+            "value": 60.72351487999999,
+            "lower": 0,
+            "upper": 122.09752162696873
           }
-        ]
+        ],
+        "residualStdDev": 18.07872414112669,
+        "rmse": 18.07872414112669,
+        "mape": 24.56970746450305,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2027-04-15",
-      "safetyStock": 50,
-      "reorderPoint": 190,
+      "expectedStockoutDate": "2027-06-15",
+      "safetyStock": 17,
+      "reorderPoint": 133,
       "recommendedOrderQuantity": 0,
-      "turnoverRate": 2.17,
+      "turnoverRate": 1.78,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -22420,8 +30595,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 22.47,
-        "wape": 0.338,
+        "mae": 19.36,
+        "wape": 0.291,
         "observations": 4
       },
       "historicalTrend": {
@@ -22463,11 +30638,27 @@ export const analyticsReport = {
         "upper": 50
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          50
+        ],
+        "forecast": [
+          50,
+          50,
+          50
+        ],
+        "lower95": [
+          50,
+          50,
+          50
+        ],
+        "upper95": [
+          50,
+          50,
+          50
+        ],
         "points": [
           {
             "period": 1,
@@ -22487,11 +30678,15 @@ export const analyticsReport = {
             "lower": 50,
             "upper": 50
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2027-06-01",
-      "safetyStock": 0,
-      "reorderPoint": 99,
+      "safetyStock": 15,
+      "reorderPoint": 113,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1,
       "stockoutFrequency": 0,
@@ -22545,11 +30740,30 @@ export const analyticsReport = {
         "upper": 42
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "forecast": [
+          42,
+          42,
+          42
+        ],
+        "lower95": [
+          42,
+          42,
+          42
+        ],
+        "upper95": [
+          42,
+          42,
+          42
+        ],
         "points": [
           {
             "period": 1,
@@ -22569,12 +30783,20 @@ export const analyticsReport = {
             "lower": 42,
             "upper": 42
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-26",
-      "safetyStock": 0,
-      "reorderPoint": 83,
-      "recommendedOrderQuantity": 108,
+      "safetyStock": 12,
+      "reorderPoint": 95,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 5.58,
       "stockoutFrequency": 0.25,
       "stockAgeDays": null,
@@ -22605,88 +30827,6 @@ export const analyticsReport = {
       "priorityScore": 35
     },
     {
-      "sku": "RN0357",
-      "description": "Permanent catheter 14.5F x 55cm (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 46,
-      "ami": 22,
-      "mos": 2.1,
-      "status": "adequate",
-      "daysOfSupply": 80,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 17.5,
-      "usageRates": {
-        "daily": 0.58,
-        "weekly": 4.03,
-        "monthly": 17.5
-      },
-      "forecastRange": {
-        "lower": 9.76,
-        "upper": 25.25
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 6,
-        "residualStdDev": 3.9531945563050654,
-        "points": [
-          {
-            "period": 1,
-            "value": 17.5046,
-            "lower": 9.756338669642073,
-            "upper": 25.252861330357927
-          },
-          {
-            "period": 2,
-            "value": 17.5046,
-            "lower": 6.546903741796816,
-            "upper": 28.46229625820318
-          },
-          {
-            "period": 3,
-            "value": 17.5046,
-            "lower": 4.0842177054988476,
-            "upper": 30.924982294501152
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-10-02",
-      "safetyStock": 15,
-      "reorderPoint": 49,
-      "recommendedOrderQuantity": 41,
-      "turnoverRate": 6.03,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 6.79,
-        "wape": 0.379,
-        "observations": 4
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 1.091,
-        "demandChange": 1.75,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 7,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 35
-    },
-    {
       "sku": "RN0137",
       "description": "Fresenius: Multifiltrate Substitute System Line (1)",
       "programme": "Renal",
@@ -22709,11 +30849,30 @@ export const analyticsReport = {
         "upper": 22
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "forecast": [
+          22,
+          22,
+          22
+        ],
+        "lower95": [
+          22,
+          22,
+          22
+        ],
+        "upper95": [
+          22,
+          22,
+          22
+        ],
         "points": [
           {
             "period": 1,
@@ -22733,12 +30892,20 @@ export const analyticsReport = {
             "lower": 22,
             "upper": 22
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-20",
-      "safetyStock": 0,
-      "reorderPoint": 43,
-      "recommendedOrderQuantity": 61,
+      "safetyStock": 7,
+      "reorderPoint": 50,
+      "recommendedOrderQuantity": 1,
       "turnoverRate": 5.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -22769,59 +30936,88 @@ export const analyticsReport = {
       "priorityScore": 35
     },
     {
-      "sku": "RN0121",
-      "description": "Sporotal (1)",
-      "programme": "Renal",
+      "sku": "MAL0083",
+      "description": "Artesunate Rectal CAPSULE 100mg (2)",
+      "programme": "Anti-Malarials",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 25,
-      "ami": 9,
-      "mos": 2.7,
+      "stockOnHand": 8447,
+      "ami": 3576,
+      "mos": 2.4,
       "status": "adequate",
-      "daysOfSupply": 73,
+      "daysOfSupply": 78,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 10.44,
+      "forecastMonthlyDemand": 3297.63,
       "usageRates": {
-        "daily": 0.34,
-        "weekly": 2.4,
-        "monthly": 10.44
+        "daily": 108.34,
+        "weekly": 758.39,
+        "monthly": 3297.63
       },
       "forecastRange": {
-        "lower": 0.33,
-        "upper": 20.55
+        "lower": 1940.6,
+        "upper": 4654.66
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 5.158754537894455,
+        "observations": 6,
+        "fitted": [
+          2549,
+          3381,
+          4213,
+          4127.72,
+          4958.5232,
+          3572.6689920000003
+        ],
+        "forecast": [
+          3297.6299955199997,
+          3019.92619264,
+          2742.2223897599997
+        ],
+        "lower95": [
+          1940.5985512719442,
+          1100.793919617651,
+          391.77498085379557
+        ],
+        "upper95": [
+          4654.661439768055,
+          4939.058465662349,
+          5092.669798666204
+        ],
         "points": [
           {
             "period": 1,
-            "value": 10.441098384375001,
-            "lower": 0.32993949010186974,
-            "upper": 20.552257278648135
+            "value": 3297.6299955199997,
+            "lower": 1940.5985512719442,
+            "upper": 4654.661439768055
           },
           {
             "period": 2,
-            "value": 10.441098384375001,
-            "lower": 0,
-            "upper": 24.740436423965413
+            "value": 3019.92619264,
+            "lower": 1100.793919617651,
+            "upper": 4939.058465662349
           },
           {
             "period": 3,
-            "value": 10.441098384375001,
-            "lower": 0,
-            "upper": 27.954139312658015
+            "value": 2742.2223897599997,
+            "lower": 391.77498085379557,
+            "upper": 5092.669798666204
           }
-        ]
+        ],
+        "residualStdDev": 692.3629817592121,
+        "rmse": 692.3629817592121,
+        "mape": 12.593683687774881,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-09-25",
-      "safetyStock": 12,
-      "reorderPoint": 33,
-      "recommendedOrderQuantity": 27,
-      "turnoverRate": 3.26,
+      "expectedStockoutDate": "2026-09-30",
+      "safetyStock": 934,
+      "reorderPoint": 7161,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 5.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -22830,13 +31026,126 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 4.27,
-        "wape": 0.354,
+        "mae": 749.81,
+        "wape": 0.198,
+        "observations": 4
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 5.61,
+        "demandChange": 0.403,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 6,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 35
+    },
+    {
+      "sku": "MS0589",
+      "description": "Needle Spinal 24G x 90mm sterile, disposable (50)",
+      "programme": "Medical Supplies",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 560,
+      "ami": 179,
+      "mos": 3.1,
+      "status": "adequate",
+      "daysOfSupply": 89,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 191,
+      "usageRates": {
+        "daily": 6.28,
+        "weekly": 43.93,
+        "monthly": 191
+      },
+      "forecastRange": {
+        "lower": 92.66,
+        "upper": 289.35
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          52,
+          52,
+          52,
+          173.92000000000002,
+          199.1168,
+          200.93747200000004,
+          197.79161088,
+          194.1557809152
+        ],
+        "forecast": [
+          191.00368997580804,
+          199.97622376857603,
+          208.94875756134405
+        ],
+        "lower95": [
+          92.658310828806,
+          60.89485478216156,
+          38.60956418911175
+        ],
+        "upper95": [
+          289.3490691228101,
+          339.05759275499054,
+          379.2879509335763
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 191.00368997580804,
+            "lower": 92.658310828806,
+            "upper": 289.3490691228101
+          },
+          {
+            "period": 2,
+            "value": 199.97622376857603,
+            "lower": 60.89485478216156,
+            "upper": 339.05759275499054
+          },
+          {
+            "period": 3,
+            "value": 208.94875756134405,
+            "lower": 38.60956418911175,
+            "upper": 379.2879509335763
+          }
+        ],
+        "residualStdDev": 50.17621385051125,
+        "rmse": 50.17621385051125,
+        "mape": 16.6066770786273,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2026-10-12",
+      "safetyStock": 58,
+      "reorderPoint": 443,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.15,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 54.15,
+        "wape": 0.303,
         "observations": 6
       },
       "historicalTrend": {
-        "stockOnHandChange": -0.51,
-        "demandChange": -0.4,
+        "stockOnHandChange": -0.36,
+        "demandChange": 2.442,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -22851,59 +31160,90 @@ export const analyticsReport = {
       "priorityScore": 35
     },
     {
-      "sku": "RN0153",
-      "description": "Fresenius: Peritonial Dialysis Catheter 42cm PD (1)",
+      "sku": "RN0056",
+      "description": "Fresenius: FX100 Dialysers (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 12,
-      "ami": 4,
-      "mos": 3.3,
+      "stockOnHand": 969,
+      "ami": 314,
+      "mos": 3.1,
       "status": "adequate",
-      "daysOfSupply": 77,
+      "daysOfSupply": 87,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 4.72,
+      "forecastMonthlyDemand": 340.59,
       "usageRates": {
-        "daily": 0.16,
-        "weekly": 1.09,
-        "monthly": 4.72
+        "daily": 11.19,
+        "weekly": 78.33,
+        "monthly": 340.59
       },
       "forecastRange": {
-        "lower": 2.06,
-        "upper": 7.38
+        "lower": 254.64,
+        "upper": 426.53
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
-        "observations": 4,
-        "residualStdDev": 1.3572830474272246,
+        "observations": 8,
+        "fitted": [
+          214,
+          266,
+          318,
+          303.43999999999994,
+          282.5568,
+          220.51289600000004,
+          243.60192512000006,
+          331.37080688640003
+        ],
+        "forecast": [
+          340.58659593420793,
+          363.6990304911359,
+          386.8114650480639
+        ],
+        "lower95": [
+          254.63865483891436,
+          242.15028653612785,
+          237.9452642650784
+        ],
+        "upper95": [
+          426.5345370295015,
+          485.2477744461439,
+          535.6776658310494
+        ],
         "points": [
           {
             "period": 1,
-            "value": 4.7203625,
-            "lower": 2.06008772704264,
-            "upper": 7.38063727295736
+            "value": 340.58659593420793,
+            "lower": 254.63865483891436,
+            "upper": 426.5345370295015
           },
           {
             "period": 2,
-            "value": 4.7203625,
-            "lower": 0.958165836444695,
-            "upper": 8.482559163555305
+            "value": 363.6990304911359,
+            "lower": 242.15028653612785,
+            "upper": 485.2477744461439
           },
           {
             "period": 3,
-            "value": 4.7203625,
-            "lower": 0.11263143114409324,
-            "upper": 9.328093568855907
+            "value": 386.8114650480639,
+            "lower": 237.9452642650784,
+            "upper": 535.6776658310494
           }
-        ]
+        ],
+        "residualStdDev": 43.85099035474161,
+        "rmse": 43.85099035474161,
+        "mape": 14.092746569815018,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.6
+        }
       },
-      "expectedStockoutDate": "2026-09-30",
-      "safetyStock": 4,
-      "reorderPoint": 13,
-      "recommendedOrderQuantity": 12,
-      "turnoverRate": 3.06,
+      "expectedStockoutDate": "2026-10-09",
+      "safetyStock": 104,
+      "reorderPoint": 798,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.05,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -22912,20 +31252,132 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 1.41,
-        "wape": 0.352,
-        "observations": 2
+        "mae": 55.86,
+        "wape": 0.204,
+        "observations": 6
       },
       "historicalTrend": {
-        "stockOnHandChange": -0.2,
-        "demandChange": -0.429,
+        "stockOnHandChange": -0.14,
+        "demandChange": 0.467,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
           "score": null
         }
       },
-      "observations": 4,
+      "observations": 8,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 35
+    },
+    {
+      "sku": "RN0331",
+      "description": "Acute HD Catheters 8Fr (Single Lumen), 12cm (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 18,
+      "ami": 6,
+      "mos": 3.2,
+      "status": "adequate",
+      "daysOfSupply": 81,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 6.79,
+      "usageRates": {
+        "daily": 0.22,
+        "weekly": 1.56,
+        "monthly": 6.79
+      },
+      "forecastRange": {
+        "lower": 3.91,
+        "upper": 9.66
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 7,
+        "fitted": [
+          1,
+          1,
+          1,
+          1,
+          3.8800000000000003,
+          6.107200000000001,
+          6.775488
+        ],
+        "forecast": [
+          6.78506752,
+          7.415037440000001,
+          8.045007360000001
+        ],
+        "lower95": [
+          3.908329477423594,
+          3.346715484793817,
+          3.0623509101914266
+        ],
+        "upper95": [
+          9.661805562576406,
+          11.483359395206184,
+          13.027663809808576
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 6.78506752,
+            "lower": 3.908329477423594,
+            "upper": 9.661805562576406
+          },
+          {
+            "period": 2,
+            "value": 7.415037440000001,
+            "lower": 3.346715484793817,
+            "upper": 11.483359395206184
+          },
+          {
+            "period": 3,
+            "value": 8.045007360000001,
+            "lower": 3.0623509101914266,
+            "upper": 13.027663809808576
+          }
+        ],
+        "residualStdDev": 1.4677234911104113,
+        "rmse": 1.4677234911104113,
+        "mape": 20.273548538011696,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": "2026-10-03",
+      "safetyStock": 2,
+      "reorderPoint": 16,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.36,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 2.01,
+        "wape": 0.443,
+        "observations": 5
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.455,
+        "demandChange": 5,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
       "dataQualityFlags": [
         "mos_reconciliation"
       ],
@@ -22944,47 +31396,78 @@ export const analyticsReport = {
       "status": "overstocked",
       "daysOfSupply": 129,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1731.04,
+      "forecastMonthlyDemand": 1731.06,
       "usageRates": {
         "daily": 56.87,
-        "weekly": 398.1,
-        "monthly": 1731.04
+        "weekly": 398.11,
+        "monthly": 1731.06
       },
       "forecastRange": {
-        "lower": 1730.79,
-        "upper": 1731.3
+        "lower": 1730.83,
+        "upper": 1731.29
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0.13126816200869243,
+        "fitted": [
+          1731,
+          1731,
+          1731.0000000000002,
+          1731.0000000000002,
+          1731.0000000000002,
+          1731.0000000000002,
+          1731.0720000000001,
+          1731.0667200000003
+        ],
+        "forecast": [
+          1731.0598272000004,
+          1731.0662784000003,
+          1731.0727296000005
+        ],
+        "lower95": [
+          1730.8259896614188,
+          1730.7355821815463,
+          1730.6677111024605
+        ],
+        "upper95": [
+          1731.293664738582,
+          1731.3969746184544,
+          1731.4777480975404
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1731.0443625,
-            "lower": 1730.787076902463,
-            "upper": 1731.301648097537
+            "value": 1731.0598272000004,
+            "lower": 1730.8259896614188,
+            "upper": 1731.293664738582
           },
           {
             "period": 2,
-            "value": 1731.0443625,
-            "lower": 1730.68050571856,
-            "upper": 1731.40821928144
+            "value": 1731.0662784000003,
+            "lower": 1730.7355821815463,
+            "upper": 1731.3969746184544
           },
           {
             "period": 3,
-            "value": 1731.0443625,
-            "lower": 1730.5987307730102,
-            "upper": 1731.48999422699
+            "value": 1731.0727296000005,
+            "lower": 1730.6677111024605,
+            "upper": 1731.4777480975404
           }
-        ]
+        ],
+        "residualStdDev": 0.1193048666232185,
+        "rmse": 0.1193048666232185,
+        "mape": 0.00362026917506448,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-20",
-      "safetyStock": 0,
-      "reorderPoint": 3413,
-      "recommendedOrderQuantity": 1301,
+      "safetyStock": 512,
+      "reorderPoint": 3924,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.73,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23035,11 +31518,34 @@ export const analyticsReport = {
         "upper": 136
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          136,
+          136,
+          136,
+          136,
+          136,
+          136,
+          136,
+          136
+        ],
+        "forecast": [
+          136,
+          136,
+          136
+        ],
+        "lower95": [
+          136,
+          136,
+          136
+        ],
+        "upper95": [
+          136,
+          136,
+          136
+        ],
         "points": [
           {
             "period": 1,
@@ -23059,12 +31565,20 @@ export const analyticsReport = {
             "lower": 136,
             "upper": 136
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-20",
-      "safetyStock": 0,
-      "reorderPoint": 268,
-      "recommendedOrderQuantity": 102,
+      "safetyStock": 40,
+      "reorderPoint": 308,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.88,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23115,11 +31629,33 @@ export const analyticsReport = {
         "upper": 383
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          383,
+          383,
+          383,
+          383,
+          383,
+          383,
+          383
+        ],
+        "forecast": [
+          383,
+          383,
+          383
+        ],
+        "lower95": [
+          383,
+          383,
+          383
+        ],
+        "upper95": [
+          383,
+          383,
+          383
+        ],
         "points": [
           {
             "period": 1,
@@ -23139,12 +31675,20 @@ export const analyticsReport = {
             "lower": 383,
             "upper": 383
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-23",
-      "safetyStock": 0,
-      "reorderPoint": 755,
-      "recommendedOrderQuantity": 253,
+      "safetyStock": 113,
+      "reorderPoint": 868,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.29,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23195,11 +31739,34 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -23219,12 +31786,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-24",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 65,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.34,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23275,11 +31850,34 @@ export const analyticsReport = {
         "upper": 3600
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3600,
+          3600,
+          3600,
+          3600,
+          3600,
+          3600,
+          3600,
+          3600
+        ],
+        "forecast": [
+          3600,
+          3600,
+          3600
+        ],
+        "lower95": [
+          3600,
+          3600,
+          3600
+        ],
+        "upper95": [
+          3600,
+          3600,
+          3600
+        ],
         "points": [
           {
             "period": 1,
@@ -23299,12 +31897,20 @@ export const analyticsReport = {
             "lower": 3600,
             "upper": 3600
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-30",
-      "safetyStock": 0,
-      "reorderPoint": 7097,
-      "recommendedOrderQuantity": 1625,
+      "safetyStock": 1064,
+      "reorderPoint": 8161,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23355,11 +31961,34 @@ export const analyticsReport = {
         "upper": 111
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          111,
+          111,
+          111,
+          111,
+          111,
+          111,
+          111,
+          111
+        ],
+        "forecast": [
+          111,
+          111,
+          111
+        ],
+        "lower95": [
+          111,
+          111,
+          111
+        ],
+        "upper95": [
+          111,
+          111,
+          111
+        ],
         "points": [
           {
             "period": 1,
@@ -23379,12 +32008,20 @@ export const analyticsReport = {
             "lower": 111,
             "upper": 111
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-02",
-      "safetyStock": 0,
-      "reorderPoint": 219,
-      "recommendedOrderQuantity": 42,
+      "safetyStock": 33,
+      "reorderPoint": 252,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.13,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23435,11 +32072,34 @@ export const analyticsReport = {
         "upper": 52
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          52,
+          52,
+          52,
+          52,
+          52,
+          52,
+          52,
+          52
+        ],
+        "forecast": [
+          52,
+          52,
+          52
+        ],
+        "lower95": [
+          52,
+          52,
+          52
+        ],
+        "upper95": [
+          52,
+          52,
+          52
+        ],
         "points": [
           {
             "period": 1,
@@ -23459,12 +32119,20 @@ export const analyticsReport = {
             "lower": 52,
             "upper": 52
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-02",
-      "safetyStock": 0,
-      "reorderPoint": 103,
-      "recommendedOrderQuantity": 19,
+      "safetyStock": 15,
+      "reorderPoint": 118,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.73,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23515,11 +32183,34 @@ export const analyticsReport = {
         "upper": 1253
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1253,
+          1253,
+          1253,
+          1253,
+          1253,
+          1253,
+          1253,
+          1253
+        ],
+        "forecast": [
+          1253,
+          1253,
+          1253
+        ],
+        "lower95": [
+          1253,
+          1253,
+          1253
+        ],
+        "upper95": [
+          1253,
+          1253,
+          1253
+        ],
         "points": [
           {
             "period": 1,
@@ -23539,12 +32230,20 @@ export const analyticsReport = {
             "lower": 1253,
             "upper": 1253
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-05",
-      "safetyStock": 0,
-      "reorderPoint": 2470,
-      "recommendedOrderQuantity": 320,
+      "safetyStock": 370,
+      "reorderPoint": 2840,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.3,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23595,11 +32294,32 @@ export const analyticsReport = {
         "upper": 3
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "forecast": [
+          3,
+          3,
+          3
+        ],
+        "lower95": [
+          3,
+          3,
+          3
+        ],
+        "upper95": [
+          3,
+          3,
+          3
+        ],
         "points": [
           {
             "period": 1,
@@ -23619,12 +32339,20 @@ export const analyticsReport = {
             "lower": 3,
             "upper": 3
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-04",
-      "safetyStock": 0,
-      "reorderPoint": 6,
-      "recommendedOrderQuantity": 1,
+      "safetyStock": 1,
+      "reorderPoint": 7,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23675,11 +32403,34 @@ export const analyticsReport = {
         "upper": 28
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          28,
+          28,
+          28
+        ],
+        "forecast": [
+          28,
+          28,
+          28
+        ],
+        "lower95": [
+          28,
+          28,
+          28
+        ],
+        "upper95": [
+          28,
+          28,
+          28
+        ],
         "points": [
           {
             "period": 1,
@@ -23699,12 +32450,20 @@ export const analyticsReport = {
             "lower": 28,
             "upper": 28
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-06",
-      "safetyStock": 0,
-      "reorderPoint": 55,
-      "recommendedOrderQuantity": 7,
+      "safetyStock": 8,
+      "reorderPoint": 63,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.91,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23755,11 +32514,34 @@ export const analyticsReport = {
         "upper": 2728
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2728,
+          2728,
+          2728,
+          2728,
+          2728,
+          2728,
+          2728,
+          2728
+        ],
+        "forecast": [
+          2728,
+          2728,
+          2728
+        ],
+        "lower95": [
+          2728,
+          2728,
+          2728
+        ],
+        "upper95": [
+          2728,
+          2728,
+          2728
+        ],
         "points": [
           {
             "period": 1,
@@ -23779,12 +32561,20 @@ export const analyticsReport = {
             "lower": 2728,
             "upper": 2728
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-08",
-      "safetyStock": 0,
-      "reorderPoint": 5378,
-      "recommendedOrderQuantity": 482,
+      "safetyStock": 807,
+      "reorderPoint": 6184,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.29,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23835,11 +32625,34 @@ export const analyticsReport = {
         "upper": 10970
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          10970,
+          10970,
+          10970,
+          10970,
+          10970,
+          10970,
+          10970,
+          10970
+        ],
+        "forecast": [
+          10970,
+          10970,
+          10970
+        ],
+        "lower95": [
+          10970,
+          10970,
+          10970
+        ],
+        "upper95": [
+          10970,
+          10970,
+          10970
+        ],
         "points": [
           {
             "period": 1,
@@ -23859,12 +32672,20 @@ export const analyticsReport = {
             "lower": 10970,
             "upper": 10970
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-12",
-      "safetyStock": 0,
-      "reorderPoint": 21625,
-      "recommendedOrderQuantity": 471,
+      "safetyStock": 3244,
+      "reorderPoint": 24868,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.85,
       "stockoutFrequency": 0.125,
       "stockAgeDays": null,
@@ -23915,11 +32736,30 @@ export const analyticsReport = {
         "upper": 40
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          40,
+          40,
+          40,
+          40
+        ],
+        "forecast": [
+          40,
+          40,
+          40
+        ],
+        "lower95": [
+          40,
+          40,
+          40
+        ],
+        "upper95": [
+          40,
+          40,
+          40
+        ],
         "points": [
           {
             "period": 1,
@@ -23939,12 +32779,20 @@ export const analyticsReport = {
             "lower": 40,
             "upper": 40
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-12",
-      "safetyStock": 0,
-      "reorderPoint": 79,
-      "recommendedOrderQuantity": 1,
+      "safetyStock": 12,
+      "reorderPoint": 91,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.83,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -23995,11 +32843,30 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -24019,11 +32886,19 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-17",
-      "safetyStock": 0,
-      "reorderPoint": 65,
+      "safetyStock": 10,
+      "reorderPoint": 75,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.72,
       "stockoutFrequency": 0,
@@ -24075,11 +32950,30 @@ export const analyticsReport = {
         "upper": 15
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          15,
+          15,
+          15,
+          15
+        ],
+        "forecast": [
+          15,
+          15,
+          15
+        ],
+        "lower95": [
+          15,
+          15,
+          15
+        ],
+        "upper95": [
+          15,
+          15,
+          15
+        ],
         "points": [
           {
             "period": 1,
@@ -24099,12 +32993,20 @@ export const analyticsReport = {
             "lower": 15,
             "upper": 15
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-12",
-      "safetyStock": 0,
-      "reorderPoint": 30,
-      "recommendedOrderQuantity": 1,
+      "safetyStock": 4,
+      "reorderPoint": 34,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.88,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -24155,11 +33057,30 @@ export const analyticsReport = {
         "upper": 32
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          32,
+          32,
+          32,
+          32
+        ],
+        "forecast": [
+          32,
+          32,
+          32
+        ],
+        "lower95": [
+          32,
+          32,
+          32
+        ],
+        "upper95": [
+          32,
+          32,
+          32
+        ],
         "points": [
           {
             "period": 1,
@@ -24179,12 +33100,20 @@ export const analyticsReport = {
             "lower": 32,
             "upper": 32
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-13",
-      "safetyStock": 0,
-      "reorderPoint": 63,
-      "recommendedOrderQuantity": 1,
+      "safetyStock": 9,
+      "reorderPoint": 73,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.72,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -24235,11 +33164,31 @@ export const analyticsReport = {
         "upper": 10
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "forecast": [
+          10,
+          10,
+          10
+        ],
+        "lower95": [
+          10,
+          10,
+          10
+        ],
+        "upper95": [
+          10,
+          10,
+          10
+        ],
         "points": [
           {
             "period": 1,
@@ -24259,11 +33208,19 @@ export const analyticsReport = {
             "lower": 10,
             "upper": 10
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-14",
-      "safetyStock": 0,
-      "reorderPoint": 20,
+      "safetyStock": 3,
+      "reorderPoint": 23,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.4,
       "stockoutFrequency": 0,
@@ -24315,11 +33272,31 @@ export const analyticsReport = {
         "upper": 7
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "forecast": [
+          7,
+          7,
+          7
+        ],
+        "lower95": [
+          7,
+          7,
+          7
+        ],
+        "upper95": [
+          7,
+          7,
+          7
+        ],
         "points": [
           {
             "period": 1,
@@ -24339,11 +33316,19 @@ export const analyticsReport = {
             "lower": 7,
             "upper": 7
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-18",
-      "safetyStock": 0,
-      "reorderPoint": 14,
+      "safetyStock": 2,
+      "reorderPoint": 16,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.7,
       "stockoutFrequency": 0,
@@ -24373,86 +33358,6 @@ export const analyticsReport = {
       "priorityScore": 35
     },
     {
-      "sku": "RN0353",
-      "description": "Erythropoetin 2,000IU Injection 1ml Prefilled Syringe (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 13080,
-      "ami": 2534,
-      "mos": 5.2,
-      "status": "overstocked",
-      "daysOfSupply": 160,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 2481.49,
-      "usageRates": {
-        "daily": 81.53,
-        "weekly": 570.69,
-        "monthly": 2481.49
-      },
-      "forecastRange": {
-        "lower": 1536.03,
-        "upper": 3426.95
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 482.37624083942194,
-        "points": [
-          {
-            "period": 1,
-            "value": 2481.48957588125,
-            "lower": 1536.0321438359829,
-            "upper": 3426.947007926517
-          },
-          {
-            "period": 2,
-            "value": 2481.48957588125,
-            "lower": 1144.4108528363945,
-            "upper": 3818.5682989261054
-          },
-          {
-            "period": 3,
-            "value": 2481.48957588125,
-            "lower": 843.9092671852484,
-            "upper": 4119.069884577251
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-12-22",
-      "safetyStock": 1575,
-      "reorderPoint": 6466,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 2.81,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 603.76,
-        "wape": 0.238,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 0.623,
-        "demandChange": 2.429,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [],
-      "action": "Review incoming orders and redistribute before stock becomes excess.",
-      "priorityScore": 35
-    },
-    {
       "sku": "LAB1635",
       "description": "Cobas C111: Creatinine Tests (400)",
       "programme": "Laboratory Services",
@@ -24475,11 +33380,34 @@ export const analyticsReport = {
         "upper": 150
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150
+        ],
+        "forecast": [
+          150,
+          150,
+          150
+        ],
+        "lower95": [
+          150,
+          150,
+          150
+        ],
+        "upper95": [
+          150,
+          150,
+          150
+        ],
         "points": [
           {
             "period": 1,
@@ -24499,11 +33427,19 @@ export const analyticsReport = {
             "lower": 150,
             "upper": 150
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-22",
-      "safetyStock": 0,
-      "reorderPoint": 296,
+      "safetyStock": 44,
+      "reorderPoint": 340,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.82,
       "stockoutFrequency": 0,
@@ -24555,11 +33491,34 @@ export const analyticsReport = {
         "upper": 15
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          15
+        ],
+        "forecast": [
+          15,
+          15,
+          15
+        ],
+        "lower95": [
+          15,
+          15,
+          15
+        ],
+        "upper95": [
+          15,
+          15,
+          15
+        ],
         "points": [
           {
             "period": 1,
@@ -24579,11 +33538,19 @@ export const analyticsReport = {
             "lower": 15,
             "upper": 15
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-24",
-      "safetyStock": 0,
-      "reorderPoint": 30,
+      "safetyStock": 4,
+      "reorderPoint": 34,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.25,
       "stockoutFrequency": 0,
@@ -24601,6 +33568,117 @@ export const analyticsReport = {
       "historicalTrend": {
         "stockOnHandChange": 0,
         "demandChange": 0,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Review incoming orders and redistribute before stock becomes excess.",
+      "priorityScore": 35
+    },
+    {
+      "sku": "RN0116",
+      "description": "Nipro: Elisio Dialyser 17H (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 4602,
+      "ami": 869,
+      "mos": 5.3,
+      "status": "overstocked",
+      "daysOfSupply": 162,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 865.11,
+      "usageRates": {
+        "daily": 28.42,
+        "weekly": 198.96,
+        "monthly": 865.11
+      },
+      "forecastRange": {
+        "lower": 528.98,
+        "upper": 1201.23
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          384,
+          667,
+          950,
+          930.9200000000001,
+          822.9824,
+          838.683328,
+          1121.11151616,
+          933.6236260352
+        ],
+        "forecast": [
+          865.106707513344,
+          848.288689819648,
+          831.4706721259519
+        ],
+        "lower95": [
+          528.980806497886,
+          372.93488193871076,
+          249.28353382731132
+        ],
+        "upper95": [
+          1201.2326085288018,
+          1323.6424977005852,
+          1413.6578104245923
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 865.106707513344,
+            "lower": 528.980806497886,
+            "upper": 1201.2326085288018
+          },
+          {
+            "period": 2,
+            "value": 848.288689819648,
+            "lower": 372.93488193871076,
+            "upper": 1323.6424977005852
+          },
+          {
+            "period": 3,
+            "value": 831.4706721259519,
+            "lower": 249.28353382731132,
+            "upper": 1413.6578104245923
+          }
+        ],
+        "residualStdDev": 171.4928066405398,
+        "rmse": 171.4928066405398,
+        "mape": 17.549696050369064,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.6
+        }
+      },
+      "expectedStockoutDate": "2026-12-23",
+      "safetyStock": 253,
+      "reorderPoint": 1942,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.35,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 211.63,
+        "wape": 0.255,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 2.548,
+        "demandChange": 1.263,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -24635,11 +33713,34 @@ export const analyticsReport = {
         "upper": 2
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "forecast": [
+          2,
+          2,
+          2
+        ],
+        "lower95": [
+          2,
+          2,
+          2
+        ],
+        "upper95": [
+          2,
+          2,
+          2
+        ],
         "points": [
           {
             "period": 1,
@@ -24659,11 +33760,19 @@ export const analyticsReport = {
             "lower": 2,
             "upper": 2
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-12-29",
-      "safetyStock": 0,
-      "reorderPoint": 4,
+      "safetyStock": 1,
+      "reorderPoint": 5,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.18,
       "stockoutFrequency": 0,
@@ -24715,11 +33824,34 @@ export const analyticsReport = {
         "upper": 120
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "forecast": [
+          120,
+          120,
+          120
+        ],
+        "lower95": [
+          120,
+          120,
+          120
+        ],
+        "upper95": [
+          120,
+          120,
+          120
+        ],
         "points": [
           {
             "period": 1,
@@ -24739,11 +33871,19 @@ export const analyticsReport = {
             "lower": 120,
             "upper": 120
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-02",
-      "safetyStock": 0,
-      "reorderPoint": 237,
+      "safetyStock": 35,
+      "reorderPoint": 272,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.93,
       "stockoutFrequency": 0,
@@ -24795,11 +33935,34 @@ export const analyticsReport = {
         "upper": 952
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          952,
+          952,
+          952,
+          952,
+          952,
+          952,
+          952,
+          952
+        ],
+        "forecast": [
+          952,
+          952,
+          952
+        ],
+        "lower95": [
+          952,
+          952,
+          952
+        ],
+        "upper95": [
+          952,
+          952,
+          952
+        ],
         "points": [
           {
             "period": 1,
@@ -24819,11 +33982,19 @@ export const analyticsReport = {
             "lower": 952,
             "upper": 952
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-05",
-      "safetyStock": 0,
-      "reorderPoint": 1877,
+      "safetyStock": 281,
+      "reorderPoint": 2158,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.79,
       "stockoutFrequency": 0,
@@ -24875,11 +34046,34 @@ export const analyticsReport = {
         "upper": 784
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          784,
+          784,
+          784,
+          784,
+          784,
+          784,
+          784,
+          784
+        ],
+        "forecast": [
+          784,
+          784,
+          784
+        ],
+        "lower95": [
+          784,
+          784,
+          784
+        ],
+        "upper95": [
+          784,
+          784,
+          784
+        ],
         "points": [
           {
             "period": 1,
@@ -24899,11 +34093,19 @@ export const analyticsReport = {
             "lower": 784,
             "upper": 784
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-11",
-      "safetyStock": 0,
-      "reorderPoint": 1545,
+      "safetyStock": 232,
+      "reorderPoint": 1777,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.97,
       "stockoutFrequency": 0,
@@ -24955,11 +34157,34 @@ export const analyticsReport = {
         "upper": 20
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "forecast": [
+          20,
+          20,
+          20
+        ],
+        "lower95": [
+          20,
+          20,
+          20
+        ],
+        "upper95": [
+          20,
+          20,
+          20
+        ],
         "points": [
           {
             "period": 1,
@@ -24979,11 +34204,19 @@ export const analyticsReport = {
             "lower": 20,
             "upper": 20
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-12",
-      "safetyStock": 0,
-      "reorderPoint": 39,
+      "safetyStock": 6,
+      "reorderPoint": 45,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2.02,
       "stockoutFrequency": 0,
@@ -25035,11 +34268,33 @@ export const analyticsReport = {
         "upper": 2
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "forecast": [
+          2,
+          2,
+          2
+        ],
+        "lower95": [
+          2,
+          2,
+          2
+        ],
+        "upper95": [
+          2,
+          2,
+          2
+        ],
         "points": [
           {
             "period": 1,
@@ -25059,11 +34314,19 @@ export const analyticsReport = {
             "lower": 2,
             "upper": 2
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-13",
-      "safetyStock": 0,
-      "reorderPoint": 4,
+      "safetyStock": 1,
+      "reorderPoint": 5,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 2,
       "stockoutFrequency": 0,
@@ -25115,11 +34378,34 @@ export const analyticsReport = {
         "upper": 913
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          913,
+          913,
+          913,
+          913,
+          913,
+          913,
+          913,
+          913
+        ],
+        "forecast": [
+          913,
+          913,
+          913
+        ],
+        "lower95": [
+          913,
+          913,
+          913
+        ],
+        "upper95": [
+          913,
+          913,
+          913
+        ],
         "points": [
           {
             "period": 1,
@@ -25139,11 +34425,19 @@ export const analyticsReport = {
             "lower": 913,
             "upper": 913
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-15",
-      "safetyStock": 0,
-      "reorderPoint": 1800,
+      "safetyStock": 270,
+      "reorderPoint": 2070,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.81,
       "stockoutFrequency": 0,
@@ -25195,11 +34489,34 @@ export const analyticsReport = {
         "upper": 5705
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          5705,
+          5705,
+          5705,
+          5705,
+          5705,
+          5705,
+          5705,
+          5705
+        ],
+        "forecast": [
+          5705,
+          5705,
+          5705
+        ],
+        "lower95": [
+          5705,
+          5705,
+          5705
+        ],
+        "upper95": [
+          5705,
+          5705,
+          5705
+        ],
         "points": [
           {
             "period": 1,
@@ -25219,11 +34536,19 @@ export const analyticsReport = {
             "lower": 5705,
             "upper": 5705
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-22",
-      "safetyStock": 0,
-      "reorderPoint": 11246,
+      "safetyStock": 1687,
+      "reorderPoint": 12933,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.13,
       "stockoutFrequency": 0,
@@ -25275,11 +34600,34 @@ export const analyticsReport = {
         "upper": 55
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          55,
+          55,
+          55,
+          55,
+          55,
+          55,
+          55,
+          55
+        ],
+        "forecast": [
+          55,
+          55,
+          55
+        ],
+        "lower95": [
+          55,
+          55,
+          55
+        ],
+        "upper95": [
+          55,
+          55,
+          55
+        ],
         "points": [
           {
             "period": 1,
@@ -25299,11 +34647,19 @@ export const analyticsReport = {
             "lower": 55,
             "upper": 55
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-23",
-      "safetyStock": 0,
-      "reorderPoint": 108,
+      "safetyStock": 16,
+      "reorderPoint": 125,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.9,
       "stockoutFrequency": 0,
@@ -25355,11 +34711,34 @@ export const analyticsReport = {
         "upper": 3777
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3777,
+          3777,
+          3777,
+          3777,
+          3777,
+          3777,
+          3777,
+          3777
+        ],
+        "forecast": [
+          3777,
+          3777,
+          3777
+        ],
+        "lower95": [
+          3777,
+          3777,
+          3777
+        ],
+        "upper95": [
+          3777,
+          3777,
+          3777
+        ],
         "points": [
           {
             "period": 1,
@@ -25379,11 +34758,19 @@ export const analyticsReport = {
             "lower": 3777,
             "upper": 3777
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-24",
-      "safetyStock": 0,
-      "reorderPoint": 7445,
+      "safetyStock": 1117,
+      "reorderPoint": 8562,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.27,
       "stockoutFrequency": 0,
@@ -25435,11 +34822,34 @@ export const analyticsReport = {
         "upper": 208
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          208,
+          208,
+          208,
+          208,
+          208,
+          208,
+          208,
+          208
+        ],
+        "forecast": [
+          208,
+          208,
+          208
+        ],
+        "lower95": [
+          208,
+          208,
+          208
+        ],
+        "upper95": [
+          208,
+          208,
+          208
+        ],
         "points": [
           {
             "period": 1,
@@ -25459,11 +34869,19 @@ export const analyticsReport = {
             "lower": 208,
             "upper": 208
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-27",
-      "safetyStock": 0,
-      "reorderPoint": 410,
+      "safetyStock": 62,
+      "reorderPoint": 472,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.76,
       "stockoutFrequency": 0,
@@ -25515,11 +34933,33 @@ export const analyticsReport = {
         "upper": 21030
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          21030,
+          21030,
+          21030,
+          21030,
+          21030,
+          21030,
+          21030
+        ],
+        "forecast": [
+          21030,
+          21030,
+          21030
+        ],
+        "lower95": [
+          21030,
+          21030,
+          21030
+        ],
+        "upper95": [
+          21030,
+          21030,
+          21030
+        ],
         "points": [
           {
             "period": 1,
@@ -25539,11 +34979,19 @@ export const analyticsReport = {
             "lower": 21030,
             "upper": 21030
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-28",
-      "safetyStock": 0,
-      "reorderPoint": 41455,
+      "safetyStock": 6218,
+      "reorderPoint": 47674,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.57,
       "stockoutFrequency": 0,
@@ -25584,46 +35032,74 @@ export const analyticsReport = {
       "status": "overstocked",
       "daysOfSupply": 200,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 4577.04,
+      "forecastMonthlyDemand": 4577.06,
       "usageRates": {
         "daily": 150.38,
         "weekly": 1052.63,
-        "monthly": 4577.04
+        "monthly": 4577.06
       },
       "forecastRange": {
-        "lower": 4576.68,
-        "upper": 4577.41
+        "lower": 4576.75,
+        "upper": 4577.37
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0.18408935500211054,
+        "fitted": [
+          4577,
+          4577,
+          4577,
+          4577.072,
+          4577.06672
+        ],
+        "forecast": [
+          4577.0598272,
+          4577.0662784,
+          4577.0727296
+        ],
+        "lower95": [
+          4576.75048921286,
+          4576.62880842323,
+          4576.536940489563
+        ],
+        "upper95": [
+          4577.3691651871395,
+          4577.503748376769,
+          4577.608518710436
+        ],
         "points": [
           {
             "period": 1,
-            "value": 4577.044362500001,
-            "lower": 4576.683547364197,
-            "upper": 4577.405177635805
+            "value": 4577.0598272,
+            "lower": 4576.75048921286,
+            "upper": 4577.3691651871395
           },
           {
             "period": 2,
-            "value": 4577.044362500001,
-            "lower": 4576.534092841437,
-            "upper": 4577.554632158564
+            "value": 4577.0662784,
+            "lower": 4576.62880842323,
+            "upper": 4577.503748376769
           },
           {
             "period": 3,
-            "value": 4577.044362500001,
-            "lower": 4576.419412352648,
-            "upper": 4577.669312647354
+            "value": 4577.0727296,
+            "lower": 4576.536940489563,
+            "upper": 4577.608518710436
           }
-        ]
+        ],
+        "residualStdDev": 0.15782550364255127,
+        "rmse": 0.15782550364255127,
+        "mape": 0.0023962220764354412,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-30",
-      "safetyStock": 0,
-      "reorderPoint": 9023,
+      "safetyStock": 1353,
+      "reorderPoint": 10376,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.52,
       "stockoutFrequency": 0,
@@ -25634,7 +35110,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.16,
+        "mae": 0.15,
         "wape": 0,
         "observations": 3
       },
@@ -25675,11 +35151,31 @@ export const analyticsReport = {
         "upper": 1305
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1305,
+          1305,
+          1305,
+          1305,
+          1305
+        ],
+        "forecast": [
+          1305,
+          1305,
+          1305
+        ],
+        "lower95": [
+          1305,
+          1305,
+          1305
+        ],
+        "upper95": [
+          1305,
+          1305,
+          1305
+        ],
         "points": [
           {
             "period": 1,
@@ -25699,11 +35195,19 @@ export const analyticsReport = {
             "lower": 1305,
             "upper": 1305
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-01-31",
-      "safetyStock": 0,
-      "reorderPoint": 2572,
+      "safetyStock": 386,
+      "reorderPoint": 2958,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.88,
       "stockoutFrequency": 0,
@@ -25755,11 +35259,34 @@ export const analyticsReport = {
         "upper": 8724
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          8724,
+          8724,
+          8724,
+          8724,
+          8724,
+          8724,
+          8724,
+          8724
+        ],
+        "forecast": [
+          8724,
+          8724,
+          8724
+        ],
+        "lower95": [
+          8724,
+          8724,
+          8724
+        ],
+        "upper95": [
+          8724,
+          8724,
+          8724
+        ],
         "points": [
           {
             "period": 1,
@@ -25779,11 +35306,19 @@ export const analyticsReport = {
             "lower": 8724,
             "upper": 8724
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-02-02",
-      "safetyStock": 0,
-      "reorderPoint": 17197,
+      "safetyStock": 2580,
+      "reorderPoint": 19777,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.48,
       "stockoutFrequency": 0,
@@ -25835,11 +35370,33 @@ export const analyticsReport = {
         "upper": 3361
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          3361,
+          3361,
+          3361,
+          3361,
+          3361,
+          3361,
+          3361
+        ],
+        "forecast": [
+          3361,
+          3361,
+          3361
+        ],
+        "lower95": [
+          3361,
+          3361,
+          3361
+        ],
+        "upper95": [
+          3361,
+          3361,
+          3361
+        ],
         "points": [
           {
             "period": 1,
@@ -25859,11 +35416,19 @@ export const analyticsReport = {
             "lower": 3361,
             "upper": 3361
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-02-04",
-      "safetyStock": 0,
-      "reorderPoint": 6625,
+      "safetyStock": 994,
+      "reorderPoint": 7619,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.79,
       "stockoutFrequency": 0,
@@ -25915,11 +35480,34 @@ export const analyticsReport = {
         "upper": 86873
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          86873,
+          86873,
+          86873,
+          86873,
+          86873,
+          86873,
+          86873,
+          86873
+        ],
+        "forecast": [
+          86873,
+          86873,
+          86873
+        ],
+        "lower95": [
+          86873,
+          86873,
+          86873
+        ],
+        "upper95": [
+          86873,
+          86873,
+          86873
+        ],
         "points": [
           {
             "period": 1,
@@ -25939,11 +35527,19 @@ export const analyticsReport = {
             "lower": 86873,
             "upper": 86873
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-02-09",
-      "safetyStock": 0,
-      "reorderPoint": 171249,
+      "safetyStock": 25687,
+      "reorderPoint": 196936,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.49,
       "stockoutFrequency": 0,
@@ -25995,11 +35591,31 @@ export const analyticsReport = {
         "upper": 25
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "forecast": [
+          25,
+          25,
+          25
+        ],
+        "lower95": [
+          25,
+          25,
+          25
+        ],
+        "upper95": [
+          25,
+          25,
+          25
+        ],
         "points": [
           {
             "period": 1,
@@ -26019,11 +35635,19 @@ export const analyticsReport = {
             "lower": 25,
             "upper": 25
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-02-15",
-      "safetyStock": 0,
-      "reorderPoint": 49,
+      "safetyStock": 7,
+      "reorderPoint": 57,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.44,
       "stockoutFrequency": 0,
@@ -26075,11 +35699,34 @@ export const analyticsReport = {
         "upper": 159
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          159,
+          159,
+          159,
+          159,
+          159,
+          159,
+          159,
+          159
+        ],
+        "forecast": [
+          159,
+          159,
+          159
+        ],
+        "lower95": [
+          159,
+          159,
+          159
+        ],
+        "upper95": [
+          159,
+          159,
+          159
+        ],
         "points": [
           {
             "period": 1,
@@ -26099,11 +35746,19 @@ export const analyticsReport = {
             "lower": 159,
             "upper": 159
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-04",
-      "safetyStock": 0,
-      "reorderPoint": 313,
+      "safetyStock": 47,
+      "reorderPoint": 360,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.31,
       "stockoutFrequency": 0,
@@ -26155,11 +35810,33 @@ export const analyticsReport = {
         "upper": 103952
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          103952,
+          103952,
+          103952,
+          103952,
+          103952,
+          103952,
+          103952
+        ],
+        "forecast": [
+          103952,
+          103952,
+          103952
+        ],
+        "lower95": [
+          103952,
+          103952,
+          103952
+        ],
+        "upper95": [
+          103952,
+          103952,
+          103952
+        ],
         "points": [
           {
             "period": 1,
@@ -26179,11 +35856,19 @@ export const analyticsReport = {
             "lower": 103952,
             "upper": 103952
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-01",
-      "safetyStock": 0,
-      "reorderPoint": 204916,
+      "safetyStock": 30737,
+      "reorderPoint": 235653,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.39,
       "stockoutFrequency": 0,
@@ -26235,11 +35920,34 @@ export const analyticsReport = {
         "upper": 8030
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          8030,
+          8030,
+          8030,
+          8030,
+          8030,
+          8030,
+          8030,
+          8030
+        ],
+        "forecast": [
+          8030,
+          8030,
+          8030
+        ],
+        "lower95": [
+          8030,
+          8030,
+          8030
+        ],
+        "upper95": [
+          8030,
+          8030,
+          8030
+        ],
         "points": [
           {
             "period": 1,
@@ -26259,11 +35967,19 @@ export const analyticsReport = {
             "lower": 8030,
             "upper": 8030
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-13",
-      "safetyStock": 0,
-      "reorderPoint": 15829,
+      "safetyStock": 2374,
+      "reorderPoint": 18204,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.19,
       "stockoutFrequency": 0,
@@ -26315,11 +36031,33 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -26339,11 +36077,19 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-15",
-      "safetyStock": 0,
-      "reorderPoint": 197,
+      "safetyStock": 30,
+      "reorderPoint": 227,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.5,
       "stockoutFrequency": 0,
@@ -26373,86 +36119,6 @@ export const analyticsReport = {
       "priorityScore": 35
     },
     {
-      "sku": "LAB0573",
-      "description": "Sysmex Sulfolyser, 5L (1)",
-      "programme": "Laboratory Services",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 142,
-      "ami": 18,
-      "mos": 8,
-      "status": "overstocked",
-      "daysOfSupply": 242,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 17.87,
-      "usageRates": {
-        "daily": 0.59,
-        "weekly": 4.11,
-        "monthly": 17.87
-      },
-      "forecastRange": {
-        "lower": 17.73,
-        "upper": 18.02
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 3,
-        "residualStdDev": 0.0742462120245878,
-        "points": [
-          {
-            "period": 1,
-            "value": 17.87325,
-            "lower": 17.727727424431805,
-            "upper": 18.018772575568192
-          },
-          {
-            "period": 2,
-            "value": 17.87325,
-            "lower": 17.66745,
-            "upper": 18.07905
-          },
-          {
-            "period": 3,
-            "value": 17.87325,
-            "lower": 17.62119750546761,
-            "upper": 18.125302494532388
-          }
-        ]
-      },
-      "expectedStockoutDate": "2027-03-13",
-      "safetyStock": 0,
-      "reorderPoint": 36,
-      "recommendedOrderQuantity": 0,
-      "turnoverRate": 1.39,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.2,
-        "wape": 0.011,
-        "observations": 1
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 0.092,
-        "demandChange": 0.017,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
-      "dataQualityFlags": [],
-      "action": "Review incoming orders and redistribute before stock becomes excess.",
-      "priorityScore": 35
-    },
-    {
       "sku": "HTK0015",
       "description": "Standard Q HIV/Syphilis Combo(25)",
       "programme": "HIV Test Kits",
@@ -26475,11 +36141,30 @@ export const analyticsReport = {
         "upper": 4854
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          4854,
+          4854,
+          4854,
+          4854
+        ],
+        "forecast": [
+          4854,
+          4854,
+          4854
+        ],
+        "lower95": [
+          4854,
+          4854,
+          4854
+        ],
+        "upper95": [
+          4854,
+          4854,
+          4854
+        ],
         "points": [
           {
             "period": 1,
@@ -26499,11 +36184,19 @@ export const analyticsReport = {
             "lower": 4854,
             "upper": 4854
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-18",
-      "safetyStock": 0,
-      "reorderPoint": 9568,
+      "safetyStock": 1435,
+      "reorderPoint": 11004,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 3.43,
       "stockoutFrequency": 0,
@@ -26555,11 +36248,34 @@ export const analyticsReport = {
         "upper": 67
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67
+        ],
+        "forecast": [
+          67,
+          67,
+          67
+        ],
+        "lower95": [
+          67,
+          67,
+          67
+        ],
+        "upper95": [
+          67,
+          67,
+          67
+        ],
         "points": [
           {
             "period": 1,
@@ -26579,11 +36295,19 @@ export const analyticsReport = {
             "lower": 67,
             "upper": 67
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-23",
-      "safetyStock": 0,
-      "reorderPoint": 132,
+      "safetyStock": 20,
+      "reorderPoint": 152,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.45,
       "stockoutFrequency": 0,
@@ -26635,11 +36359,33 @@ export const analyticsReport = {
         "upper": 1412
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1412,
+          1412,
+          1412,
+          1412,
+          1412,
+          1412,
+          1412
+        ],
+        "forecast": [
+          1412,
+          1412,
+          1412
+        ],
+        "lower95": [
+          1412,
+          1412,
+          1412
+        ],
+        "upper95": [
+          1412,
+          1412,
+          1412
+        ],
         "points": [
           {
             "period": 1,
@@ -26659,11 +36405,19 @@ export const analyticsReport = {
             "lower": 1412,
             "upper": 1412
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-03-29",
-      "safetyStock": 0,
-      "reorderPoint": 2783,
+      "safetyStock": 418,
+      "reorderPoint": 3201,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.16,
       "stockoutFrequency": 0,
@@ -26715,11 +36469,29 @@ export const analyticsReport = {
         "upper": 23
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          23,
+          23,
+          23
+        ],
+        "forecast": [
+          23,
+          23,
+          23
+        ],
+        "lower95": [
+          23,
+          23,
+          23
+        ],
+        "upper95": [
+          23,
+          23,
+          23
+        ],
         "points": [
           {
             "period": 1,
@@ -26739,11 +36511,19 @@ export const analyticsReport = {
             "lower": 23,
             "upper": 23
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-05",
-      "safetyStock": 0,
-      "reorderPoint": 45,
+      "safetyStock": 7,
+      "reorderPoint": 52,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.38,
       "stockoutFrequency": 0,
@@ -26795,11 +36575,34 @@ export const analyticsReport = {
         "upper": 67
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67
+        ],
+        "forecast": [
+          67,
+          67,
+          67
+        ],
+        "lower95": [
+          67,
+          67,
+          67
+        ],
+        "upper95": [
+          67,
+          67,
+          67
+        ],
         "points": [
           {
             "period": 1,
@@ -26819,11 +36622,19 @@ export const analyticsReport = {
             "lower": 67,
             "upper": 67
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-19",
-      "safetyStock": 0,
-      "reorderPoint": 132,
+      "safetyStock": 20,
+      "reorderPoint": 152,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.91,
       "stockoutFrequency": 0,
@@ -26875,11 +36686,34 @@ export const analyticsReport = {
         "upper": 15
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          15
+        ],
+        "forecast": [
+          15,
+          15,
+          15
+        ],
+        "lower95": [
+          15,
+          15,
+          15
+        ],
+        "upper95": [
+          15,
+          15,
+          15
+        ],
         "points": [
           {
             "period": 1,
@@ -26899,11 +36733,19 @@ export const analyticsReport = {
             "lower": 15,
             "upper": 15
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-21",
-      "safetyStock": 0,
-      "reorderPoint": 30,
+      "safetyStock": 4,
+      "reorderPoint": 34,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.3,
       "stockoutFrequency": 0,
@@ -26955,11 +36797,34 @@ export const analyticsReport = {
         "upper": 1138
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1138,
+          1138,
+          1138,
+          1138,
+          1138,
+          1138,
+          1138,
+          1138
+        ],
+        "forecast": [
+          1138,
+          1138,
+          1138
+        ],
+        "lower95": [
+          1138,
+          1138,
+          1138
+        ],
+        "upper95": [
+          1138,
+          1138,
+          1138
+        ],
         "points": [
           {
             "period": 1,
@@ -26979,11 +36844,19 @@ export const analyticsReport = {
             "lower": 1138,
             "upper": 1138
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-21",
-      "safetyStock": 0,
-      "reorderPoint": 2243,
+      "safetyStock": 336,
+      "reorderPoint": 2580,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.43,
       "stockoutFrequency": 0,
@@ -27035,11 +36908,33 @@ export const analyticsReport = {
         "upper": 2110
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          2110,
+          2110,
+          2110,
+          2110,
+          2110,
+          2110,
+          2110
+        ],
+        "forecast": [
+          2110,
+          2110,
+          2110
+        ],
+        "lower95": [
+          2110,
+          2110,
+          2110
+        ],
+        "upper95": [
+          2110,
+          2110,
+          2110
+        ],
         "points": [
           {
             "period": 1,
@@ -27059,11 +36954,19 @@ export const analyticsReport = {
             "lower": 2110,
             "upper": 2110
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-28",
-      "safetyStock": 0,
-      "reorderPoint": 4159,
+      "safetyStock": 624,
+      "reorderPoint": 4783,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.91,
       "stockoutFrequency": 0,
@@ -27115,11 +37018,34 @@ export const analyticsReport = {
         "upper": 23495
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          23495,
+          23495,
+          23495,
+          23495,
+          23495,
+          23495,
+          23495,
+          23495
+        ],
+        "forecast": [
+          23495,
+          23495,
+          23495
+        ],
+        "lower95": [
+          23495,
+          23495,
+          23495
+        ],
+        "upper95": [
+          23495,
+          23495,
+          23495
+        ],
         "points": [
           {
             "period": 1,
@@ -27139,11 +37065,19 @@ export const analyticsReport = {
             "lower": 23495,
             "upper": 23495
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-04-28",
-      "safetyStock": 0,
-      "reorderPoint": 46315,
+      "safetyStock": 6947,
+      "reorderPoint": 53262,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.27,
       "stockoutFrequency": 0,
@@ -27195,11 +37129,34 @@ export const analyticsReport = {
         "upper": 958
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          958,
+          958,
+          958,
+          958,
+          958,
+          958,
+          958,
+          958
+        ],
+        "forecast": [
+          958,
+          958,
+          958
+        ],
+        "lower95": [
+          958,
+          958,
+          958
+        ],
+        "upper95": [
+          958,
+          958,
+          958
+        ],
         "points": [
           {
             "period": 1,
@@ -27219,11 +37176,19 @@ export const analyticsReport = {
             "lower": 958,
             "upper": 958
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-05-06",
-      "safetyStock": 0,
-      "reorderPoint": 1888,
+      "safetyStock": 283,
+      "reorderPoint": 2172,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.05,
       "stockoutFrequency": 0,
@@ -27275,11 +37240,34 @@ export const analyticsReport = {
         "upper": 765
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          765,
+          765,
+          765,
+          765,
+          765,
+          765,
+          765,
+          765
+        ],
+        "forecast": [
+          765,
+          765,
+          765
+        ],
+        "lower95": [
+          765,
+          765,
+          765
+        ],
+        "upper95": [
+          765,
+          765,
+          765
+        ],
         "points": [
           {
             "period": 1,
@@ -27299,11 +37287,19 @@ export const analyticsReport = {
             "lower": 765,
             "upper": 765
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-05-16",
-      "safetyStock": 0,
-      "reorderPoint": 1508,
+      "safetyStock": 226,
+      "reorderPoint": 1734,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.99,
       "stockoutFrequency": 0,
@@ -27355,11 +37351,33 @@ export const analyticsReport = {
         "upper": 40080
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          40080,
+          40080,
+          40080,
+          40080,
+          40080,
+          40080,
+          40080
+        ],
+        "forecast": [
+          40080,
+          40080,
+          40080
+        ],
+        "lower95": [
+          40080,
+          40080,
+          40080
+        ],
+        "upper95": [
+          40080,
+          40080,
+          40080
+        ],
         "points": [
           {
             "period": 1,
@@ -27379,11 +37397,19 @@ export const analyticsReport = {
             "lower": 40080,
             "upper": 40080
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-05-24",
-      "safetyStock": 0,
-      "reorderPoint": 79008,
+      "safetyStock": 11851,
+      "reorderPoint": 90859,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.04,
       "stockoutFrequency": 0,
@@ -27424,46 +37450,75 @@ export const analyticsReport = {
       "status": "overstocked",
       "daysOfSupply": 316,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 170.16,
+      "forecastMonthlyDemand": 170.22,
       "usageRates": {
         "daily": 5.59,
-        "weekly": 39.13,
-        "monthly": 170.16
+        "weekly": 39.15,
+        "monthly": 170.22
       },
       "forecastRange": {
-        "lower": 169.81,
-        "upper": 170.51
+        "lower": 169.89,
+        "upper": 170.56
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0.17875538453429352,
+        "fitted": [
+          170,
+          170,
+          170,
+          170,
+          170.108,
+          170.11712
+        ],
+        "forecast": [
+          170.2244768,
+          170.28925759999998,
+          170.35403839999998
+        ],
+        "lower95": [
+          169.88842750435214,
+          169.81401212846887,
+          169.77198394609016
+        ],
+        "upper95": [
+          170.56052609564784,
+          170.7645030715311,
+          170.9360928539098
+        ],
         "points": [
           {
             "period": 1,
-            "value": 170.15986249999997,
-            "lower": 169.80950194631276,
-            "upper": 170.51022305368718
+            "value": 170.2244768,
+            "lower": 169.88842750435214,
+            "upper": 170.56052609564784
           },
           {
             "period": 2,
-            "value": 170.15986249999997,
-            "lower": 169.66437785325496,
-            "upper": 170.655347146745
+            "value": 170.28925759999998,
+            "lower": 169.81401212846887,
+            "upper": 170.7645030715311
           },
           {
             "period": 3,
-            "value": 170.15986249999997,
-            "lower": 169.55302022004577,
-            "upper": 170.76670477995418
+            "value": 170.35403839999998,
+            "lower": 169.77198394609016,
+            "upper": 170.9360928539098
           }
-        ]
+        ],
+        "residualStdDev": 0.1714537222693127,
+        "rmse": 0.1714537222693127,
+        "mape": 0.07293400986018844,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2027-05-26",
-      "safetyStock": 0,
-      "reorderPoint": 336,
+      "safetyStock": 50,
+      "reorderPoint": 386,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.16,
       "stockoutFrequency": 0,
@@ -27474,7 +37529,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.17,
+        "mae": 0.16,
         "wape": 0.001,
         "observations": 4
       },
@@ -27515,11 +37570,33 @@ export const analyticsReport = {
         "upper": 1032
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1032,
+          1032,
+          1032,
+          1032,
+          1032,
+          1032,
+          1032
+        ],
+        "forecast": [
+          1032,
+          1032,
+          1032
+        ],
+        "lower95": [
+          1032,
+          1032,
+          1032
+        ],
+        "upper95": [
+          1032,
+          1032,
+          1032
+        ],
         "points": [
           {
             "period": 1,
@@ -27539,11 +37616,19 @@ export const analyticsReport = {
             "lower": 1032,
             "upper": 1032
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-03",
-      "safetyStock": 0,
-      "reorderPoint": 2034,
+      "safetyStock": 305,
+      "reorderPoint": 2339,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.41,
       "stockoutFrequency": 0,
@@ -27595,11 +37680,32 @@ export const analyticsReport = {
         "upper": 48
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          48,
+          48,
+          48,
+          48,
+          48,
+          48
+        ],
+        "forecast": [
+          48,
+          48,
+          48
+        ],
+        "lower95": [
+          48,
+          48,
+          48
+        ],
+        "upper95": [
+          48,
+          48,
+          48
+        ],
         "points": [
           {
             "period": 1,
@@ -27619,11 +37725,19 @@ export const analyticsReport = {
             "lower": 48,
             "upper": 48
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-03",
-      "safetyStock": 0,
-      "reorderPoint": 95,
+      "safetyStock": 14,
+      "reorderPoint": 109,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.1,
       "stockoutFrequency": 0,
@@ -27675,11 +37789,34 @@ export const analyticsReport = {
         "upper": 14600
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          14600,
+          14600,
+          14600,
+          14600,
+          14600,
+          14600,
+          14600,
+          14600
+        ],
+        "forecast": [
+          14600,
+          14600,
+          14600
+        ],
+        "lower95": [
+          14600,
+          14600,
+          14600
+        ],
+        "upper95": [
+          14600,
+          14600,
+          14600
+        ],
         "points": [
           {
             "period": 1,
@@ -27699,11 +37836,19 @@ export const analyticsReport = {
             "lower": 14600,
             "upper": 14600
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-01",
-      "safetyStock": 0,
-      "reorderPoint": 28780,
+      "safetyStock": 4317,
+      "reorderPoint": 33097,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.31,
       "stockoutFrequency": 0,
@@ -27755,11 +37900,34 @@ export const analyticsReport = {
         "upper": 3096
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3096,
+          3096,
+          3096,
+          3096,
+          3096,
+          3096,
+          3096,
+          3096
+        ],
+        "forecast": [
+          3096,
+          3096,
+          3096
+        ],
+        "lower95": [
+          3096,
+          3096,
+          3096
+        ],
+        "upper95": [
+          3096,
+          3096,
+          3096
+        ],
         "points": [
           {
             "period": 1,
@@ -27779,11 +37947,19 @@ export const analyticsReport = {
             "lower": 3096,
             "upper": 3096
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-07",
-      "safetyStock": 0,
-      "reorderPoint": 6103,
+      "safetyStock": 915,
+      "reorderPoint": 7018,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.01,
       "stockoutFrequency": 0,
@@ -27835,11 +38011,31 @@ export const analyticsReport = {
         "upper": 1715
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          1715,
+          1715,
+          1715,
+          1715,
+          1715
+        ],
+        "forecast": [
+          1715,
+          1715,
+          1715
+        ],
+        "lower95": [
+          1715,
+          1715,
+          1715
+        ],
+        "upper95": [
+          1715,
+          1715,
+          1715
+        ],
         "points": [
           {
             "period": 1,
@@ -27859,11 +38055,19 @@ export const analyticsReport = {
             "lower": 1715,
             "upper": 1715
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-13",
-      "safetyStock": 0,
-      "reorderPoint": 3381,
+      "safetyStock": 507,
+      "reorderPoint": 3888,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.77,
       "stockoutFrequency": 0,
@@ -27915,11 +38119,34 @@ export const analyticsReport = {
         "upper": 667
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          667,
+          667,
+          667,
+          667,
+          667,
+          667,
+          667,
+          667
+        ],
+        "forecast": [
+          667,
+          667,
+          667
+        ],
+        "lower95": [
+          667,
+          667,
+          667
+        ],
+        "upper95": [
+          667,
+          667,
+          667
+        ],
         "points": [
           {
             "period": 1,
@@ -27939,11 +38166,19 @@ export const analyticsReport = {
             "lower": 667,
             "upper": 667
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-23",
-      "safetyStock": 0,
-      "reorderPoint": 1315,
+      "safetyStock": 197,
+      "reorderPoint": 1512,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.61,
       "stockoutFrequency": 0,
@@ -27995,11 +38230,34 @@ export const analyticsReport = {
         "upper": 400
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          400,
+          400,
+          400,
+          400,
+          400,
+          400,
+          400,
+          400
+        ],
+        "forecast": [
+          400,
+          400,
+          400
+        ],
+        "lower95": [
+          400,
+          400,
+          400
+        ],
+        "upper95": [
+          400,
+          400,
+          400
+        ],
         "points": [
           {
             "period": 1,
@@ -28019,11 +38277,19 @@ export const analyticsReport = {
             "lower": 400,
             "upper": 400
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-06-28",
-      "safetyStock": 0,
-      "reorderPoint": 789,
+      "safetyStock": 118,
+      "reorderPoint": 907,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.92,
       "stockoutFrequency": 0,
@@ -28075,11 +38341,33 @@ export const analyticsReport = {
         "upper": 1393
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1393,
+          1393,
+          1393,
+          1393,
+          1393,
+          1393,
+          1393
+        ],
+        "forecast": [
+          1393,
+          1393,
+          1393
+        ],
+        "lower95": [
+          1393,
+          1393,
+          1393
+        ],
+        "upper95": [
+          1393,
+          1393,
+          1393
+        ],
         "points": [
           {
             "period": 1,
@@ -28099,11 +38387,19 @@ export const analyticsReport = {
             "lower": 1393,
             "upper": 1393
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-07-09",
-      "safetyStock": 0,
-      "reorderPoint": 2746,
+      "safetyStock": 412,
+      "reorderPoint": 3158,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 0.95,
       "stockoutFrequency": 0,
@@ -28155,11 +38451,34 @@ export const analyticsReport = {
         "upper": 648
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          648,
+          648,
+          648,
+          648,
+          648,
+          648,
+          648,
+          648
+        ],
+        "forecast": [
+          648,
+          648,
+          648
+        ],
+        "lower95": [
+          648,
+          648,
+          648
+        ],
+        "upper95": [
+          648,
+          648,
+          648
+        ],
         "points": [
           {
             "period": 1,
@@ -28179,11 +38498,19 @@ export const analyticsReport = {
             "lower": 648,
             "upper": 648
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2027-07-09",
-      "safetyStock": 0,
-      "reorderPoint": 1277,
+      "safetyStock": 192,
+      "reorderPoint": 1469,
       "recommendedOrderQuantity": 0,
       "turnoverRate": 1.15,
       "stockoutFrequency": 0,
@@ -28235,11 +38562,34 @@ export const analyticsReport = {
         "upper": 6
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "forecast": [
+          6,
+          6,
+          6
+        ],
+        "lower95": [
+          6,
+          6,
+          6
+        ],
+        "upper95": [
+          6,
+          6,
+          6
+        ],
         "points": [
           {
             "period": 1,
@@ -28259,12 +38609,20 @@ export const analyticsReport = {
             "lower": 6,
             "upper": 6
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-18",
-      "safetyStock": 0,
-      "reorderPoint": 12,
-      "recommendedOrderQuantity": 17,
+      "safetyStock": 2,
+      "reorderPoint": 14,
+      "recommendedOrderQuantity": 1,
       "turnoverRate": 5.54,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28315,11 +38673,34 @@ export const analyticsReport = {
         "upper": 156
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          156,
+          156,
+          156,
+          156,
+          156,
+          156,
+          156,
+          156
+        ],
+        "forecast": [
+          156,
+          156,
+          156
+        ],
+        "lower95": [
+          156,
+          156,
+          156
+        ],
+        "upper95": [
+          156,
+          156,
+          156
+        ],
         "points": [
           {
             "period": 1,
@@ -28339,12 +38720,20 @@ export const analyticsReport = {
             "lower": 156,
             "upper": 156
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-19",
-      "safetyStock": 0,
-      "reorderPoint": 308,
-      "recommendedOrderQuantity": 438,
+      "safetyStock": 46,
+      "reorderPoint": 354,
+      "recommendedOrderQuantity": 14,
       "turnoverRate": 1.93,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28382,50 +38771,81 @@ export const analyticsReport = {
       "ami": 51047,
       "mos": 2.2,
       "status": "adequate",
-      "daysOfSupply": 64,
+      "daysOfSupply": 70,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 53021.25,
+      "forecastMonthlyDemand": 48644.59,
       "usageRates": {
-        "daily": 1741.97,
-        "weekly": 12193.8,
-        "monthly": 53021.25
+        "daily": 1598.18,
+        "weekly": 11187.26,
+        "monthly": 48644.59
       },
       "forecastRange": {
-        "lower": 35152.59,
-        "upper": 70889.91
+        "lower": 24348.26,
+        "upper": 72940.92
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 9116.662459882236,
+        "fitted": [
+          36507,
+          51047,
+          65587,
+          64423.8,
+          57537.656,
+          51667.68352,
+          68646.4464384,
+          56087.617315328
+        ],
+        "forecast": [
+          48644.58935474176,
+          44225.93178335232,
+          39807.27421196287
+        ],
+        "lower95": [
+          24348.257371334108,
+          9865.729576498015,
+          0
+        ],
+        "upper95": [
+          72940.9213381494,
+          78586.13399020661,
+          81889.75564478562
+        ],
         "points": [
           {
             "period": 1,
-            "value": 53021.25268970313,
-            "lower": 35152.594268333945,
-            "upper": 70889.91111107232
+            "value": 48644.58935474176,
+            "lower": 24348.257371334108,
+            "upper": 72940.9213381494
           },
           {
             "period": 2,
-            "value": 53021.25268970313,
-            "lower": 27751.15360879061,
-            "upper": 78291.35177061564
+            "value": 44225.93178335232,
+            "lower": 9865.729576498015,
+            "upper": 78586.13399020661
           },
           {
             "period": 3,
-            "value": 53021.25268970313,
-            "lower": 22071.828440798217,
-            "upper": 83970.67693860804
+            "value": 39807.27421196287,
+            "lower": 0,
+            "upper": 81889.75564478562
           }
-        ]
+        ],
+        "residualStdDev": 12396.087746636556,
+        "rmse": 12396.087746636556,
+        "mape": 19.58714654555681,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-09-17",
-      "safetyStock": 20285,
-      "reorderPoint": 124803,
-      "recommendedOrderQuantity": 152195,
-      "turnoverRate": 9.11,
+      "expectedStockoutDate": "2026-09-23",
+      "safetyStock": 13730,
+      "reorderPoint": 105266,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 8.36,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -28434,8 +38854,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 8010.63,
-        "wape": 0.148,
+        "mae": 14184.08,
+        "wape": 0.262,
         "observations": 6
       },
       "historicalTrend": {
@@ -28475,11 +38895,34 @@ export const analyticsReport = {
         "upper": 3639
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          3639,
+          3639,
+          3639,
+          3639,
+          3639,
+          3639,
+          3639,
+          3639
+        ],
+        "forecast": [
+          3639,
+          3639,
+          3639
+        ],
+        "lower95": [
+          3639,
+          3639,
+          3639
+        ],
+        "upper95": [
+          3639,
+          3639,
+          3639
+        ],
         "points": [
           {
             "period": 1,
@@ -28499,12 +38942,20 @@ export const analyticsReport = {
             "lower": 3639,
             "upper": 3639
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-20",
-      "safetyStock": 0,
-      "reorderPoint": 7173,
-      "recommendedOrderQuantity": 10120,
+      "safetyStock": 1076,
+      "reorderPoint": 8249,
+      "recommendedOrderQuantity": 226,
       "turnoverRate": 2.56,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28555,11 +39006,31 @@ export const analyticsReport = {
         "upper": 14723
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          14723,
+          14723,
+          14723,
+          14723,
+          14723
+        ],
+        "forecast": [
+          14723,
+          14723,
+          14723
+        ],
+        "lower95": [
+          14723,
+          14723,
+          14723
+        ],
+        "upper95": [
+          14723,
+          14723,
+          14723
+        ],
         "points": [
           {
             "period": 1,
@@ -28579,12 +39050,20 @@ export const analyticsReport = {
             "lower": 14723,
             "upper": 14723
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-23",
-      "safetyStock": 0,
-      "reorderPoint": 29023,
-      "recommendedOrderQuantity": 39462,
+      "safetyStock": 4353,
+      "reorderPoint": 33376,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.94,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28635,11 +39114,33 @@ export const analyticsReport = {
         "upper": 65
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          65,
+          65,
+          65,
+          65,
+          65,
+          65,
+          65
+        ],
+        "forecast": [
+          65,
+          65,
+          65
+        ],
+        "lower95": [
+          65,
+          65,
+          65
+        ],
+        "upper95": [
+          65,
+          65,
+          65
+        ],
         "points": [
           {
             "period": 1,
@@ -28659,12 +39160,20 @@ export const analyticsReport = {
             "lower": 65,
             "upper": 65
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-26",
-      "safetyStock": 0,
-      "reorderPoint": 128,
-      "recommendedOrderQuantity": 168,
+      "safetyStock": 19,
+      "reorderPoint": 147,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28693,86 +39202,6 @@ export const analyticsReport = {
       "priorityScore": 25
     },
     {
-      "sku": "MAL0083",
-      "description": "Artesunate Rectal CAPSULE 100mg (2)",
-      "programme": "Anti-Malarials",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 8447,
-      "ami": 3576,
-      "mos": 2.4,
-      "status": "adequate",
-      "daysOfSupply": 72,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 3567.98,
-      "usageRates": {
-        "daily": 117.22,
-        "weekly": 820.56,
-        "monthly": 3567.98
-      },
-      "forecastRange": {
-        "lower": 2467.51,
-        "upper": 4668.45
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 6,
-        "residualStdDev": 561.4633082314729,
-        "points": [
-          {
-            "period": 1,
-            "value": 3567.98285125,
-            "lower": 2467.514767116313,
-            "upper": 4668.450935383687
-          },
-          {
-            "period": 2,
-            "value": 3567.98285125,
-            "lower": 2011.6859617094037,
-            "upper": 5124.279740790596
-          },
-          {
-            "period": 3,
-            "value": 3567.98285125,
-            "lower": 1661.9162174224728,
-            "upper": 5474.049485077527
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-09-25",
-      "safetyStock": 1372,
-      "reorderPoint": 8405,
-      "recommendedOrderQuantity": 9342,
-      "turnoverRate": 6.03,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 519.84,
-        "wape": 0.137,
-        "observations": 4
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 5.61,
-        "demandChange": 0.403,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
-      "dataQualityFlags": [],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 25
-    },
-    {
       "sku": "TB0076",
       "description": "Cycloserine 250mg Capsule(100)",
       "programme": "Anti-TB Medicines",
@@ -28795,11 +39224,34 @@ export const analyticsReport = {
         "upper": 568
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          568,
+          568,
+          568,
+          568,
+          568,
+          568,
+          568,
+          568
+        ],
+        "forecast": [
+          568,
+          568,
+          568
+        ],
+        "lower95": [
+          568,
+          568,
+          568
+        ],
+        "upper95": [
+          568,
+          568,
+          568
+        ],
         "points": [
           {
             "period": 1,
@@ -28819,12 +39271,20 @@ export const analyticsReport = {
             "lower": 568,
             "upper": 568
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-25",
-      "safetyStock": 0,
-      "reorderPoint": 1120,
-      "recommendedOrderQuantity": 1487,
+      "safetyStock": 168,
+      "reorderPoint": 1288,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.78,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28875,11 +39335,29 @@ export const analyticsReport = {
         "upper": 129
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          129,
+          129,
+          129
+        ],
+        "forecast": [
+          129,
+          129,
+          129
+        ],
+        "lower95": [
+          129,
+          129,
+          129
+        ],
+        "upper95": [
+          129,
+          129,
+          129
+        ],
         "points": [
           {
             "period": 1,
@@ -28899,12 +39377,20 @@ export const analyticsReport = {
             "lower": 129,
             "upper": 129
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-30",
-      "safetyStock": 0,
-      "reorderPoint": 254,
-      "recommendedOrderQuantity": 316,
+      "safetyStock": 38,
+      "reorderPoint": 292,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 5.2,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -28942,50 +39428,76 @@ export const analyticsReport = {
       "ami": 30,
       "mos": 2.5,
       "status": "adequate",
-      "daysOfSupply": 74,
+      "daysOfSupply": 73,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 29.87,
+      "forecastMonthlyDemand": 30.53,
       "usageRates": {
-        "daily": 0.98,
-        "weekly": 6.87,
-        "monthly": 29.87
+        "daily": 1,
+        "weekly": 7.02,
+        "monthly": 30.53
       },
       "forecastRange": {
-        "lower": 29.73,
-        "upper": 30.02
+        "lower": 30.11,
+        "upper": 30.94
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0.0742462120245878,
+        "fitted": [
+          29.7,
+          30,
+          30.3
+        ],
+        "forecast": [
+          30.528000000000002,
+          30.816000000000003,
+          31.104000000000006
+        ],
+        "lower95": [
+          30.112221212662313,
+          30.228,
+          30.38385001562175
+        ],
+        "upper95": [
+          30.943778787337692,
+          31.404000000000003,
+          31.824149984378263
+        ],
         "points": [
           {
             "period": 1,
-            "value": 29.87325,
-            "lower": 29.727727424431805,
-            "upper": 30.018772575568192
+            "value": 30.528000000000002,
+            "lower": 30.112221212662313,
+            "upper": 30.943778787337692
           },
           {
             "period": 2,
-            "value": 29.87325,
-            "lower": 29.66745,
-            "upper": 30.07905
+            "value": 30.816000000000003,
+            "lower": 30.228,
+            "upper": 31.404000000000003
           },
           {
             "period": 3,
-            "value": 29.87325,
-            "lower": 29.62119750546761,
-            "upper": 30.125302494532388
+            "value": 31.104000000000006,
+            "lower": 30.38385001562175,
+            "upper": 31.824149984378263
           }
-        ]
+        ],
+        "residualStdDev": 0.21213203435596475,
+        "rmse": 0.21213203435596475,
+        "mape": 0.5000000000000012,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
-      "expectedStockoutDate": "2026-09-27",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 76,
-      "turnoverRate": 3.34,
+      "expectedStockoutDate": "2026-09-25",
+      "safetyStock": 9,
+      "reorderPoint": 70,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.41,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -28994,8 +39506,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.2,
-        "wape": 0.007,
+        "mae": 0.3,
+        "wape": 0.01,
         "observations": 1
       },
       "historicalTrend": {
@@ -29022,50 +39534,81 @@ export const analyticsReport = {
       "ami": 16704,
       "mos": 2.5,
       "status": "adequate",
-      "daysOfSupply": 75,
+      "daysOfSupply": 77,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 16746.53,
+      "forecastMonthlyDemand": 16434.47,
       "usageRates": {
-        "daily": 550.19,
-        "weekly": 3851.36,
-        "monthly": 16746.53
+        "daily": 539.94,
+        "weekly": 3779.59,
+        "monthly": 16434.47
       },
       "forecastRange": {
-        "lower": 15245.47,
-        "upper": 18247.59
+        "lower": 14350.32,
+        "upper": 18518.61
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 765.8476498576473,
+        "fitted": [
+          14718,
+          16704,
+          18690,
+          17816.16,
+          16929.6096,
+          16607.909376000003,
+          17967.30733056,
+          16673.8702299136
+        ],
+        "forecast": [
+          16434.465862639612,
+          16170.957679296509,
+          15907.449495953404
+        ],
+        "lower95": [
+          14350.324998826725,
+          13223.537403796347,
+          12297.611629698997
+        ],
+        "upper95": [
+          18518.606726452497,
+          19118.37795479667,
+          19517.28736220781
+        ],
         "points": [
           {
             "period": 1,
-            "value": 16746.531504092185,
-            "lower": 15245.470110371196,
-            "upper": 18247.592897813174
+            "value": 16434.465862639612,
+            "lower": 14350.324998826725,
+            "upper": 18518.606726452497
           },
           {
             "period": 2,
-            "value": 16746.531504092185,
-            "lower": 14623.710123137302,
-            "upper": 18869.35288504707
+            "value": 16170.957679296509,
+            "lower": 13223.537403796347,
+            "upper": 19118.37795479667
           },
           {
             "period": 3,
-            "value": 16746.531504092185,
-            "lower": 14146.616904887282,
-            "upper": 19346.446103297087
+            "value": 15907.449495953404,
+            "lower": 12297.611629698997,
+            "upper": 19517.28736220781
           }
-        ]
+        ],
+        "residualStdDev": 1063.3371754147383,
+        "rmse": 1063.3371754147383,
+        "mape": 4.792217115556982,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-09-28",
-      "safetyStock": 1893,
-      "reorderPoint": 34905,
-      "recommendedOrderQuantity": 42022,
-      "turnoverRate": 11.11,
+      "expectedStockoutDate": "2026-09-29",
+      "safetyStock": 4821,
+      "reorderPoint": 36957,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 10.9,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -29074,8 +39617,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 690.33,
-        "wape": 0.041,
+        "mae": 1340.42,
+        "wape": 0.079,
         "observations": 6
       },
       "historicalTrend": {
@@ -29115,11 +39658,34 @@ export const analyticsReport = {
         "upper": 67
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67
+        ],
+        "forecast": [
+          67,
+          67,
+          67
+        ],
+        "lower95": [
+          67,
+          67,
+          67
+        ],
+        "upper95": [
+          67,
+          67,
+          67
+        ],
         "points": [
           {
             "period": 1,
@@ -29139,12 +39705,20 @@ export const analyticsReport = {
             "lower": 67,
             "upper": 67
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-09-27",
-      "safetyStock": 0,
-      "reorderPoint": 132,
-      "recommendedOrderQuantity": 170,
+      "safetyStock": 20,
+      "reorderPoint": 152,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.16,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29195,11 +39769,34 @@ export const analyticsReport = {
         "upper": 8691
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          8691,
+          8691,
+          8691,
+          8691,
+          8691,
+          8691,
+          8691,
+          8691
+        ],
+        "forecast": [
+          8691,
+          8691,
+          8691
+        ],
+        "lower95": [
+          8691,
+          8691,
+          8691
+        ],
+        "upper95": [
+          8691,
+          8691,
+          8691
+        ],
         "points": [
           {
             "period": 1,
@@ -29219,12 +39816,20 @@ export const analyticsReport = {
             "lower": 8691,
             "upper": 8691
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-03",
-      "safetyStock": 0,
-      "reorderPoint": 17132,
-      "recommendedOrderQuantity": 20208,
+      "safetyStock": 2570,
+      "reorderPoint": 19702,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.26,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29275,11 +39880,29 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -29299,12 +39922,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-04",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 231,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.48,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29355,11 +39986,34 @@ export const analyticsReport = {
         "upper": 14723
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          14723,
+          14723,
+          14723,
+          14723,
+          14723,
+          14723,
+          14723,
+          14723
+        ],
+        "forecast": [
+          14723,
+          14723,
+          14723
+        ],
+        "lower95": [
+          14723,
+          14723,
+          14723
+        ],
+        "upper95": [
+          14723,
+          14723,
+          14723
+        ],
         "points": [
           {
             "period": 1,
@@ -29379,12 +40033,20 @@ export const analyticsReport = {
             "lower": 14723,
             "upper": 14723
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-05",
-      "safetyStock": 0,
-      "reorderPoint": 29023,
-      "recommendedOrderQuantity": 33725,
+      "safetyStock": 4353,
+      "reorderPoint": 33376,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.75,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29435,11 +40097,34 @@ export const analyticsReport = {
         "upper": 159
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          159,
+          159,
+          159,
+          159,
+          159,
+          159,
+          159,
+          159
+        ],
+        "forecast": [
+          159,
+          159,
+          159
+        ],
+        "lower95": [
+          159,
+          159,
+          159
+        ],
+        "upper95": [
+          159,
+          159,
+          159
+        ],
         "points": [
           {
             "period": 1,
@@ -29459,12 +40144,20 @@ export const analyticsReport = {
             "lower": 159,
             "upper": 159
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-05",
-      "safetyStock": 0,
-      "reorderPoint": 313,
-      "recommendedOrderQuantity": 361,
+      "safetyStock": 47,
+      "reorderPoint": 360,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.42,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29515,11 +40208,34 @@ export const analyticsReport = {
         "upper": 17
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "forecast": [
+          17,
+          17,
+          17
+        ],
+        "lower95": [
+          17,
+          17,
+          17
+        ],
+        "upper95": [
+          17,
+          17,
+          17
+        ],
         "points": [
           {
             "period": 1,
@@ -29539,12 +40255,20 @@ export const analyticsReport = {
             "lower": 17,
             "upper": 17
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-05",
-      "safetyStock": 0,
-      "reorderPoint": 34,
-      "recommendedOrderQuantity": 39,
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29595,11 +40319,34 @@ export const analyticsReport = {
         "upper": 21055
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          21055,
+          21055,
+          21055,
+          21055,
+          21055,
+          21055,
+          21055,
+          21055
+        ],
+        "forecast": [
+          21055,
+          21055,
+          21055
+        ],
+        "lower95": [
+          21055,
+          21055,
+          21055
+        ],
+        "upper95": [
+          21055,
+          21055,
+          21055
+        ],
         "points": [
           {
             "period": 1,
@@ -29619,12 +40366,20 @@ export const analyticsReport = {
             "lower": 21055,
             "upper": 21055
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-07",
-      "safetyStock": 0,
-      "reorderPoint": 41505,
-      "recommendedOrderQuantity": 46505,
+      "safetyStock": 6226,
+      "reorderPoint": 47730,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.44,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29675,11 +40430,34 @@ export const analyticsReport = {
         "upper": 248
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          248,
+          248,
+          248,
+          248,
+          248,
+          248,
+          248,
+          248
+        ],
+        "forecast": [
+          248,
+          248,
+          248
+        ],
+        "lower95": [
+          248,
+          248,
+          248
+        ],
+        "upper95": [
+          248,
+          248,
+          248
+        ],
         "points": [
           {
             "period": 1,
@@ -29699,12 +40477,20 @@ export const analyticsReport = {
             "lower": 248,
             "upper": 248
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-08",
-      "safetyStock": 0,
-      "reorderPoint": 489,
-      "recommendedOrderQuantity": 536,
+      "safetyStock": 73,
+      "reorderPoint": 562,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.65,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29755,11 +40541,33 @@ export const analyticsReport = {
         "upper": 7028
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          7028,
+          7028,
+          7028,
+          7028,
+          7028,
+          7028,
+          7028
+        ],
+        "forecast": [
+          7028,
+          7028,
+          7028
+        ],
+        "lower95": [
+          7028,
+          7028,
+          7028
+        ],
+        "upper95": [
+          7028,
+          7028,
+          7028
+        ],
         "points": [
           {
             "period": 1,
@@ -29779,12 +40587,20 @@ export const analyticsReport = {
             "lower": 7028,
             "upper": 7028
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-06",
-      "safetyStock": 0,
-      "reorderPoint": 13854,
-      "recommendedOrderQuantity": 15696,
+      "safetyStock": 2078,
+      "reorderPoint": 15932,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.2,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29835,11 +40651,29 @@ export const analyticsReport = {
         "upper": 100
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          100,
+          100,
+          100
+        ],
+        "forecast": [
+          100,
+          100,
+          100
+        ],
+        "lower95": [
+          100,
+          100,
+          100
+        ],
+        "upper95": [
+          100,
+          100,
+          100
+        ],
         "points": [
           {
             "period": 1,
@@ -29859,12 +40693,20 @@ export const analyticsReport = {
             "lower": 100,
             "upper": 100
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-07",
-      "safetyStock": 0,
-      "reorderPoint": 197,
-      "recommendedOrderQuantity": 222,
+      "safetyStock": 30,
+      "reorderPoint": 227,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.45,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29915,11 +40757,34 @@ export const analyticsReport = {
         "upper": 50
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "forecast": [
+          50,
+          50,
+          50
+        ],
+        "lower95": [
+          50,
+          50,
+          50
+        ],
+        "upper95": [
+          50,
+          50,
+          50
+        ],
         "points": [
           {
             "period": 1,
@@ -29939,12 +40804,20 @@ export const analyticsReport = {
             "lower": 50,
             "upper": 50
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-08",
-      "safetyStock": 0,
-      "reorderPoint": 99,
-      "recommendedOrderQuantity": 109,
+      "safetyStock": 15,
+      "reorderPoint": 113,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.29,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -29995,11 +40868,30 @@ export const analyticsReport = {
         "upper": 20
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          20,
+          20,
+          20,
+          20
+        ],
+        "forecast": [
+          20,
+          20,
+          20
+        ],
+        "lower95": [
+          20,
+          20,
+          20
+        ],
+        "upper95": [
+          20,
+          20,
+          20
+        ],
         "points": [
           {
             "period": 1,
@@ -30019,12 +40911,20 @@ export const analyticsReport = {
             "lower": 20,
             "upper": 20
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-06",
-      "safetyStock": 0,
-      "reorderPoint": 39,
-      "recommendedOrderQuantity": 45,
+      "safetyStock": 6,
+      "reorderPoint": 45,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.9,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30075,11 +40975,34 @@ export const analyticsReport = {
         "upper": 2281
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2281,
+          2281,
+          2281,
+          2281,
+          2281,
+          2281,
+          2281,
+          2281
+        ],
+        "forecast": [
+          2281,
+          2281,
+          2281
+        ],
+        "lower95": [
+          2281,
+          2281,
+          2281
+        ],
+        "upper95": [
+          2281,
+          2281,
+          2281
+        ],
         "points": [
           {
             "period": 1,
@@ -30099,12 +41022,20 @@ export const analyticsReport = {
             "lower": 2281,
             "upper": 2281
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-06",
-      "safetyStock": 0,
-      "reorderPoint": 4496,
-      "recommendedOrderQuantity": 5089,
+      "safetyStock": 674,
+      "reorderPoint": 5171,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.91,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30155,11 +41086,32 @@ export const analyticsReport = {
         "upper": 30
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 6,
-        "residualStdDev": 0,
+        "fitted": [
+          30,
+          30,
+          30,
+          30,
+          30,
+          30
+        ],
+        "forecast": [
+          30,
+          30,
+          30
+        ],
+        "lower95": [
+          30,
+          30,
+          30
+        ],
+        "upper95": [
+          30,
+          30,
+          30
+        ],
         "points": [
           {
             "period": 1,
@@ -30179,12 +41131,20 @@ export const analyticsReport = {
             "lower": 30,
             "upper": 30
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-10",
-      "safetyStock": 0,
-      "reorderPoint": 59,
-      "recommendedOrderQuantity": 64,
+      "safetyStock": 9,
+      "reorderPoint": 68,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.64,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30235,11 +41195,34 @@ export const analyticsReport = {
         "upper": 24
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          24,
+          24,
+          24,
+          24,
+          24,
+          24,
+          24,
+          24
+        ],
+        "forecast": [
+          24,
+          24,
+          24
+        ],
+        "lower95": [
+          24,
+          24,
+          24
+        ],
+        "upper95": [
+          24,
+          24,
+          24
+        ],
         "points": [
           {
             "period": 1,
@@ -30259,12 +41242,20 @@ export const analyticsReport = {
             "lower": 24,
             "upper": 24
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-11",
-      "safetyStock": 0,
-      "reorderPoint": 47,
-      "recommendedOrderQuantity": 50,
+      "safetyStock": 7,
+      "reorderPoint": 54,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.99,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30315,11 +41306,34 @@ export const analyticsReport = {
         "upper": 1180
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1180,
+          1180,
+          1180,
+          1180,
+          1180,
+          1180,
+          1180,
+          1180
+        ],
+        "forecast": [
+          1180,
+          1180,
+          1180
+        ],
+        "lower95": [
+          1180,
+          1180,
+          1180
+        ],
+        "upper95": [
+          1180,
+          1180,
+          1180
+        ],
         "points": [
           {
             "period": 1,
@@ -30339,12 +41353,20 @@ export const analyticsReport = {
             "lower": 1180,
             "upper": 1180
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-12",
-      "safetyStock": 0,
-      "reorderPoint": 2326,
-      "recommendedOrderQuantity": 2405,
+      "safetyStock": 349,
+      "reorderPoint": 2675,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.57,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30395,11 +41417,30 @@ export const analyticsReport = {
         "upper": 5296
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          5296,
+          5296,
+          5296,
+          5296
+        ],
+        "forecast": [
+          5296,
+          5296,
+          5296
+        ],
+        "lower95": [
+          5296,
+          5296,
+          5296
+        ],
+        "upper95": [
+          5296,
+          5296,
+          5296
+        ],
         "points": [
           {
             "period": 1,
@@ -30419,12 +41460,20 @@ export const analyticsReport = {
             "lower": 5296,
             "upper": 5296
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-10",
-      "safetyStock": 0,
-      "reorderPoint": 10440,
-      "recommendedOrderQuantity": 11169,
+      "safetyStock": 1566,
+      "reorderPoint": 12006,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.38,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30453,6 +41502,228 @@ export const analyticsReport = {
       "priorityScore": 25
     },
     {
+      "sku": "RN0087",
+      "description": "Nipro: AV Blood Line Set (Blood Tubing Set) (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 3184,
+      "ami": 1081,
+      "mos": 2.9,
+      "status": "adequate",
+      "daysOfSupply": 87,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 1107.77,
+      "usageRates": {
+        "daily": 36.4,
+        "weekly": 254.77,
+        "monthly": 1107.77
+      },
+      "forecastRange": {
+        "lower": 827.66,
+        "upper": 1387.89
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          998,
+          803,
+          608,
+          809,
+          896.5600000000001,
+          899.6336000000001,
+          1200.9628160000002,
+          1171.6524569599999
+        ],
+        "forecast": [
+          1107.7728126976,
+          1116.4151340032001,
+          1125.0574553088004
+        ],
+        "lower95": [
+          827.6604765002762,
+          720.2764691649327,
+          639.8886571882208
+        ],
+        "upper95": [
+          1387.885148894924,
+          1512.5537988414676,
+          1610.22625342938
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 1107.7728126976,
+            "lower": 827.6604765002762,
+            "upper": 1387.885148894924
+          },
+          {
+            "period": 2,
+            "value": 1116.4151340032001,
+            "lower": 720.2764691649327,
+            "upper": 1512.5537988414676
+          },
+          {
+            "period": 3,
+            "value": 1125.0574553088004,
+            "lower": 639.8886571882208,
+            "upper": 1610.22625342938
+          }
+        ],
+        "residualStdDev": 142.91445724353258,
+        "rmse": 142.91445724353258,
+        "mape": 11.285273591268881,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-10-10",
+      "safetyStock": 329,
+      "reorderPoint": 2521,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.89,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 182.26,
+        "wape": 0.185,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": 2.472,
+        "demandChange": 0.083,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 25
+    },
+    {
+      "sku": "RN0358",
+      "description": "Citric Acid solution 50%, 10 liters (1)",
+      "programme": "Renal",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 47,
+      "ami": 16,
+      "mos": 2.9,
+      "status": "adequate",
+      "daysOfSupply": 84,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 16.98,
+      "usageRates": {
+        "daily": 0.56,
+        "weekly": 3.91,
+        "monthly": 16.98
+      },
+      "forecastRange": {
+        "lower": 9.89,
+        "upper": 24.06
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 8,
+        "fitted": [
+          8,
+          5,
+          2,
+          3.3200000000000007,
+          4.659199999999999,
+          12.345151999999999,
+          21.021445120000003,
+          19.542978867200002
+        ],
+        "forecast": [
+          16.979779141631997,
+          17.250962509823996,
+          17.522145878015994
+        ],
+        "lower95": [
+          9.89459238286069,
+          7.23099530362334,
+          5.250242430709834
+        ],
+        "upper95": [
+          24.064965900403305,
+          27.270929716024654,
+          29.794049325322156
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 16.979779141631997,
+            "lower": 9.89459238286069,
+            "upper": 24.064965900403305
+          },
+          {
+            "period": 2,
+            "value": 17.250962509823996,
+            "lower": 7.23099530362334,
+            "upper": 27.270929716024654
+          },
+          {
+            "period": 3,
+            "value": 17.522145878015994,
+            "lower": 5.250242430709834,
+            "upper": 29.794049325322156
+          }
+        ],
+        "residualStdDev": 3.614891203454749,
+        "rmse": 3.614891203454749,
+        "mape": 31.911207131428576,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
+      },
+      "expectedStockoutDate": "2026-10-07",
+      "safetyStock": 5,
+      "reorderPoint": 39,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 3.15,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 4.26,
+        "wape": 0.376,
+        "observations": 6
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.382,
+        "demandChange": 1,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 8,
+      "dataQualityFlags": [],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 25
+    },
+    {
       "sku": "LAB0121",
       "description": "Campylobacter Agar Bas, 500g (1)",
       "programme": "Laboratory Services",
@@ -30475,11 +41746,31 @@ export const analyticsReport = {
         "upper": 14
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          14,
+          14,
+          14,
+          14,
+          14
+        ],
+        "forecast": [
+          14,
+          14,
+          14
+        ],
+        "lower95": [
+          14,
+          14,
+          14
+        ],
+        "upper95": [
+          14,
+          14,
+          14
+        ],
         "points": [
           {
             "period": 1,
@@ -30499,12 +41790,20 @@ export const analyticsReport = {
             "lower": 14,
             "upper": 14
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-09",
-      "safetyStock": 0,
-      "reorderPoint": 28,
-      "recommendedOrderQuantity": 30,
+      "safetyStock": 4,
+      "reorderPoint": 32,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.84,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30533,59 +41832,90 @@ export const analyticsReport = {
       "priorityScore": 25
     },
     {
-      "sku": "RN0087",
-      "description": "Nipro: AV Blood Line Set (Blood Tubing Set) (1)",
+      "sku": "RN0121",
+      "description": "Sporotal (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 3184,
-      "ami": 1081,
-      "mos": 2.9,
+      "stockOnHand": 25,
+      "ami": 9,
+      "mos": 2.7,
       "status": "adequate",
-      "daysOfSupply": 94,
+      "daysOfSupply": 92,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 1032.13,
+      "forecastMonthlyDemand": 8.31,
       "usageRates": {
-        "daily": 33.91,
-        "weekly": 237.37,
-        "monthly": 1032.13
+        "daily": 0.27,
+        "weekly": 1.91,
+        "monthly": 8.31
       },
       "forecastRange": {
-        "lower": 778.59,
-        "upper": 1285.67
+        "lower": 0,
+        "upper": 19.98
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 129.3582448662011,
+        "fitted": [
+          15,
+          19,
+          23,
+          21.880000000000003,
+          20.273600000000002,
+          3.9809920000000014,
+          5.115594240000001,
+          6.9670294528
+        ],
+        "forecast": [
+          8.313142358015998,
+          8.032878825471998,
+          7.752615292927998
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          19.979348197683436,
+          24.53138534536589,
+          27.959076538788732
+        ],
         "points": [
           {
             "period": 1,
-            "value": 1032.1316081367188,
-            "lower": 778.5894481989646,
-            "upper": 1285.673768074473
+            "value": 8.313142358015998,
+            "lower": 0,
+            "upper": 19.979348197683436
           },
           {
             "period": 2,
-            "value": 1032.1316081367188,
-            "lower": 673.5688469193785,
-            "upper": 1390.694369354059
+            "value": 8.032878825471998,
+            "lower": 0,
+            "upper": 24.53138534536589
           },
           {
             "period": 3,
-            "value": 1032.1316081367188,
-            "lower": 592.9837052637744,
-            "upper": 1471.279511009663
+            "value": 7.752615292927998,
+            "lower": 0,
+            "upper": 27.959076538788732
           }
-        ]
+        ],
+        "residualStdDev": 5.952145836565018,
+        "rmse": 5.952145836565018,
+        "mape": 49.82509192897205,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.6
+        }
       },
-      "expectedStockoutDate": "2026-10-16",
-      "safetyStock": 265,
-      "reorderPoint": 2300,
-      "recommendedOrderQuantity": 1962,
-      "turnoverRate": 3.62,
+      "expectedStockoutDate": "2026-10-14",
+      "safetyStock": 2,
+      "reorderPoint": 19,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 2.6,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -30594,13 +41924,13 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 82.38,
-        "wape": 0.084,
+        "mae": 6.2,
+        "wape": 0.514,
         "observations": 6
       },
       "historicalTrend": {
-        "stockOnHandChange": 2.472,
-        "demandChange": 0.083,
+        "stockOnHandChange": -0.51,
+        "demandChange": -0.4,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
@@ -30615,59 +41945,86 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
-      "sku": "RN0358",
-      "description": "Citric Acid solution 50%, 10 liters (1)",
+      "sku": "RN0355",
+      "description": "Permanent catheter 14.5F x 20cm (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 47,
-      "ami": 16,
+      "stockOnHand": 35,
+      "ami": 12,
       "mos": 2.9,
       "status": "adequate",
-      "daysOfSupply": 105,
+      "daysOfSupply": 98,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 13.61,
+      "forecastMonthlyDemand": 10.89,
       "usageRates": {
-        "daily": 0.45,
-        "weekly": 3.13,
-        "monthly": 13.61
+        "daily": 0.36,
+        "weekly": 2.5,
+        "monthly": 10.89
       },
       "forecastRange": {
-        "lower": 4.96,
-        "upper": 22.25
+        "lower": 0,
+        "upper": 26.38
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 4.41159223485105,
+        "observations": 4,
+        "fitted": [
+          8,
+          16.7,
+          25.4,
+          14.804
+        ],
+        "forecast": [
+          10.89024,
+          9.21968,
+          7.549120000000002
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          26.3821943990378,
+          31.12861201878479,
+          34.38197212767364
+        ],
         "points": [
           {
             "period": 1,
-            "value": 13.60678558671875,
-            "lower": 4.960064806410692,
-            "upper": 22.25350636702681
+            "value": 10.89024,
+            "lower": 0,
+            "upper": 26.3821943990378
           },
           {
             "period": 2,
-            "value": 13.60678558671875,
-            "lower": 1.3784757891538213,
-            "upper": 25.83509538428368
+            "value": 9.21968,
+            "lower": 0,
+            "upper": 31.12861201878479
           },
           {
             "period": 3,
-            "value": 13.60678558671875,
+            "value": 7.549120000000002,
             "lower": 0,
-            "upper": 28.583345297073915
+            "upper": 34.38197212767364
           }
-        ]
+        ],
+        "residualStdDev": 7.90405836685602,
+        "rmse": 7.90405836685602,
+        "mape": 45.011111111111106,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-10-28",
-      "safetyStock": 12,
-      "reorderPoint": 39,
-      "recommendedOrderQuantity": 21,
-      "turnoverRate": 2.53,
+      "expectedStockoutDate": "2026-10-20",
+      "safetyStock": 3,
+      "reorderPoint": 23,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 2.94,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -30676,20 +42033,20 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 4.24,
-        "wape": 0.374,
-        "observations": 6
+        "mae": 16.14,
+        "wape": 1.345,
+        "observations": 2
       },
       "historicalTrend": {
-        "stockOnHandChange": -0.382,
-        "demandChange": 1,
+        "stockOnHandChange": 0.346,
+        "demandChange": 0.5,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
           "score": null
         }
       },
-      "observations": 8,
+      "observations": 4,
       "dataQualityFlags": [
         "mos_reconciliation"
       ],
@@ -30719,11 +42076,31 @@ export const analyticsReport = {
         "upper": 5529
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          5529,
+          5529,
+          5529,
+          5529,
+          5529
+        ],
+        "forecast": [
+          5529,
+          5529,
+          5529
+        ],
+        "lower95": [
+          5529,
+          5529,
+          5529
+        ],
+        "upper95": [
+          5529,
+          5529,
+          5529
+        ],
         "points": [
           {
             "period": 1,
@@ -30743,12 +42120,20 @@ export const analyticsReport = {
             "lower": 5529,
             "upper": 5529
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-26",
-      "safetyStock": 0,
-      "reorderPoint": 10899,
-      "recommendedOrderQuantity": 8780,
+      "safetyStock": 1635,
+      "reorderPoint": 12534,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.32,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -30779,170 +42164,6 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
-      "sku": "MS0589",
-      "description": "Needle Spinal 24G x 90mm sterile, disposable (50)",
-      "programme": "Medical Supplies",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 560,
-      "ami": 179,
-      "mos": 3.1,
-      "status": "adequate",
-      "daysOfSupply": 101,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 169.42,
-      "usageRates": {
-        "daily": 5.57,
-        "weekly": 38.96,
-        "monthly": 169.42
-      },
-      "forecastRange": {
-        "lower": 82.9,
-        "upper": 255.94
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 44.141787339733895,
-        "points": [
-          {
-            "period": 1,
-            "value": 169.421800890625,
-            "lower": 82.90389770474657,
-            "upper": 255.93970407650346
-          },
-          {
-            "period": 2,
-            "value": 169.421800890625,
-            "lower": 47.0670088170733,
-            "upper": 291.7765929641767
-          },
-          {
-            "period": 3,
-            "value": 169.421800890625,
-            "lower": 19.56839680835833,
-            "upper": 319.2752049728917
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-10-23",
-      "safetyStock": 136,
-      "reorderPoint": 470,
-      "recommendedOrderQuantity": 285,
-      "turnoverRate": 2.8,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 55.92,
-        "wape": 0.312,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.36,
-        "demandChange": 2.442,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 10
-    },
-    {
-      "sku": "RN0056",
-      "description": "Fresenius: FX100 Dialysers (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 969,
-      "ami": 314,
-      "mos": 3.1,
-      "status": "adequate",
-      "daysOfSupply": 103,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 285.4,
-      "usageRates": {
-        "daily": 9.38,
-        "weekly": 65.64,
-        "monthly": 285.4
-      },
-      "forecastRange": {
-        "lower": 225.51,
-        "upper": 345.28
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 8,
-        "residualStdDev": 30.552699573129786,
-        "points": [
-          {
-            "period": 1,
-            "value": 285.396322746875,
-            "lower": 225.51303158354062,
-            "upper": 345.2796139102094
-          },
-          {
-            "period": 2,
-            "value": 285.396322746875,
-            "lower": 200.7085602241506,
-            "upper": 370.0840852695994
-          },
-          {
-            "period": 3,
-            "value": 285.396322746875,
-            "lower": 181.67541992753948,
-            "upper": 389.11722556621055
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-10-26",
-      "safetyStock": 83,
-      "reorderPoint": 645,
-      "recommendedOrderQuantity": 454,
-      "turnoverRate": 2.56,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 33.57,
-        "wape": 0.123,
-        "observations": 6
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.14,
-        "demandChange": 0.467,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 8,
-      "dataQualityFlags": [
-        "mos_reconciliation"
-      ],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 10
-    },
-    {
       "sku": "EM0083",
       "description": "Cephalexin 250mg Capsule(100)",
       "programme": "Essential Medicines",
@@ -30965,11 +42186,28 @@ export const analyticsReport = {
         "upper": 51243
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          51243,
+          51243
+        ],
+        "forecast": [
+          51243,
+          51243,
+          51243
+        ],
+        "lower95": [
+          51243,
+          51243,
+          51243
+        ],
+        "upper95": [
+          51243,
+          51243,
+          51243
+        ],
         "points": [
           {
             "period": 1,
@@ -30989,12 +42227,20 @@ export const analyticsReport = {
             "lower": 51243,
             "upper": 51243
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-19",
-      "safetyStock": 0,
-      "reorderPoint": 101013,
-      "recommendedOrderQuantity": 93017,
+      "safetyStock": 15152,
+      "reorderPoint": 116165,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.13,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31047,11 +42293,27 @@ export const analyticsReport = {
         "upper": 56593
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          56593
+        ],
+        "forecast": [
+          56593,
+          56593,
+          56593
+        ],
+        "lower95": [
+          56593,
+          56593,
+          56593
+        ],
+        "upper95": [
+          56593,
+          56593,
+          56593
+        ],
         "points": [
           {
             "period": 1,
@@ -31071,12 +42333,16 @@ export const analyticsReport = {
             "lower": 56593,
             "upper": 56593
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2026-10-21",
-      "safetyStock": 0,
-      "reorderPoint": 111559,
-      "recommendedOrderQuantity": 98892,
+      "safetyStock": 16734,
+      "reorderPoint": 128293,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.62,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31107,59 +42373,86 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
-      "sku": "RN0331",
-      "description": "Acute HD Catheters 8Fr (Single Lumen), 12cm (1)",
+      "sku": "RN0153",
+      "description": "Fresenius: Peritonial Dialysis Catheter 42cm PD (1)",
       "programme": "Renal",
       "location": "Central",
       "asOfDate": "2026-07-15",
-      "stockOnHand": 18,
-      "ami": 6,
-      "mos": 3.2,
+      "stockOnHand": 12,
+      "ami": 4,
+      "mos": 3.3,
       "status": "adequate",
-      "daysOfSupply": 112,
+      "daysOfSupply": 94,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 4.87,
+      "forecastMonthlyDemand": 3.89,
       "usageRates": {
-        "daily": 0.16,
-        "weekly": 1.12,
-        "monthly": 4.87
+        "daily": 0.13,
+        "weekly": 0.9,
+        "monthly": 3.89
       },
       "forecastRange": {
-        "lower": 1.82,
-        "upper": 7.92
+        "lower": 0,
+        "upper": 8.84
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
-        "observations": 7,
-        "residualStdDev": 1.5554083274510802,
+        "observations": 4,
+        "fitted": [
+          7,
+          3.3,
+          0,
+          2.2360000000000007
+        ],
+        "forecast": [
+          3.8921600000000005,
+          4.13712,
+          4.382080000000001
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          8.839195858424045,
+          11.133285204529312,
+          12.950597453655561
+        ],
         "points": [
           {
             "period": 1,
-            "value": 4.87086875,
-            "lower": 1.8222684281958825,
-            "upper": 7.919469071804117
+            "value": 3.8921600000000005,
+            "lower": 0,
+            "upper": 8.839195858424045
           },
           {
             "period": 2,
-            "value": 4.87086875,
-            "lower": 0.5594968286496353,
-            "upper": 9.182240671350364
+            "value": 4.13712,
+            "lower": 0,
+            "upper": 11.133285204529312
           },
           {
             "period": 3,
-            "value": 4.87086875,
+            "value": 4.382080000000001,
             "lower": 0,
-            "upper": 10.15119939933556
+            "upper": 12.950597453655561
           }
-        ]
+        ],
+        "residualStdDev": 2.5239978869510433,
+        "rmse": 2.5239978869510433,
+        "mape": 48.03333333333333,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
-      "expectedStockoutDate": "2026-11-04",
-      "safetyStock": 6,
-      "reorderPoint": 15,
-      "recommendedOrderQuantity": 6,
-      "turnoverRate": 2.41,
+      "expectedStockoutDate": "2026-10-16",
+      "safetyStock": 1,
+      "reorderPoint": 9,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 2.52,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -31168,20 +42461,20 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 2.21,
-        "wape": 0.487,
-        "observations": 5
+        "mae": 4,
+        "wape": 1,
+        "observations": 2
       },
       "historicalTrend": {
-        "stockOnHandChange": -0.455,
-        "demandChange": 5,
+        "stockOnHandChange": -0.2,
+        "demandChange": -0.429,
         "seasonality": {
           "status": "insufficient_history",
           "lag": 12,
           "score": null
         }
       },
-      "observations": 8,
+      "observations": 4,
       "dataQualityFlags": [
         "mos_reconciliation"
       ],
@@ -31200,48 +42493,79 @@ export const analyticsReport = {
       "status": "adequate",
       "daysOfSupply": 108,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 5.9,
+      "forecastMonthlyDemand": 5.91,
       "usageRates": {
         "daily": 0.19,
         "weekly": 1.36,
-        "monthly": 5.9
+        "monthly": 5.91
       },
       "forecastRange": {
-        "lower": 3.92,
-        "upper": 7.87
+        "lower": 3.32,
+        "upper": 8.5
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 1.0067007463468831,
+        "fitted": [
+          3,
+          6,
+          9,
+          7.680000000000001,
+          6.3408,
+          5.8548480000000005,
+          6.28255488,
+          5.9472611328000005
+        ],
+        "forecast": [
+          5.913955258368001,
+          5.8384582901760025,
+          5.762961321984003
+        ],
+        "lower95": [
+          3.3243674944610837,
+          2.176228153503423,
+          1.2776637442385432
+        ],
+        "upper95": [
+          8.503543022274918,
+          9.500688426848582,
+          10.248258899729462
+        ],
         "points": [
           {
             "period": 1,
-            "value": 5.89729566328125,
-            "lower": 3.9241622004413594,
-            "upper": 7.870429126121141
+            "value": 5.913955258368001,
+            "lower": 3.3243674944610837,
+            "upper": 8.503543022274918
           },
           {
             "period": 2,
-            "value": 5.89729566328125,
-            "lower": 3.1068635597608867,
-            "upper": 8.687727766801613
+            "value": 5.8384582901760025,
+            "lower": 2.176228153503423,
+            "upper": 9.500688426848582
           },
           {
             "period": 3,
-            "value": 5.89729566328125,
-            "lower": 2.479728255528242,
-            "upper": 9.314863071034258
+            "value": 5.762961321984003,
+            "lower": 1.2776637442385432,
+            "upper": 10.248258899729462
           }
-        ]
+        ],
+        "residualStdDev": 1.3212182468912845,
+        "rmse": 1.3212182468912845,
+        "mape": 13.762019125986392,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-10-31",
       "safetyStock": 2,
-      "reorderPoint": 14,
-      "recommendedOrderQuantity": 8,
-      "turnoverRate": 2.73,
+      "reorderPoint": 13,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 2.74,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -31250,8 +42574,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.88,
-        "wape": 0.145,
+        "mae": 1.55,
+        "wape": 0.256,
         "observations": 6
       },
       "historicalTrend": {
@@ -31282,48 +42606,79 @@ export const analyticsReport = {
       "status": "adequate",
       "daysOfSupply": 108,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 5.9,
+      "forecastMonthlyDemand": 5.91,
       "usageRates": {
         "daily": 0.19,
         "weekly": 1.36,
-        "monthly": 5.9
+        "monthly": 5.91
       },
       "forecastRange": {
-        "lower": 3.92,
-        "upper": 7.87
+        "lower": 3.32,
+        "upper": 8.5
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 1.0067007463468831,
+        "fitted": [
+          3,
+          6,
+          9,
+          7.680000000000001,
+          6.3408,
+          5.8548480000000005,
+          6.28255488,
+          5.9472611328000005
+        ],
+        "forecast": [
+          5.913955258368001,
+          5.8384582901760025,
+          5.762961321984003
+        ],
+        "lower95": [
+          3.3243674944610837,
+          2.176228153503423,
+          1.2776637442385432
+        ],
+        "upper95": [
+          8.503543022274918,
+          9.500688426848582,
+          10.248258899729462
+        ],
         "points": [
           {
             "period": 1,
-            "value": 5.89729566328125,
-            "lower": 3.9241622004413594,
-            "upper": 7.870429126121141
+            "value": 5.913955258368001,
+            "lower": 3.3243674944610837,
+            "upper": 8.503543022274918
           },
           {
             "period": 2,
-            "value": 5.89729566328125,
-            "lower": 3.1068635597608867,
-            "upper": 8.687727766801613
+            "value": 5.8384582901760025,
+            "lower": 2.176228153503423,
+            "upper": 9.500688426848582
           },
           {
             "period": 3,
-            "value": 5.89729566328125,
-            "lower": 2.479728255528242,
-            "upper": 9.314863071034258
+            "value": 5.762961321984003,
+            "lower": 1.2776637442385432,
+            "upper": 10.248258899729462
           }
-        ]
+        ],
+        "residualStdDev": 1.3212182468912845,
+        "rmse": 1.3212182468912845,
+        "mape": 13.762019125986392,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.8
+        }
       },
       "expectedStockoutDate": "2026-10-31",
       "safetyStock": 2,
-      "reorderPoint": 14,
-      "recommendedOrderQuantity": 8,
-      "turnoverRate": 2.73,
+      "reorderPoint": 13,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 2.74,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
       "stagnant": false,
@@ -31332,8 +42687,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.88,
-        "wape": 0.145,
+        "mae": 1.55,
+        "wape": 0.256,
         "observations": 6
       },
       "historicalTrend": {
@@ -31375,11 +42730,27 @@ export const analyticsReport = {
         "upper": 78
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          78
+        ],
+        "forecast": [
+          78,
+          78,
+          78
+        ],
+        "lower95": [
+          78,
+          78,
+          78
+        ],
+        "upper95": [
+          78,
+          78,
+          78
+        ],
         "points": [
           {
             "period": 1,
@@ -31399,12 +42770,16 @@ export const analyticsReport = {
             "lower": 78,
             "upper": 78
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": "2026-10-31",
-      "safetyStock": 0,
-      "reorderPoint": 154,
-      "recommendedOrderQuantity": 112,
+      "safetyStock": 23,
+      "reorderPoint": 177,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.08,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31457,11 +42832,28 @@ export const analyticsReport = {
         "upper": 13689
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          13689,
+          13689
+        ],
+        "forecast": [
+          13689,
+          13689,
+          13689
+        ],
+        "lower95": [
+          13689,
+          13689,
+          13689
+        ],
+        "upper95": [
+          13689,
+          13689,
+          13689
+        ],
         "points": [
           {
             "period": 1,
@@ -31481,12 +42873,20 @@ export const analyticsReport = {
             "lower": 13689,
             "upper": 13689
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-04",
-      "safetyStock": 0,
-      "reorderPoint": 26984,
-      "recommendedOrderQuantity": 17830,
+      "safetyStock": 4048,
+      "reorderPoint": 31032,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.21,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31540,11 +42940,28 @@ export const analyticsReport = {
         "upper": 5447
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          5447,
+          5447
+        ],
+        "forecast": [
+          5447,
+          5447,
+          5447
+        ],
+        "lower95": [
+          5447,
+          5447,
+          5447
+        ],
+        "upper95": [
+          5447,
+          5447,
+          5447
+        ],
         "points": [
           {
             "period": 1,
@@ -31564,12 +42981,20 @@ export const analyticsReport = {
             "lower": 5447,
             "upper": 5447
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-07",
-      "safetyStock": 0,
-      "reorderPoint": 10737,
-      "recommendedOrderQuantity": 6508,
+      "safetyStock": 1611,
+      "reorderPoint": 12348,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.96,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31622,11 +43047,28 @@ export const analyticsReport = {
         "upper": 13
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 2,
-        "residualStdDev": 0,
+        "fitted": [
+          13,
+          13
+        ],
+        "forecast": [
+          13,
+          13,
+          13
+        ],
+        "lower95": [
+          13,
+          13,
+          13
+        ],
+        "upper95": [
+          13,
+          13,
+          13
+        ],
         "points": [
           {
             "period": 1,
@@ -31646,12 +43088,20 @@ export const analyticsReport = {
             "lower": 13,
             "upper": 13
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-09",
-      "safetyStock": 0,
-      "reorderPoint": 26,
-      "recommendedOrderQuantity": 15,
+      "safetyStock": 4,
+      "reorderPoint": 29,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.32,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31704,11 +43154,29 @@ export const analyticsReport = {
         "upper": 39
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          39,
+          39,
+          39
+        ],
+        "forecast": [
+          39,
+          39,
+          39
+        ],
+        "lower95": [
+          39,
+          39,
+          39
+        ],
+        "upper95": [
+          39,
+          39,
+          39
+        ],
         "points": [
           {
             "period": 1,
@@ -31728,12 +43196,20 @@ export const analyticsReport = {
             "lower": 39,
             "upper": 39
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-24",
-      "safetyStock": 0,
-      "reorderPoint": 77,
-      "recommendedOrderQuantity": 24,
+      "safetyStock": 12,
+      "reorderPoint": 88,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31786,11 +43262,29 @@ export const analyticsReport = {
         "upper": 32
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          32,
+          32,
+          32
+        ],
+        "forecast": [
+          32,
+          32,
+          32
+        ],
+        "lower95": [
+          32,
+          32,
+          32
+        ],
+        "upper95": [
+          32,
+          32,
+          32
+        ],
         "points": [
           {
             "period": 1,
@@ -31810,12 +43304,20 @@ export const analyticsReport = {
             "lower": 32,
             "upper": 32
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-27",
-      "safetyStock": 0,
-      "reorderPoint": 63,
-      "recommendedOrderQuantity": 18,
+      "safetyStock": 9,
+      "reorderPoint": 73,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31868,11 +43370,29 @@ export const analyticsReport = {
         "upper": 40
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 3,
-        "residualStdDev": 0,
+        "fitted": [
+          40,
+          40,
+          40
+        ],
+        "forecast": [
+          40,
+          40,
+          40
+        ],
+        "lower95": [
+          40,
+          40,
+          40
+        ],
+        "upper95": [
+          40,
+          40,
+          40
+        ],
         "points": [
           {
             "period": 1,
@@ -31892,12 +43412,20 @@ export const analyticsReport = {
             "lower": 40,
             "upper": 40
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-19",
-      "safetyStock": 0,
-      "reorderPoint": 79,
-      "recommendedOrderQuantity": 32,
+      "safetyStock": 12,
+      "reorderPoint": 91,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -31950,11 +43478,31 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -31974,12 +43522,20 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-23",
-      "safetyStock": 0,
-      "reorderPoint": 65,
-      "recommendedOrderQuantity": 22,
+      "safetyStock": 10,
+      "reorderPoint": 75,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.61,
       "stockoutFrequency": 0.2,
       "stockAgeDays": null,
@@ -32010,6 +43566,114 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
+      "sku": "LAB7898",
+      "description": "Sysmex: Fluorocell WNR, 2 x 82ml (1)",
+      "programme": "Laboratory Services",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 49,
+      "ami": 12,
+      "mos": 4,
+      "status": "adequate",
+      "daysOfSupply": 130,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 11.5,
+      "usageRates": {
+        "daily": 0.38,
+        "weekly": 2.64,
+        "monthly": 11.5
+      },
+      "forecastRange": {
+        "lower": 11.08,
+        "upper": 11.91
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "ok",
+        "observations": 3,
+        "fitted": [
+          12.3,
+          12,
+          11.700000000000003
+        ],
+        "forecast": [
+          11.496000000000004,
+          11.232000000000006,
+          10.968000000000007
+        ],
+        "lower95": [
+          11.080221212662318,
+          10.644000000000013,
+          10.24785001562176
+        ],
+        "upper95": [
+          11.91177878733769,
+          11.82,
+          11.688149984378255
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 11.496000000000004,
+            "lower": 11.080221212662318,
+            "upper": 11.91177878733769
+          },
+          {
+            "period": 2,
+            "value": 11.232000000000006,
+            "lower": 10.644000000000013,
+            "upper": 11.82
+          },
+          {
+            "period": 3,
+            "value": 10.968000000000007,
+            "lower": 10.24785001562176,
+            "upper": 11.688149984378255
+          }
+        ],
+        "residualStdDev": 0.21213203435596223,
+        "rmse": 0.21213203435596223,
+        "mape": 1.249999999999988,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.6
+        }
+      },
+      "expectedStockoutDate": "2026-11-21",
+      "safetyStock": 3,
+      "reorderPoint": 26,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 1.98,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "ok",
+        "mae": 0.3,
+        "wape": 0.025,
+        "observations": 1
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.456,
+        "demandChange": -0.024,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 6,
+      "dataQualityFlags": [
+        "mos_reconciliation"
+      ],
+      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
+      "priorityScore": 10
+    },
+    {
       "sku": "ARV0082",
       "description": "Dolutegravir/Lamivudine/Tenofovir 50/300/300mg Tablet(90)",
       "programme": "National ART Programme",
@@ -32029,10 +43693,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32088,10 +43760,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32147,10 +43827,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32206,10 +43894,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32265,10 +43961,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32324,10 +44028,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32383,10 +44095,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32442,10 +44162,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32501,10 +44229,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32560,10 +44296,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32619,10 +44363,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32678,10 +44430,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32737,10 +44497,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32796,10 +44564,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32855,10 +44631,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32914,10 +44698,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -32973,10 +44765,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33032,10 +44832,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33091,10 +44899,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33150,10 +44966,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33209,10 +45033,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33268,10 +45100,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33327,10 +45167,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33386,10 +45234,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33445,10 +45301,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33504,10 +45368,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33563,10 +45435,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33622,10 +45502,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33681,10 +45569,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33740,10 +45636,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33799,10 +45703,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33858,10 +45770,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33917,10 +45837,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -33957,6 +45885,113 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
+      "sku": "EM0916",
+      "description": "Misoprostol 200mcg Tablet (4)",
+      "programme": "Other Essential Medicines",
+      "location": "Central",
+      "asOfDate": "2026-07-15",
+      "stockOnHand": 63164,
+      "ami": null,
+      "mos": null,
+      "status": "data_gap",
+      "daysOfSupply": null,
+      "demandSource": "ami_proxy",
+      "forecastMonthlyDemand": 0,
+      "usageRates": {
+        "daily": 0,
+        "weekly": 0,
+        "monthly": 0
+      },
+      "forecastRange": {
+        "lower": 0,
+        "upper": 0
+      },
+      "forecast": {
+        "method": "holt_linear",
+        "status": "limited_history",
+        "observations": 2,
+        "fitted": [
+          2408,
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
+        "points": [
+          {
+            "period": 1,
+            "value": 0,
+            "lower": 0,
+            "upper": 0
+          },
+          {
+            "period": 2,
+            "value": 0,
+            "lower": 0,
+            "upper": 0
+          },
+          {
+            "period": 3,
+            "value": 0,
+            "lower": 0,
+            "upper": 0
+          }
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
+      },
+      "expectedStockoutDate": null,
+      "safetyStock": 0,
+      "reorderPoint": 0,
+      "recommendedOrderQuantity": 0,
+      "turnoverRate": 0,
+      "stockoutFrequency": 0,
+      "stockAgeDays": null,
+      "stagnant": false,
+      "unitCost": null,
+      "inventoryValue": null,
+      "annualCarryingCost": null,
+      "forecastAccuracy": {
+        "status": "insufficient_history",
+        "mae": null,
+        "wape": null,
+        "observations": 0
+      },
+      "historicalTrend": {
+        "stockOnHandChange": -0.271,
+        "demandChange": -1,
+        "seasonality": {
+          "status": "insufficient_history",
+          "lag": 12,
+          "score": null
+        }
+      },
+      "observations": 6,
+      "dataQualityFlags": [
+        "limited_history"
+      ],
+      "action": "Resolve AMI/MOS data gaps before a procurement decision.",
+      "priorityScore": 10
+    },
+    {
       "sku": "EM0965",
       "description": "Lorazepam 2mg/ml Injection (10)",
       "programme": "Other Essential Medicines",
@@ -33976,10 +46011,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34035,10 +46078,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34094,10 +46145,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34153,10 +46212,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34212,10 +46279,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34271,10 +46346,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34330,10 +46413,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34389,10 +46480,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34448,10 +46547,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34507,10 +46614,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34566,10 +46681,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34625,10 +46748,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34684,10 +46815,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34743,10 +46882,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34802,10 +46949,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34861,10 +47016,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34920,10 +47083,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -34979,10 +47150,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35038,10 +47217,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35097,10 +47284,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35156,10 +47351,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35215,10 +47418,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35274,10 +47485,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35333,10 +47552,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35392,10 +47619,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35451,10 +47686,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35510,10 +47753,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35569,10 +47820,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35628,10 +47887,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35687,10 +47954,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35746,10 +48021,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35805,10 +48088,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35864,10 +48155,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35923,10 +48222,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -35982,10 +48289,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36041,10 +48356,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36100,10 +48423,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36159,10 +48490,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36218,10 +48557,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36280,11 +48627,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -36304,7 +48667,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -36359,10 +48726,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36418,10 +48793,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36480,11 +48863,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -36504,7 +48903,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -36559,10 +48962,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36618,10 +49029,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36677,10 +49096,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36736,10 +49163,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36795,10 +49230,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36854,10 +49297,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36913,10 +49364,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -36972,10 +49431,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37031,10 +49498,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37090,10 +49565,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37149,10 +49632,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37208,10 +49699,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37267,10 +49766,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37326,10 +49833,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37385,10 +49900,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37444,10 +49967,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37503,10 +50034,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37562,10 +50101,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37621,10 +50168,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37680,10 +50235,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37739,10 +50302,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37798,10 +50369,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37857,10 +50436,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37916,10 +50503,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -37975,10 +50570,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38034,10 +50637,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38093,10 +50704,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38152,10 +50771,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38211,10 +50838,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38270,10 +50905,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38329,10 +50972,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38388,10 +51039,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38447,10 +51106,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38506,10 +51173,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38565,10 +51240,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38624,10 +51307,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -38686,11 +51377,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -38710,7 +51417,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -38768,11 +51479,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -38792,7 +51519,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -38850,11 +51581,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -38874,7 +51621,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -38932,11 +51683,27 @@ export const analyticsReport = {
         "upper": 0
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "limited_history",
-        "alpha": 0.35,
         "observations": 1,
-        "residualStdDev": 0,
+        "fitted": [
+          0
+        ],
+        "forecast": [
+          0,
+          0,
+          0
+        ],
+        "lower95": [
+          0,
+          0,
+          0
+        ],
+        "upper95": [
+          0,
+          0,
+          0
+        ],
         "points": [
           {
             "period": 1,
@@ -38956,7 +51723,11 @@ export const analyticsReport = {
             "lower": 0,
             "upper": 0
           }
-        ]
+        ],
+        "params": {},
+        "rmse": 0,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": 0,
@@ -39011,10 +51782,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39070,10 +51849,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39129,10 +51916,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39188,10 +51983,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39247,10 +52050,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39306,10 +52117,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39365,10 +52184,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39424,10 +52251,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39483,10 +52318,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39542,10 +52385,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39601,10 +52452,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39660,10 +52519,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39719,10 +52586,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39778,10 +52653,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39837,10 +52720,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39896,10 +52787,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -39955,10 +52854,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40014,10 +52921,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40073,10 +52988,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40132,10 +53055,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40191,10 +53122,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40250,10 +53189,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40309,10 +53256,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40368,10 +53323,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40427,10 +53390,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40486,10 +53457,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40545,10 +53524,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40604,10 +53591,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40663,10 +53658,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40722,10 +53725,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40781,10 +53792,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40840,10 +53859,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40899,10 +53926,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -40958,10 +53993,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41017,10 +54060,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41076,10 +54127,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41135,10 +54194,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41194,10 +54261,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41253,10 +54328,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41312,10 +54395,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41371,10 +54462,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41430,10 +54529,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41489,10 +54596,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41548,10 +54663,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41607,10 +54730,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41666,10 +54797,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41725,10 +54864,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41784,10 +54931,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41843,10 +54998,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41902,10 +55065,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -41961,10 +55132,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42020,10 +55199,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42079,10 +55266,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42138,10 +55333,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42197,10 +55400,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42256,10 +55467,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42315,10 +55534,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42374,10 +55601,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42433,10 +55668,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42492,10 +55735,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42551,10 +55802,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42610,10 +55869,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42669,10 +55936,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42728,10 +56003,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42787,10 +56070,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42846,10 +56137,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42905,10 +56204,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -42964,10 +56271,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43023,10 +56338,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43082,10 +56405,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43141,10 +56472,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43200,10 +56539,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43259,10 +56606,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43318,10 +56673,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43377,10 +56740,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43436,10 +56807,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43495,10 +56874,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43554,10 +56941,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43613,10 +57008,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43672,10 +57075,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43731,10 +57142,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43790,10 +57209,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43849,10 +57276,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43908,10 +57343,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -43967,10 +57410,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44026,10 +57477,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44085,10 +57544,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44144,10 +57611,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44203,10 +57678,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44262,10 +57745,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44321,10 +57812,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44380,10 +57879,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44439,10 +57946,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44498,10 +58013,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44557,10 +58080,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44616,10 +58147,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44675,10 +58214,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44734,10 +58281,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44793,10 +58348,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44852,10 +58415,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44911,10 +58482,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -44970,10 +58549,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45029,10 +58616,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45088,10 +58683,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45147,10 +58750,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45206,10 +58817,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45265,10 +58884,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45324,10 +58951,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45383,10 +59018,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45442,10 +59085,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45501,10 +59152,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45560,10 +59219,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45619,10 +59286,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45678,10 +59353,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45737,10 +59420,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45796,10 +59487,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45855,10 +59554,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45914,10 +59621,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -45973,10 +59688,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46032,10 +59755,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46091,10 +59822,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46150,10 +59889,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46209,10 +59956,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46268,10 +60023,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46327,10 +60090,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46386,10 +60157,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46445,10 +60224,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46504,10 +60291,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46563,10 +60358,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46622,10 +60425,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46681,10 +60492,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46740,10 +60559,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46799,10 +60626,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46858,10 +60693,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46917,10 +60760,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -46976,10 +60827,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47035,10 +60894,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47094,10 +60961,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47153,10 +61028,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47212,10 +61095,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47271,10 +61162,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47330,10 +61229,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47389,10 +61296,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47448,10 +61363,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47507,10 +61430,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47566,10 +61497,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47625,10 +61564,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47684,10 +61631,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47743,10 +61698,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47802,10 +61765,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47861,10 +61832,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47920,10 +61899,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -47979,10 +61966,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48038,10 +62033,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48097,10 +62100,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48156,10 +62167,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48215,10 +62234,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48274,10 +62301,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48333,10 +62368,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48392,10 +62435,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48451,10 +62502,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48510,10 +62569,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48569,10 +62636,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48628,10 +62703,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48687,10 +62770,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48746,10 +62837,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48805,10 +62904,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48864,10 +62971,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48923,10 +63038,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -48982,10 +63105,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49041,10 +63172,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49100,10 +63239,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49159,10 +63306,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49218,10 +63373,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49277,10 +63440,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49336,10 +63507,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49395,10 +63574,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49454,10 +63641,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49513,10 +63708,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49572,10 +63775,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49631,10 +63842,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49690,10 +63909,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49749,10 +63976,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49808,10 +64043,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49867,10 +64110,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49926,10 +64177,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -49985,10 +64244,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -50044,10 +64311,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -50103,10 +64378,18 @@ export const analyticsReport = {
       },
       "forecastRange": null,
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "insufficient_history",
-        "horizon": 3,
-        "points": []
+        "observations": 0,
+        "fitted": [],
+        "forecast": [],
+        "lower95": [],
+        "upper95": [],
+        "points": [],
+        "params": {},
+        "rmse": null,
+        "mape": null,
+        "seasonalPeriod": null
       },
       "expectedStockoutDate": null,
       "safetyStock": null,
@@ -50143,86 +64426,6 @@ export const analyticsReport = {
       "priorityScore": 10
     },
     {
-      "sku": "RN0355",
-      "description": "Permanent catheter 14.5F x 20cm (1)",
-      "programme": "Renal",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 35,
-      "ami": 12,
-      "mos": 2.9,
-      "status": "adequate",
-      "daysOfSupply": 92,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 11.6,
-      "usageRates": {
-        "daily": 0.38,
-        "weekly": 2.67,
-        "monthly": 11.6
-      },
-      "forecastRange": {
-        "lower": 2.64,
-        "upper": 20.56
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 4,
-        "residualStdDev": 4.571123651521581,
-        "points": [
-          {
-            "period": 1,
-            "value": 11.5965125,
-            "lower": 2.6371101430177006,
-            "upper": 20.555914856982298
-          },
-          {
-            "period": 2,
-            "value": 11.5965125,
-            "lower": 0,
-            "upper": 24.26702082400184
-          },
-          {
-            "period": 3,
-            "value": 11.5965125,
-            "lower": 0,
-            "upper": 27.11465258774569
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 8,
-      "reorderPoint": 31,
-      "recommendedOrderQuantity": 23,
-      "turnoverRate": 3.13,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.79,
-        "wape": 0.066,
-        "observations": 2
-      },
-      "historicalTrend": {
-        "stockOnHandChange": 0.346,
-        "demandChange": 0.5,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 4,
-      "dataQualityFlags": [],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 0
-    },
-    {
       "sku": "CAN0184",
       "description": "Rituximab 500mg/50ml Injection (1)",
       "programme": "Oncology",
@@ -50245,11 +64448,33 @@ export const analyticsReport = {
         "upper": 150
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150
+        ],
+        "forecast": [
+          150,
+          150,
+          150
+        ],
+        "lower95": [
+          150,
+          150,
+          150
+        ],
+        "upper95": [
+          150,
+          150,
+          150
+        ],
         "points": [
           {
             "period": 1,
@@ -50269,12 +64494,20 @@ export const analyticsReport = {
             "lower": 150,
             "upper": 150
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 296,
-      "recommendedOrderQuantity": 298,
+      "safetyStock": 44,
+      "reorderPoint": 340,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50325,11 +64558,33 @@ export const analyticsReport = {
         "upper": 1000
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "forecast": [
+          1000,
+          1000,
+          1000
+        ],
+        "lower95": [
+          1000,
+          1000,
+          1000
+        ],
+        "upper95": [
+          1000,
+          1000,
+          1000
+        ],
         "points": [
           {
             "period": 1,
@@ -50349,12 +64604,20 @@ export const analyticsReport = {
             "lower": 1000,
             "upper": 1000
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 1971,
-      "recommendedOrderQuantity": 1992,
+      "safetyStock": 296,
+      "reorderPoint": 2267,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4.01,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50405,11 +64668,34 @@ export const analyticsReport = {
         "upper": 198293
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          198293,
+          198293,
+          198293,
+          198293,
+          198293,
+          198293,
+          198293,
+          198293
+        ],
+        "forecast": [
+          198293,
+          198293,
+          198293
+        ],
+        "lower95": [
+          198293,
+          198293,
+          198293
+        ],
+        "upper95": [
+          198293,
+          198293,
+          198293
+        ],
         "points": [
           {
             "period": 1,
@@ -50429,12 +64715,20 @@ export const analyticsReport = {
             "lower": 198293,
             "upper": 198293
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-15",
-      "safetyStock": 0,
-      "reorderPoint": 390886,
-      "recommendedOrderQuantity": 385349,
+      "safetyStock": 58633,
+      "reorderPoint": 449518,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 11.93,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50485,11 +64779,31 @@ export const analyticsReport = {
         "upper": 74
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          74,
+          74,
+          74,
+          74,
+          74
+        ],
+        "forecast": [
+          74,
+          74,
+          74
+        ],
+        "lower95": [
+          74,
+          74,
+          74
+        ],
+        "upper95": [
+          74,
+          74,
+          74
+        ],
         "points": [
           {
             "period": 1,
@@ -50509,12 +64823,20 @@ export const analyticsReport = {
             "lower": 74,
             "upper": 74
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-17",
-      "safetyStock": 0,
-      "reorderPoint": 146,
-      "recommendedOrderQuantity": 139,
+      "safetyStock": 22,
+      "reorderPoint": 168,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.73,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50565,11 +64887,31 @@ export const analyticsReport = {
         "upper": 8
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "forecast": [
+          8,
+          8,
+          8
+        ],
+        "lower95": [
+          8,
+          8,
+          8
+        ],
+        "upper95": [
+          8,
+          8,
+          8
+        ],
         "points": [
           {
             "period": 1,
@@ -50589,12 +64931,20 @@ export const analyticsReport = {
             "lower": 8,
             "upper": 8
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 16,
-      "recommendedOrderQuantity": 16,
+      "safetyStock": 2,
+      "reorderPoint": 18,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50634,47 +64984,74 @@ export const analyticsReport = {
       "status": "adequate",
       "daysOfSupply": 91,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 31094.84,
+      "forecastMonthlyDemand": 31094.47,
       "usageRates": {
-        "daily": 1021.6,
-        "weekly": 7151.17,
-        "monthly": 31094.84
+        "daily": 1021.58,
+        "weekly": 7151.09,
+        "monthly": 31094.47
       },
       "forecastRange": {
-        "lower": 31094.4,
-        "upper": 31095.28
+        "lower": 31093.79,
+        "upper": 31095.15
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0.22360442191500313,
+        "fitted": [
+          31095,
+          31094.7,
+          31094.4,
+          31094.675999999996
+        ],
+        "forecast": [
+          31094.466239999998,
+          31094.261279999995,
+          31094.056319999996
+        ],
+        "lower95": [
+          31093.787242136084,
+          31093.301032012027,
+          31092.88026120147
+        ],
+        "upper95": [
+          31095.14523786391,
+          31095.221527987964,
+          31095.232378798522
+        ],
         "points": [
           {
             "period": 1,
-            "value": 31094.840137499996,
-            "lower": 31094.40187283304,
-            "upper": 31095.27840216695
+            "value": 31094.466239999998,
+            "lower": 31093.787242136084,
+            "upper": 31095.14523786391
           },
           {
             "period": 2,
-            "value": 31094.840137499996,
-            "lower": 31094.220337664083,
-            "upper": 31095.45993733591
+            "value": 31094.261279999995,
+            "lower": 31093.301032012027,
+            "upper": 31095.221527987964
           },
           {
             "period": 3,
-            "value": 31094.840137499996,
-            "lower": 31094.08104082967,
-            "upper": 31095.59923417032
+            "value": 31094.056319999996,
+            "lower": 31092.88026120147,
+            "upper": 31095.232378798522
           }
-        ]
+        ],
+        "residualStdDev": 0.346427481588006,
+        "rmse": 0.346427481588006,
+        "mape": 0.0006496221939997182,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 61296,
-      "recommendedOrderQuantity": 61743,
+      "safetyStock": 9194,
+      "reorderPoint": 70489,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50684,7 +65061,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.18,
+        "mae": 0.49,
         "wape": 0,
         "observations": 2
       },
@@ -50714,47 +65091,74 @@ export const analyticsReport = {
       "status": "adequate",
       "daysOfSupply": 91,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 23364.16,
+      "forecastMonthlyDemand": 23364.53,
       "usageRates": {
-        "daily": 767.61,
-        "weekly": 5373.28,
-        "monthly": 23364.16
+        "daily": 767.62,
+        "weekly": 5373.36,
+        "monthly": 23364.53
       },
       "forecastRange": {
-        "lower": 23363.72,
-        "upper": 23364.6
+        "lower": 23363.85,
+        "upper": 23365.21
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0.22360442191500313,
+        "fitted": [
+          23364,
+          23364.3,
+          23364.599999999995,
+          23364.323999999997
+        ],
+        "forecast": [
+          23364.533760000002,
+          23364.738720000005,
+          23364.943680000004
+        ],
+        "lower95": [
+          23363.854762136092,
+          23363.778472012043,
+          23363.767621201485
+        ],
+        "upper95": [
+          23365.212757863912,
+          23365.698967987966,
+          23366.119738798523
+        ],
         "points": [
           {
             "period": 1,
-            "value": 23364.1598625,
-            "lower": 23363.721597833046,
-            "upper": 23364.598127166955
+            "value": 23364.533760000002,
+            "lower": 23363.854762136092,
+            "upper": 23365.212757863912
           },
           {
             "period": 2,
-            "value": 23364.1598625,
-            "lower": 23363.540062664088,
-            "upper": 23364.779662335914
+            "value": 23364.738720000005,
+            "lower": 23363.778472012043,
+            "upper": 23365.698967987966
           },
           {
             "period": 3,
-            "value": 23364.1598625,
-            "lower": 23363.400765829676,
-            "upper": 23364.918959170325
+            "value": 23364.943680000004,
+            "lower": 23363.767621201485,
+            "upper": 23366.119738798523
           }
-        ]
+        ],
+        "residualStdDev": 0.34642748158594777,
+        "rmse": 0.34642748158594777,
+        "mape": 0.0008645778623169568,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.8,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 46057,
-      "recommendedOrderQuantity": 46392,
+      "safetyStock": 6909,
+      "reorderPoint": 52966,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50764,7 +65168,7 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.18,
+        "mae": 0.4,
         "wape": 0,
         "observations": 2
       },
@@ -50794,47 +65198,74 @@ export const analyticsReport = {
       "status": "adequate",
       "daysOfSupply": 91,
       "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 302.84,
+      "forecastMonthlyDemand": 302.59,
       "usageRates": {
-        "daily": 9.95,
-        "weekly": 69.65,
-        "monthly": 302.84
+        "daily": 9.94,
+        "weekly": 69.59,
+        "monthly": 302.59
       },
       "forecastRange": {
-        "lower": 302.4,
-        "upper": 303.28
+        "lower": 301.91,
+        "upper": 303.27
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0.22360442191513305,
+        "fitted": [
+          303,
+          302.7,
+          302.4,
+          302.676
+        ],
+        "forecast": [
+          302.5862400000001,
+          302.5000800000001,
+          302.41392000000013
+        ],
+        "lower95": [
+          301.90724213608587,
+          301.5398320120303,
+          301.23786120147
+        ],
+        "upper95": [
+          303.2652378639143,
+          303.4603279879699,
+          303.58997879853024
+        ],
         "points": [
           {
             "period": 1,
-            "value": 302.84013749999997,
-            "lower": 302.4018728330463,
-            "upper": 303.27840216695364
+            "value": 302.5862400000001,
+            "lower": 301.90724213608587,
+            "upper": 303.2652378639143
           },
           {
             "period": 2,
-            "value": 302.84013749999997,
-            "lower": 302.22033766408515,
-            "upper": 303.4599373359148
+            "value": 302.5000800000001,
+            "lower": 301.5398320120303,
+            "upper": 303.4603279879699
           },
           {
             "period": 3,
-            "value": 302.84013749999997,
-            "lower": 302.08104082967395,
-            "upper": 303.599234170326
+            "value": 302.41392000000013,
+            "lower": 301.23786120147,
+            "upper": 303.58997879853024
           }
-        ]
+        ],
+        "residualStdDev": 0.34642748158887304,
+        "rmse": 0.34642748158887304,
+        "mape": 0.06666738633423198,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.6,
+          "smoothing_trend": 0.6
+        }
       },
       "expectedStockoutDate": "2026-10-14",
-      "safetyStock": 0,
-      "reorderPoint": 597,
-      "recommendedOrderQuantity": 602,
+      "safetyStock": 89,
+      "reorderPoint": 686,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 4,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50844,8 +65275,8 @@ export const analyticsReport = {
       "annualCarryingCost": null,
       "forecastAccuracy": {
         "status": "ok",
-        "mae": 0.18,
-        "wape": 0.001,
+        "mae": 0.51,
+        "wape": 0.002,
         "observations": 2
       },
       "historicalTrend": {
@@ -50885,11 +65316,34 @@ export const analyticsReport = {
         "upper": 1417
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1417,
+          1417,
+          1417,
+          1417,
+          1417,
+          1417,
+          1417,
+          1417
+        ],
+        "forecast": [
+          1417,
+          1417,
+          1417
+        ],
+        "lower95": [
+          1417,
+          1417,
+          1417
+        ],
+        "upper95": [
+          1417,
+          1417,
+          1417
+        ],
         "points": [
           {
             "period": 1,
@@ -50909,12 +65363,20 @@ export const analyticsReport = {
             "lower": 1417,
             "upper": 1417
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-16",
-      "safetyStock": 0,
-      "reorderPoint": 2793,
-      "recommendedOrderQuantity": 2733,
+      "safetyStock": 419,
+      "reorderPoint": 3212,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.39,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -50965,11 +65427,34 @@ export const analyticsReport = {
         "upper": 255
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "forecast": [
+          255,
+          255,
+          255
+        ],
+        "lower95": [
+          255,
+          255,
+          255
+        ],
+        "upper95": [
+          255,
+          255,
+          255
+        ],
         "points": [
           {
             "period": 1,
@@ -50989,12 +65474,20 @@ export const analyticsReport = {
             "lower": 255,
             "upper": 255
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-15",
-      "safetyStock": 0,
-      "reorderPoint": 503,
-      "recommendedOrderQuantity": 493,
+      "safetyStock": 75,
+      "reorderPoint": 578,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.77,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51045,11 +65538,31 @@ export const analyticsReport = {
         "upper": 114
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          114,
+          114,
+          114,
+          114,
+          114
+        ],
+        "forecast": [
+          114,
+          114,
+          114
+        ],
+        "lower95": [
+          114,
+          114,
+          114
+        ],
+        "upper95": [
+          114,
+          114,
+          114
+        ],
         "points": [
           {
             "period": 1,
@@ -51069,12 +65582,20 @@ export const analyticsReport = {
             "lower": 114,
             "upper": 114
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-17",
-      "safetyStock": 0,
-      "reorderPoint": 225,
-      "recommendedOrderQuantity": 214,
+      "safetyStock": 34,
+      "reorderPoint": 258,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.71,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51125,11 +65646,30 @@ export const analyticsReport = {
         "upper": 33822
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33822,
+          33822,
+          33822,
+          33822
+        ],
+        "forecast": [
+          33822,
+          33822,
+          33822
+        ],
+        "lower95": [
+          33822,
+          33822,
+          33822
+        ],
+        "upper95": [
+          33822,
+          33822,
+          33822
+        ],
         "points": [
           {
             "period": 1,
@@ -51149,12 +65689,20 @@ export const analyticsReport = {
             "lower": 33822,
             "upper": 33822
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-20",
-      "safetyStock": 0,
-      "reorderPoint": 66672,
-      "recommendedOrderQuantity": 60610,
+      "safetyStock": 10001,
+      "reorderPoint": 76672,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.74,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51205,11 +65753,34 @@ export const analyticsReport = {
         "upper": 373
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373
+        ],
+        "forecast": [
+          373,
+          373,
+          373
+        ],
+        "lower95": [
+          373,
+          373,
+          373
+        ],
+        "upper95": [
+          373,
+          373,
+          373
+        ],
         "points": [
           {
             "period": 1,
@@ -51229,12 +65800,20 @@ export const analyticsReport = {
             "lower": 373,
             "upper": 373
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-19",
-      "safetyStock": 0,
-      "reorderPoint": 735,
-      "recommendedOrderQuantity": 679,
+      "safetyStock": 110,
+      "reorderPoint": 846,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.77,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51285,11 +65864,34 @@ export const analyticsReport = {
         "upper": 73367
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          73367,
+          73367,
+          73367,
+          73367,
+          73367,
+          73367,
+          73367,
+          73367
+        ],
+        "forecast": [
+          73367,
+          73367,
+          73367
+        ],
+        "lower95": [
+          73367,
+          73367,
+          73367
+        ],
+        "upper95": [
+          73367,
+          73367,
+          73367
+        ],
         "points": [
           {
             "period": 1,
@@ -51309,12 +65911,20 @@ export const analyticsReport = {
             "lower": 73367,
             "upper": 73367
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-24",
-      "safetyStock": 0,
-      "reorderPoint": 144625,
-      "recommendedOrderQuantity": 120632,
+      "safetyStock": 21694,
+      "reorderPoint": 166319,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 6.38,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51365,11 +65975,34 @@ export const analyticsReport = {
         "upper": 1563
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1563,
+          1563,
+          1563,
+          1563,
+          1563,
+          1563,
+          1563,
+          1563
+        ],
+        "forecast": [
+          1563,
+          1563,
+          1563
+        ],
+        "lower95": [
+          1563,
+          1563,
+          1563
+        ],
+        "upper95": [
+          1563,
+          1563,
+          1563
+        ],
         "points": [
           {
             "period": 1,
@@ -51389,12 +66022,20 @@ export const analyticsReport = {
             "lower": 1563,
             "upper": 1563
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-22",
-      "safetyStock": 0,
-      "reorderPoint": 3081,
-      "recommendedOrderQuantity": 2705,
+      "safetyStock": 462,
+      "reorderPoint": 3543,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.47,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51445,11 +66086,34 @@ export const analyticsReport = {
         "upper": 2000
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          2000,
+          2000,
+          2000,
+          2000,
+          2000,
+          2000,
+          2000,
+          2000
+        ],
+        "forecast": [
+          2000,
+          2000,
+          2000
+        ],
+        "lower95": [
+          2000,
+          2000,
+          2000
+        ],
+        "upper95": [
+          2000,
+          2000,
+          2000
+        ],
         "points": [
           {
             "period": 1,
@@ -51469,12 +66133,20 @@ export const analyticsReport = {
             "lower": 2000,
             "upper": 2000
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-26",
-      "safetyStock": 0,
-      "reorderPoint": 3943,
-      "recommendedOrderQuantity": 3197,
+      "safetyStock": 591,
+      "reorderPoint": 4534,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.35,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51525,11 +66197,34 @@ export const analyticsReport = {
         "upper": 116
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          116,
+          116,
+          116,
+          116,
+          116,
+          116,
+          116,
+          116
+        ],
+        "forecast": [
+          116,
+          116,
+          116
+        ],
+        "lower95": [
+          116,
+          116,
+          116
+        ],
+        "upper95": [
+          116,
+          116,
+          116
+        ],
         "points": [
           {
             "period": 1,
@@ -51549,12 +66244,20 @@ export const analyticsReport = {
             "lower": 116,
             "upper": 116
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.4,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-26",
-      "safetyStock": 0,
-      "reorderPoint": 229,
-      "recommendedOrderQuantity": 183,
+      "safetyStock": 34,
+      "reorderPoint": 263,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.52,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51605,11 +66308,34 @@ export const analyticsReport = {
         "upper": 1004
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          1004,
+          1004,
+          1004,
+          1004,
+          1004,
+          1004,
+          1004,
+          1004
+        ],
+        "forecast": [
+          1004,
+          1004,
+          1004
+        ],
+        "lower95": [
+          1004,
+          1004,
+          1004
+        ],
+        "upper95": [
+          1004,
+          1004,
+          1004
+        ],
         "points": [
           {
             "period": 1,
@@ -51629,12 +66355,20 @@ export const analyticsReport = {
             "lower": 1004,
             "upper": 1004
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-10-27",
-      "safetyStock": 0,
-      "reorderPoint": 1979,
-      "recommendedOrderQuantity": 1553,
+      "safetyStock": 297,
+      "reorderPoint": 2276,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 2.44,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51685,11 +66419,31 @@ export const analyticsReport = {
         "upper": 6162
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 5,
-        "residualStdDev": 0,
+        "fitted": [
+          6162,
+          6162,
+          6162,
+          6162,
+          6162
+        ],
+        "forecast": [
+          6162,
+          6162,
+          6162
+        ],
+        "lower95": [
+          6162,
+          6162,
+          6162
+        ],
+        "upper95": [
+          6162,
+          6162,
+          6162
+        ],
         "points": [
           {
             "period": 1,
@@ -51709,12 +66463,20 @@ export const analyticsReport = {
             "lower": 6162,
             "upper": 6162
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-09",
-      "safetyStock": 0,
-      "reorderPoint": 12147,
-      "recommendedOrderQuantity": 7029,
+      "safetyStock": 1822,
+      "reorderPoint": 13969,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.3,
       "stockoutFrequency": 0.2,
       "stockAgeDays": null,
@@ -51765,11 +66527,34 @@ export const analyticsReport = {
         "upper": 24784
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 8,
-        "residualStdDev": 0,
+        "fitted": [
+          24784,
+          24784,
+          24784,
+          24784,
+          24784,
+          24784,
+          24784,
+          24784
+        ],
+        "forecast": [
+          24784,
+          24784,
+          24784
+        ],
+        "lower95": [
+          24784,
+          24784,
+          24784
+        ],
+        "upper95": [
+          24784,
+          24784,
+          24784
+        ],
         "points": [
           {
             "period": 1,
@@ -51789,12 +66574,20 @@ export const analyticsReport = {
             "lower": 24784,
             "upper": 24784
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-11",
-      "safetyStock": 0,
-      "reorderPoint": 48856,
-      "recommendedOrderQuantity": 26520,
+      "safetyStock": 7328,
+      "reorderPoint": 56184,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 1.84,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51845,11 +66638,30 @@ export const analyticsReport = {
         "upper": 33
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 4,
-        "residualStdDev": 0,
+        "fitted": [
+          33,
+          33,
+          33,
+          33
+        ],
+        "forecast": [
+          33,
+          33,
+          33
+        ],
+        "lower95": [
+          33,
+          33,
+          33
+        ],
+        "upper95": [
+          33,
+          33,
+          33
+        ],
         "points": [
           {
             "period": 1,
@@ -51869,12 +66681,20 @@ export const analyticsReport = {
             "lower": 33,
             "upper": 33
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-13",
-      "safetyStock": 0,
-      "reorderPoint": 65,
-      "recommendedOrderQuantity": 33,
+      "safetyStock": 10,
+      "reorderPoint": 75,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3.36,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51925,11 +66745,33 @@ export const analyticsReport = {
         "upper": 4
       },
       "forecast": {
-        "method": "simple_exponential_smoothing",
+        "method": "holt_linear",
         "status": "ok",
-        "alpha": 0.35,
         "observations": 7,
-        "residualStdDev": 0,
+        "fitted": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "forecast": [
+          4,
+          4,
+          4
+        ],
+        "lower95": [
+          4,
+          4,
+          4
+        ],
+        "upper95": [
+          4,
+          4,
+          4
+        ],
         "points": [
           {
             "period": 1,
@@ -51949,12 +66791,20 @@ export const analyticsReport = {
             "lower": 4,
             "upper": 4
           }
-        ]
+        ],
+        "residualStdDev": 0,
+        "rmse": 0,
+        "mape": 0,
+        "seasonalPeriod": null,
+        "params": {
+          "smoothing_level": 0.2,
+          "smoothing_trend": 0.2
+        }
       },
       "expectedStockoutDate": "2026-11-13",
-      "safetyStock": 0,
-      "reorderPoint": 8,
-      "recommendedOrderQuantity": 4,
+      "safetyStock": 1,
+      "reorderPoint": 9,
+      "recommendedOrderQuantity": 0,
       "turnoverRate": 3,
       "stockoutFrequency": 0,
       "stockAgeDays": null,
@@ -51978,86 +66828,6 @@ export const analyticsReport = {
         }
       },
       "observations": 7,
-      "dataQualityFlags": [],
-      "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
-      "priorityScore": 0
-    },
-    {
-      "sku": "LAB7898",
-      "description": "Sysmex: Fluorocell WNR, 2 x 82ml (1)",
-      "programme": "Laboratory Services",
-      "location": "Central",
-      "asOfDate": "2026-07-15",
-      "stockOnHand": 49,
-      "ami": 12,
-      "mos": 4,
-      "status": "adequate",
-      "daysOfSupply": 123,
-      "demandSource": "ami_proxy",
-      "forecastMonthlyDemand": 12.13,
-      "usageRates": {
-        "daily": 0.4,
-        "weekly": 2.79,
-        "monthly": 12.13
-      },
-      "forecastRange": {
-        "lower": 11.98,
-        "upper": 12.27
-      },
-      "forecast": {
-        "method": "simple_exponential_smoothing",
-        "status": "ok",
-        "alpha": 0.35,
-        "observations": 3,
-        "residualStdDev": 0.0742462120245878,
-        "points": [
-          {
-            "period": 1,
-            "value": 12.12675,
-            "lower": 11.981227424431808,
-            "upper": 12.272272575568191
-          },
-          {
-            "period": 2,
-            "value": 12.12675,
-            "lower": 11.92095,
-            "upper": 12.33255
-          },
-          {
-            "period": 3,
-            "value": 12.12675,
-            "lower": 11.87469750546761,
-            "upper": 12.378802494532389
-          }
-        ]
-      },
-      "expectedStockoutDate": "2026-11-14",
-      "safetyStock": 0,
-      "reorderPoint": 24,
-      "recommendedOrderQuantity": 11,
-      "turnoverRate": 2.08,
-      "stockoutFrequency": 0,
-      "stockAgeDays": null,
-      "stagnant": false,
-      "unitCost": null,
-      "inventoryValue": null,
-      "annualCarryingCost": null,
-      "forecastAccuracy": {
-        "status": "ok",
-        "mae": 0.2,
-        "wape": 0.016,
-        "observations": 1
-      },
-      "historicalTrend": {
-        "stockOnHandChange": -0.456,
-        "demandChange": -0.024,
-        "seasonality": {
-          "status": "insufficient_history",
-          "lag": 12,
-          "score": null
-        }
-      },
-      "observations": 6,
       "dataQualityFlags": [],
       "action": "Maintain routine monitoring within the 2–4 MOS policy band.",
       "priorityScore": 0
