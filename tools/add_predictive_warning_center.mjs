@@ -228,6 +228,123 @@ if (!html.includes('event.target.closest("#predictiveScenario")')) {
   );
 }
 
+if (!html.includes(".warning-workflow")) {
+  html = html.replace(
+    "    @media (max-width: 520px) { .scenario-inputs, .scenario-results { grid-template-columns: 1fr; } }",
+    `    .warning-workflow { margin-top: 16px; padding: 16px; border: 1px solid #9eb6ad; background: #fff; }
+    .warning-workflow h4 { margin: 0 0 4px; }
+    .warning-workflow > p { margin: 0 0 14px; color: var(--muted); font-size: 11px; }
+    .warning-workflow-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; }
+    .warning-workflow-grid label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 750; }
+    .warning-workflow-grid input, .warning-workflow-grid select { width: 100%; border: 1px solid #9eb6ad; background: #fff; padding: 9px; color: var(--ink); }
+    .warning-workflow-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .warning-workflow-actions button, .warning-workflow-actions a { border: 1px solid #7d9b90; background: #fff; padding: 9px 11px; color: #0d5e40; text-decoration: none; cursor: pointer; font-size: 11px; font-weight: 800; }
+    .warning-workflow-actions .primary { border-color: var(--green); background: var(--green); color: #fff; }
+    .warning-workflow-actions .acknowledged { border-color: #5b7168; background: #edf2f0; color: #405049; }
+    .warning-history { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+    .warning-history h5 { margin: 0 0 8px; }
+    .warning-history-list { display: grid; gap: 7px; max-height: 170px; overflow-y: auto; }
+    .warning-history-item { padding: 8px 10px; border-left: 3px solid #9eb6ad; background: #f7faf8; font-size: 10px; line-height: 1.4; }
+    .warning-history-item b { color: #0d5e40; }
+    .warning-history-empty { color: var(--muted); font-size: 10px; }
+    @media (max-width: 520px) { .scenario-inputs, .scenario-results, .warning-workflow-grid { grid-template-columns: 1fr; } }`,
+  );
+}
+
+if (!html.includes('id="warningWorkflow"')) {
+  html = html.replace(
+    `'<div id="scenarioResults"></div></section>';`,
+    `'<div id="scenarioResults"></div></section>' +
+        '<section class="warning-workflow" id="warningWorkflow" data-sku="' + escapeHtml(item.sku) + '"><h4>Stage 3 · Warning ownership and escalation</h4><p>Assign the warning, set a response deadline, acknowledge it, and keep a local audit trail on this device.</p>' +
+        '<div class="warning-workflow-grid"><label>Owner<input id="warningOwner" type="text" maxlength="80" placeholder="Name or team"></label>' +
+        '<label>Deadline<input id="warningDeadline" type="date"></label><label>Priority<select id="warningPriority"><option value="Critical">Critical</option><option value="High">High</option><option value="Moderate">Moderate</option></select></label></div>' +
+        '<div class="warning-workflow-actions"><button type="button" class="primary" id="warningSave">Save assignment</button><button type="button" id="warningAcknowledge">Acknowledge alert</button>' +
+        '<a id="warningEmail" href="#">Email alert</a><a id="warningWhatsApp" href="#" target="_blank" rel="noopener">WhatsApp alert</a></div>' +
+        '<div class="warning-history"><h5>Alert history</h5><div class="warning-history-list" id="warningHistory"></div></div></section>';`,
+  );
+  html = html.replace(
+    `      calculatePredictiveScenario();
+      document.getElementById("predictiveWarningClose").focus();`,
+    `      calculatePredictiveScenario();
+      renderWarningWorkflow(item.sku);
+      document.getElementById("predictiveWarningClose").focus();`,
+  );
+}
+
+if (!html.includes("renderWarningWorkflow(item.sku);")) {
+  html = html.replace(
+    /      calculatePredictiveScenario\(\);\r?\n      document\.getElementById\("predictiveWarningClose"\)\.focus\(\);/,
+    `      calculatePredictiveScenario();
+      renderWarningWorkflow(item.sku);
+      document.getElementById("predictiveWarningClose").focus();`,
+  );
+}
+
+if (!html.includes("function warningCenterRecords")) {
+  html = html.replace(
+    "    function closePredictiveWarning() {",
+    `    function warningCenterRecords() {
+      try { return JSON.parse(localStorage.getItem("zammsa-warning-center-v1") || "{}"); }
+      catch { return {}; }
+    }
+    function saveWarningCenterRecords(records) {
+      localStorage.setItem("zammsa-warning-center-v1", JSON.stringify(records));
+    }
+    function warningDefaultDeadline() {
+      const date = new Date();
+      date.setDate(date.getDate() + 7);
+      return date.toISOString().slice(0, 10);
+    }
+    function warningMessage(item, record) {
+      return "ZAMMSA predictive warning: " + item.sku + " — " + item.description + "\\nPriority: " + (record.priority || "High") + "\\nForecast stockout: " + analyticsDate(item.expectedStockoutDate) + "\\nRecommended order: " + analyticsNumber(item.recommendedOrderQuantity) + " units\\nOwner: " + (record.owner || "Unassigned") + "\\nDeadline: " + (record.deadline || "Not set") + "\\nAction: " + item.action;
+    }
+    function renderWarningWorkflow(sku) {
+      const item = analyticsItemsForDate(state.analyticsDate).find(row => row.sku === sku);
+      const workflow = document.getElementById("warningWorkflow");
+      if (!item || !workflow) return;
+      const records = warningCenterRecords();
+      const record = records[sku] || { owner: "", deadline: warningDefaultDeadline(), priority: "High", acknowledgedAt: null, history: [] };
+      document.getElementById("warningOwner").value = record.owner || "";
+      document.getElementById("warningDeadline").value = record.deadline || warningDefaultDeadline();
+      document.getElementById("warningPriority").value = record.priority || "High";
+      const acknowledge = document.getElementById("warningAcknowledge");
+      acknowledge.textContent = record.acknowledgedAt ? "Acknowledged " + new Date(record.acknowledgedAt).toLocaleDateString("en-GB") : "Acknowledge alert";
+      acknowledge.classList.toggle("acknowledged", Boolean(record.acknowledgedAt));
+      acknowledge.disabled = Boolean(record.acknowledgedAt);
+      const message = warningMessage(item, record);
+      document.getElementById("warningEmail").href = "mailto:?subject=" + encodeURIComponent("ZAMMSA warning: " + item.sku) + "&body=" + encodeURIComponent(message);
+      document.getElementById("warningWhatsApp").href = "https://wa.me/?text=" + encodeURIComponent(message);
+      const history = (record.history || []).slice().reverse();
+      document.getElementById("warningHistory").innerHTML = history.length ? history.map(entry => '<div class="warning-history-item"><b>' + escapeHtml(entry.type) + '</b> · ' + escapeHtml(new Date(entry.at).toLocaleString("en-GB")) + '<br>' + escapeHtml(entry.detail) + '</div>').join("") : '<div class="warning-history-empty">No recorded actions for this warning yet.</div>';
+    }
+    function updateWarningWorkflow(type) {
+      const workflow = document.getElementById("warningWorkflow");
+      if (!workflow) return;
+      const sku = workflow.dataset.sku;
+      const records = warningCenterRecords();
+      const previous = records[sku] || { history: [] };
+      const owner = document.getElementById("warningOwner").value.trim();
+      const deadline = document.getElementById("warningDeadline").value;
+      const priority = document.getElementById("warningPriority").value;
+      const now = new Date().toISOString();
+      const acknowledgedAt = type === "Acknowledged" ? now : previous.acknowledgedAt || null;
+      const detail = type === "Acknowledged" ? "Alert acknowledged by " + (owner || "unassigned owner") + "." : "Assigned to " + (owner || "Unassigned") + ", deadline " + (deadline || "not set") + ", priority " + priority + ".";
+      const history = [...(previous.history || []), { type, at: now, detail }].slice(-30);
+      records[sku] = { owner, deadline, priority, acknowledgedAt, updatedAt: now, history };
+      saveWarningCenterRecords(records);
+      renderWarningWorkflow(sku);
+    }
+    function closePredictiveWarning() {`,
+  );
+}
+
+if (!html.includes('event.target.id === "warningSave"')) {
+  html = html.replace(
+    `    document.getElementById("predictiveWarningDetail").addEventListener("click", event => { if (event.target.id === "predictiveWarningClose") closePredictiveWarning(); });`,
+    `    document.getElementById("predictiveWarningDetail").addEventListener("click", event => { if (event.target.id === "predictiveWarningClose") closePredictiveWarning(); if (event.target.id === "warningSave") updateWarningWorkflow("Assignment updated"); if (event.target.id === "warningAcknowledge") updateWarningWorkflow("Acknowledged"); });`,
+  );
+}
+
 if (!html.includes('document.getElementById("analyticsKpis").addEventListener')) {
   html = html.replace(
     `    document.getElementById("analyticsSearch").addEventListener("input", event => { state.analyticsSearch = event.target.value; renderManagementAnalytics(); });`,
@@ -288,6 +405,44 @@ if (!html.includes('id="predictiveWarningDetail"')) {
     '$1\n          <aside class="warning-detail" id="predictiveWarningDetail" hidden aria-label="Commodity forecast warning detail"></aside>\n        </section>',
   );
 }
+
+html = html.replaceAll(
+  "'</strong><small>AMI forecast</small></article>",
+  "'</strong><small>' + escapeHtml(item.forecast?.method === \"holt_winters_additive\" ? \"Holt-Winters · optimized\" : \"Holt linear · optimized\") + '</small></article>",
+);
+if (!html.includes("<b>Model diagnostics</b>")) {
+  html = html.replace(
+    "'<h4>Stock history and three-month projection</h4>",
+    "'<div class=\"warning-action\"><b>Model diagnostics</b><br>' + escapeHtml(item.forecast?.method === \"holt_winters_additive\" ? \"Holt-Winters additive\" : \"Holt linear\") + ' · RMSE ' + analyticsNumber(item.forecast?.rmse) + ' · MAPE ' + (Number.isFinite(item.forecast?.mape) ? analyticsNumber(item.forecast.mape, 1) + '%' : 'Not available') + ' · Optimized α ' + analyticsNumber(item.forecast?.params?.smoothing_level, 1) + ' β ' + analyticsNumber(item.forecast?.params?.smoothing_trend, 1) + (Number.isFinite(item.forecast?.params?.smoothing_seasonal) ? ' γ ' + analyticsNumber(item.forecast.params.smoothing_seasonal, 1) : '') + '</div><h4>Stock history and three-month projection</h4>",
+  );
+}
+if (!html.includes("item.forecast?.rmse") && html.includes("95% monthly demand range")) {
+  html = html.replace(
+    "+ '.</small></div>' +\n        '<section class=\"scenario-panel\"",
+    "+ '. · Model ' + escapeHtml(item.forecast?.method === \"holt_winters_additive\" ? \"Holt-Winters\" : \"Holt linear\") + ' · RMSE ' + analyticsNumber(item.forecast?.rmse) + ' · MAPE ' + (Number.isFinite(item.forecast?.mape) ? analyticsNumber(item.forecast.mape, 1) + '%' : 'Not available') + '.</small></div>' +\n        '<section class=\"scenario-panel\"",
+  );
+}
+
+if (!html.includes("date === analyticsReport.asOfDate && Array.isArray(analyticsReport.items)")) {
+  html = html.replace(
+    /    function analyticsItemsForDate\(date\) \{\r?\n      if \(analyticsDateCache\.has\(date\)\) return analyticsDateCache\.get\(date\);/,
+    `    function analyticsItemsForDate(date) {
+      if (analyticsDateCache.has(date)) return analyticsDateCache.get(date);
+      if (date === analyticsReport.asOfDate && Array.isArray(analyticsReport.items)) {
+        const modelItems = analyticsReport.items.map(item => {
+          const source = stockData.find(row => row.code === item.sku);
+          return { ...item, stream: analyticsStreamFor(source || {}), classification: source?.classification || "" };
+        });
+        analyticsDateCache.set(date, modelItems);
+        return modelItems;
+      }`,
+  );
+}
+
+html = html.replace(
+  "Simple exponential smoothing uses the historical AMI series and returns a 95% planning range.",
+  "Optimized Holt trend forecasting uses the historical AMI series, with additive Holt-Winters seasonality when at least two seasonal cycles are available, and returns a widening 95% planning interval.",
+);
 
 writeFileSync("index.html", html, "utf8");
 console.log(JSON.stringify({ output: "index.html", predictiveWarningCenter: true }, null, 2));

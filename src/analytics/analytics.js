@@ -1,5 +1,5 @@
 import { mergeAnalyticsConfig } from "./config.js";
-import { backtestForecast, exponentialSmoothingForecaster } from "./forecasting.js";
+import { backtestForecast, holtWintersForecaster, reorderRecommendation } from "./forecasting.js";
 
 const round = (value, digits = 1) => value === null || value === undefined || !Number.isFinite(value)
   ? null
@@ -8,13 +8,6 @@ const round = (value, digits = 1) => value === null || value === undefined || !N
 function average(values) {
   const clean = values.filter((value) => Number.isFinite(value));
   return clean.length ? clean.reduce((sum, value) => sum + value, 0) / clean.length : null;
-}
-
-function stdDev(values) {
-  const clean = values.filter((value) => Number.isFinite(value));
-  if (clean.length < 2) return 0;
-  const mean = average(clean);
-  return Math.sqrt(clean.reduce((sum, value) => sum + (value - mean) ** 2, 0) / (clean.length - 1));
 }
 
 function trendPercent(values) {
@@ -108,7 +101,7 @@ function priorityScore(item, asOfDate) {
   return score;
 }
 
-export function buildAnalyticsReport({ snapshots, movements = [], config: overrides = {}, forecaster = exponentialSmoothingForecaster }) {
+export function buildAnalyticsReport({ snapshots, movements = [], config: overrides = {}, forecaster = holtWintersForecaster }) {
   const config = mergeAnalyticsConfig(overrides);
   const centralSnapshots = snapshots.filter((row) => row.location === config.location).sort((a, b) => a.date.localeCompare(b.date));
   if (!centralSnapshots.length) throw new Error(`No snapshots found for ${config.location}.`);
@@ -127,23 +120,22 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
     const demandSource = movementSeries.length ? "outbound_movements" : demandSeries.length ? "ami_proxy" : "unavailable";
     const forecast = forecaster.forecast(demandSeries, {
       horizon: config.forecastHorizonMonths,
-      alpha: config.forecastAlpha,
+      seasonalPeriod: config.forecastSeasonalPeriod,
       confidenceZ: config.confidenceZ,
     });
-    const accuracy = backtestForecast(demandSeries, forecaster, { alpha: config.forecastAlpha, confidenceZ: config.confidenceZ });
+    const accuracy = backtestForecast(demandSeries, forecaster, { seasonalPeriod: config.forecastSeasonalPeriod, confidenceZ: config.confidenceZ });
     const monthlyDemand = forecast.points[0]?.value ?? latest.ami ?? null;
     const dailyDemand = Number.isFinite(monthlyDemand) ? monthlyDemand / config.daysPerMonth : null;
     const calculatedMos = Number.isFinite(latest.stockOnHand) && Number.isFinite(monthlyDemand) && monthlyDemand > 0 ? latest.stockOnHand / monthlyDemand : null;
     const mos = Number.isFinite(latest.mos) ? latest.mos : calculatedMos;
     const daysOfSupply = Number.isFinite(latest.stockOnHand) && dailyDemand > 0 ? latest.stockOnHand / dailyDemand : null;
-    const demandDeviation = stdDev(demandSeries.map((point) => Number(point.value)));
     const leadTimeMonths = config.leadTimeDays / config.daysPerMonth;
-    const safetyStock = Number.isFinite(monthlyDemand) ? config.serviceLevelZ * demandDeviation * Math.sqrt(leadTimeMonths) : null;
-    const reorderPoint = Number.isFinite(monthlyDemand) ? monthlyDemand * leadTimeMonths + (safetyStock || 0) : null;
-    const targetMonths = config.policy.adequateMaxMos + config.reviewPeriodDays / config.daysPerMonth;
-    const recommendedOrderQuantity = Number.isFinite(monthlyDemand) && Number.isFinite(latest.stockOnHand)
-      ? Math.max(0, monthlyDemand * targetMonths - latest.stockOnHand)
+    const reorder = Number.isFinite(monthlyDemand) && Number.isFinite(latest.stockOnHand)
+      ? reorderRecommendation(forecast, latest.stockOnHand, leadTimeMonths, config.reorderSafetyFactor)
       : null;
+    const safetyStock = reorder ? Math.max(0, reorder.reorderPoint - reorder.demandDuringLeadTime) : null;
+    const reorderPoint = reorder?.reorderPoint ?? null;
+    const recommendedOrderQuantity = reorder?.recommendedOrderQty ?? null;
     const expectedStockoutDate = Number.isFinite(daysOfSupply) ? addDays(asOfDate, Math.max(0, Math.floor(daysOfSupply))) : null;
     const stockoutObservations = history.filter((row) => (Number.isFinite(row.stockOnHand) && row.stockOnHand <= 0) || (Number.isFinite(row.mos) && row.mos <= 0)).length;
     const averageStock = average(history.map((row) => row.stockOnHand));
@@ -233,6 +225,8 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       leadTimeDays: config.leadTimeDays,
       reviewPeriodDays: config.reviewPeriodDays,
       serviceLevelZ: config.serviceLevelZ,
+      seasonalPeriod: config.forecastSeasonalPeriod,
+      reorderSafetyFactor: config.reorderSafetyFactor,
       annualCarryingCostRate: config.annualCarryingCostRate,
       note: "AMI-based forecasts are planning proxies and should be replaced by transaction-level consumption when available.",
     },
