@@ -444,5 +444,49 @@ html = html.replace(
   "Optimized Holt trend forecasting uses the historical AMI series, with additive Holt-Winters seasonality when at least two seasonal cycles are available, and returns a widening 95% planning interval.",
 );
 
+if (!html.includes(".forecast-model-center")) {
+  html = html.replace(
+    "    .analytics-note.warning { border-left-color: #bf7a00; }",
+    `    .analytics-note.warning { border-left-color: #bf7a00; }
+    .forecast-model-center { margin: 0 0 14px; border: 1px solid #7aa996; background: linear-gradient(120deg, #0e5b3e, #123d2d); color: #fff; }
+    .forecast-model-head { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 18px; }
+    .forecast-model-head span { color: #bde7d3; font-size: 10px; font-weight: 850; letter-spacing: .12em; }
+    .forecast-model-head h3 { margin: 5px 0; font-size: 21px; }
+    .forecast-model-head p { max-width: 760px; margin: 0; color: #d7ebe1; font-size: 12px; line-height: 1.55; }
+    .forecast-model-head button { flex: 0 0 auto; border: 1px solid #fff; background: #fff; color: #0e5b3e; padding: 11px 14px; font-weight: 850; cursor: pointer; }
+    .forecast-model-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgba(255,255,255,.22); }
+    .forecast-model-metrics article { padding: 13px 18px; border-right: 1px solid rgba(255,255,255,.22); }
+    .forecast-model-metrics article:last-child { border-right: 0; }
+    .forecast-model-metrics span, .forecast-model-metrics small { display: block; color: #cce3d8; font-size: 10px; }
+    .forecast-model-metrics strong { display: block; margin: 4px 0 2px; font-size: 20px; }
+    @media (max-width: 760px) { .forecast-model-head { align-items: stretch; flex-direction: column; } .forecast-model-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }`,
+  );
+}
+
+if (!html.includes('id="forecastModelBanner"')) {
+  html = html.replace(
+    '          <div class="analytics-summary"><div class="analytics-note" id="analyticsNarrative"></div><div class="analytics-note warning" id="analyticsMethod"></div></div>',
+    '          <div class="forecast-model-center" id="forecastModelBanner" aria-label="Live forecast model status"></div>\n          <div class="analytics-summary"><div class="analytics-note" id="analyticsNarrative"></div><div class="analytics-note warning" id="analyticsMethod"></div></div>',
+  );
+}
+
+if (!html.includes("Optimized forecasting is active on this view")) {
+  html = html.replace(
+    '      document.getElementById("analyticsMethod").innerHTML = "<b>Historical analytics</b><br>The selected date uses only Central snapshots available on or before that date. Optimized Holt trend forecasting uses the historical AMI series, with additive Holt-Winters seasonality when at least two seasonal cycles are available, and returns a widening 95% planning interval. Programme and stream filters recalculate the narrative, KPIs and export.";',
+    `      document.getElementById("analyticsMethod").innerHTML = "<b>Historical analytics</b><br>The selected date uses only Central snapshots available on or before that date. Optimized Holt trend forecasting uses the historical AMI series, with additive Holt-Winters seasonality when at least two seasonal cycles are available, and returns a widening 95% planning interval. Programme and stream filters recalculate the narrative, KPIs and export.";
+      const modelledItems = scopedItems.filter(item => Number.isFinite(item.forecastMonthlyDemand));
+      const optimizedView = state.analyticsDate === analyticsReport.asOfDate;
+      document.getElementById("forecastModelBanner").innerHTML = '<div class="forecast-model-head"><div><span>FORECAST ENGINE ' + (optimizedView ? 'ACTIVE' : 'HISTORICAL VIEW') + '</span><h3>' + (optimizedView ? 'Optimized forecasting is active on this view' : 'Historical warning reconstruction') + '</h3><p>' + (optimizedView ? 'Demand, stockout timing, 95% uncertainty ranges and reorder quantities are model-generated. Open any commodity to use the scenario simulator, assign an owner and send an alert.' : 'This older snapshot is reconstructed from the data available at that date. Return to the latest date for full optimized model diagnostics.') + '</p></div><button type="button" data-open-top-forecast>Open highest-priority forecast</button></div><div class="forecast-model-metrics"><article><span>Commodities modelled</span><strong>' + analyticsNumber(modelledItems.length) + '</strong><small>Demand signal available</small></article><article><span>90-day warnings</span><strong>' + analyticsNumber(summary.stockouts90Days) + '</strong><small>Forecast intervention horizon</small></article><article><span>Planning interval</span><strong>95%</strong><small>Residual-based uncertainty</small></article><article><span>Recommended units</span><strong>' + analyticsNumber(summary.reorderUnits) + '</strong><small>Before pipeline adjustment</small></article></div>';`,
+  );
+}
+
+if (!html.includes('data-open-top-forecast]')) {
+  html = html.replace(
+    '    document.getElementById("analyticsKpis").addEventListener("click", event => { const card = event.target.closest("[data-horizon]"); if (!card) return; state.analyticsHorizon = state.analyticsHorizon === card.dataset.horizon ? "all" : card.dataset.horizon; renderManagementAnalytics(); });',
+    `    document.getElementById("analyticsKpis").addEventListener("click", event => { const card = event.target.closest("[data-horizon]"); if (!card) return; state.analyticsHorizon = state.analyticsHorizon === card.dataset.horizon ? "all" : card.dataset.horizon; renderManagementAnalytics(); });
+    document.getElementById("forecastModelBanner").addEventListener("click", event => { if (!event.target.closest("[data-open-top-forecast]")) return; const topItem = filteredAnalyticsItems()[0]; if (topItem) openPredictiveWarning(topItem.sku); });`,
+  );
+}
+
 writeFileSync("index.html", html, "utf8");
 console.log(JSON.stringify({ output: "index.html", predictiveWarningCenter: true }, null, 2));
