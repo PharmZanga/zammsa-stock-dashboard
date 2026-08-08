@@ -96,3 +96,11 @@ test("warning detail exposes optimized Holt model diagnostics", () => {
   assert.match(dashboard, /item\.forecast\?\.rmse/);
   assert.match(dashboard, /item\.forecast\?\.mape/);
 });
+
+test("predictive landing page clearly exposes the active forecast engine", () => {
+  const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  assert.match(html, /id="forecastModelBanner"/);
+  assert.match(html, /Optimized forecasting is active on this view/);
+  assert.match(html, /Open highest-priority forecast/);
+  assert.match(html, /data-open-top-forecast/);
+});
