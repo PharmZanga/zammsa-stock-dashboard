@@ -157,6 +157,12 @@ html = replaceRequired(
   `<strong>Weekly availability · ${latestWeeklyLabel}</strong><span>EMMS ${percent(latestEmmsAvailability)} · Laboratory ${percent(latestLabAvailability)}</span>`,
   "weekly coverage date",
 );
+html = replaceRequired(
+  html,
+  /<div class="predictive-source-note">.*?<\/div>/,
+  `<div class="predictive-source-note"><strong>Forecast baseline: central stock through ${latestReport.label}.</strong> The ${latestWeeklyLabel} weekly files confirm availability (EMMS ${percent(latestEmmsAvailability)}; LAB ${percent(latestLabAvailability)}) but do not contain commodity-level SOH, AMI or MOS. Forecasts use the latest central stock-status report loaded.</div>`,
+  "predictive source note",
+);
 html = replaceRequired(html, /<strong>\d+<\/strong><small>Latest central report<\/small>/, `<strong>${latestRows.length}</strong><small>Latest central report</small>`, "row metric");
 html = replaceRequired(html, /<strong>\d+<\/strong><small>MOS at or below 0\.1<\/small>/, `<strong>${zeroOrPointOne}</strong><small>MOS at or below 0.1</small>`, "stockout metric");
 html = replaceRequired(html, /<strong>\d+<\/strong><small>More than 0\.1 and below 1 MOS<\/small>/, `<strong>${near}</strong><small>More than 0.1 and below 1 MOS</small>`, "near-critical metric");
@@ -183,10 +189,9 @@ html = html.replace(
   /The 30 June 2026 central extract has 332 rows with missing AMI and 329 rows with TBD or missing MOS\./,
   `The ${latestReport.label} central extract has ${latestRows.filter((row) => row.ami === null).length} rows with missing AMI and ${gaps} rows with TBD or missing MOS.`,
 );
-html = html.replace(
-  /const state = \{ view: "overview", classification: "all", stock: "all", search: "", snapshot: "[^"]+"(.*?), trendDate: "[^"]+" \};/,
-  `const state = { view: "overview", classification: "all", stock: "all", search: "", snapshot: "${latestReport.key}"$1, trendDate: "${latestReport.key}" };`,
-);
+html = html.replace(/snapshot: "[^"]+"/, `snapshot: "${latestReport.key}"`);
+html = html.replace(/trendDate: "[^"]+"/, `trendDate: "${latestReport.key}"`);
+html = html.replace(/analyticsDate: "[^"]+"/, `analyticsDate: "${latestReport.key}"`);
 html = html.replace(
   /Object\.assign\(state, \{ classification: "all", stock: "all", search: "", snapshot: "[^"]+"/,
   `Object.assign(state, { classification: "all", stock: "all", search: "", snapshot: "${latestReport.key}"`,

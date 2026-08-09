@@ -198,8 +198,11 @@ def main():
         category_by_code.setdefault(row["code"], row["category"])
 
     latest_rows = parse_pdf_rows(args.pdf, args.date, args.label, category_by_code)
-    if len(latest_rows) < 700:
-        raise ValueError(f"Expected at least 700 commodity rows, extracted {len(latest_rows)}")
+    # Central reports vary as programme lines are added or removed. Keep the
+    # guard below the verified 690-row July report while still catching a
+    # partial-page/table extraction failure.
+    if len(latest_rows) < 650:
+        raise ValueError(f"Expected at least 650 commodity rows, extracted {len(latest_rows)}")
     duplicate_codes = sorted(code for code in {row["code"] for row in latest_rows} if sum(r["code"] == code for r in latest_rows) > 1)
     if duplicate_codes:
         raise ValueError(f"Duplicate ordering codes in report: {', '.join(duplicate_codes)}")
