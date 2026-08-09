@@ -220,6 +220,30 @@
     .history-shell { border: 1px solid var(--border); background: var(--surface); overflow: auto; }
     .history-shell h3 { margin: 0; padding: 16px; border-bottom: 1px solid var(--border); }
     .history-shell th { position: static; }
+    .profile-forecast-section { margin: 14px 0; border: 1px solid var(--border); background: var(--surface); }
+    .profile-forecast-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; padding: 17px 18px; border-bottom: 1px solid var(--border); }
+    .profile-forecast-head h3 { margin: 0 0 5px; font-size: 18px; }
+    .profile-forecast-head p { margin: 0; max-width: 780px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .profile-model-badge { flex: 0 0 auto; padding: 6px 9px; border: 1px solid #9fc4b3; background: #edf7f2; color: #0d6343; font-size: 11px; font-weight: 850; }
+    .profile-forecast-note { margin: 14px 18px 0; padding: 11px 13px; border-left: 4px solid var(--green); background: #edf7f2; color: #184c39; font-size: 12px; line-height: 1.5; }
+    .profile-forecast-note.warning { border-left-color: #c87800; background: #fff6df; color: #6f4700; }
+    .profile-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px 18px 18px; }
+    .profile-chart-card { min-width: 0; border: 1px solid #d9e3de; background: #fff; padding: 14px; }
+    .profile-chart-card.primary { grid-column: 1 / -1; }
+    .profile-chart-card h4 { margin: 0; font-size: 14px; }
+    .profile-chart-card p { margin: 4px 0 10px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .profile-chart-summary { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 8px; }
+    .profile-chart-summary span { padding: 4px 7px; background: var(--surface-muted); color: #30473d; font-size: 10px; font-weight: 750; }
+    .profile-chart-summary .forecast { background: #fff0d2; color: #815000; }
+    .profile-chart-svg { display: block; width: 100%; height: auto; min-height: 205px; overflow: visible; }
+    .profile-chart-gridline { stroke: #e3ebe7; stroke-width: 1; }
+    .profile-chart-axis { fill: #607168; font-size: 10px; }
+    .profile-chart-line { fill: none; stroke: #17835e; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+    .profile-chart-line.forecast { stroke: #c87800; stroke-dasharray: 7 5; }
+    .profile-chart-dot { fill: #17835e; stroke: #fff; stroke-width: 2; }
+    .profile-chart-dot.forecast { fill: #c87800; }
+    .profile-forecast-divider { stroke: #c87800; stroke-width: 1; stroke-dasharray: 3 4; opacity: .75; }
+    .profile-forecast-caption { fill: #8a5700; font-size: 9px; font-weight: 800; text-transform: uppercase; }
     .weekly-strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); background: var(--surface); }
     .weekly-strip div { padding: 18px; border-right: 1px solid var(--border); }
     .weekly-strip div:last-child { border-right: 0; }
@@ -465,6 +489,8 @@
       .stock-trend-summary article:last-child { border-bottom: 0; }
       .stock-consumption-chart, .expiry-risk-trend { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .profile-chart-grid { grid-template-columns: 1fr; }
+      .profile-chart-card.primary { grid-column: auto; }
       .profile-stat:nth-child(2) { border-right: 0; }
       .profile-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
       .table-scroll { max-height: none; }
@@ -488,6 +514,10 @@
       .page-head h2 { font-size: 24px; }
       .profile-head { grid-template-columns: 1fr; }
       .profile-current { text-align: left; }
+      .profile-forecast-head { flex-direction: column; }
+      .profile-model-badge { align-self: flex-start; }
+      .profile-chart-grid { padding: 12px; }
+      .profile-forecast-note { margin: 12px 12px 0; }
       .metric-grid, .timeline, .weekly-strip { grid-template-columns: 1fr; }
       .availability-snapshot, .linked-list { grid-template-columns: 1fr; }
       .change-summary { grid-template-columns: 1fr; }
@@ -995,6 +1025,92 @@
       document.querySelector('[data-sort="mos"]').childNodes[0].textContent = "MOS · " + selectedLabel + " ";
       document.querySelector('[data-sort="soh"]').childNodes[0].textContent = "SOH · " + selectedLabel + " ";
     }
+    function profileShortDate(dateKey) {
+      const date = new Date(dateKey + "T00:00:00Z");
+      return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+    }
+    function profileFutureMonth(dateKey, offset) {
+      const date = new Date(dateKey + "T00:00:00Z");
+      const month = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + offset, 1));
+      return month.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+    }
+    function profileForecastFor(item) {
+      const selected = reportFor(item);
+      const selectedIndex = reportDates.findIndex(date => date.key === state.snapshot);
+      const eligibleDates = reportDates.filter((date, index) => selectedIndex < 0 || index <= selectedIndex);
+      const history = eligibleDates.map(date => {
+        const report = reportFor(item, date.key);
+        return {
+          date: date.key,
+          label: profileShortDate(date.key),
+          present: report.present,
+          soh: report.present && Number.isFinite(report.soh) ? Number(report.soh) : null,
+          ami: report.present && Number.isFinite(report.ami) ? Number(report.ami) : null,
+          mos: report.present ? mosFor(item, date.key) : null
+        };
+      });
+      const model = analyticsItemsForDate(state.snapshot).find(row => row.sku === item.code) || null;
+      const modelPoints = Array.isArray(model?.forecast?.points) ? model.forecast.points.slice(0, 2).map(point => Number(point.value)) : [];
+      const demandPoints = modelPoints.length === 2 && modelPoints.every(value => Number.isFinite(value) && value >= 0)
+        ? modelPoints
+        : Number.isFinite(model?.forecastMonthlyDemand) && model.forecastMonthlyDemand >= 0
+          ? [Number(model.forecastMonthlyDemand), Number(model.forecastMonthlyDemand)]
+          : [];
+      const sohHistory = history.filter(point => Number.isFinite(point.soh));
+      const amiHistory = history.filter(point => Number.isFinite(point.ami));
+      const mosHistory = history.filter(point => Number.isFinite(point.mos));
+      let unavailableReason = "";
+      if (!selected.present) unavailableReason = "A two-month forecast is not shown because this commodity is not listed in the selected report.";
+      else if (!Number.isFinite(selected.soh)) unavailableReason = "A two-month forecast is not shown because current stock on hand is missing.";
+      else if (sohHistory.length < 2 || amiHistory.length < 2) unavailableReason = "At least two listed observations with stock and AMI are required before a two-month forecast is shown.";
+      else if (demandPoints.length < 2) unavailableReason = "A two-month forecast is not shown because the historical data does not provide a usable demand signal.";
+      const projections = [];
+      if (!unavailableReason) {
+        let projectedSoh = Number(selected.soh);
+        demandPoints.forEach((demand, index) => {
+          projectedSoh = Math.max(0, projectedSoh - demand);
+          projections.push({
+            label: profileFutureMonth(state.snapshot, index + 1),
+            soh: projectedSoh,
+            ami: demand,
+            mos: demand > 0 ? projectedSoh / demand : null
+          });
+        });
+      }
+      const method = model?.forecast?.method || (model ? "exponential smoothing" : "historical trend");
+      return { history, sohHistory, amiHistory, mosHistory, projections, unavailableReason, method, model };
+    }
+    function profileChart(title, description, actual, forecast, valueKey, primary) {
+      const actualPoints = actual.filter(point => Number.isFinite(point[valueKey])).map(point => ({ label: point.label, value: Number(point[valueKey]), forecast: false }));
+      const forecastPoints = forecast.filter(point => Number.isFinite(point[valueKey])).map(point => ({ label: point.label, value: Number(point[valueKey]), forecast: true }));
+      const points = actualPoints.concat(forecastPoints);
+      if (!points.length) return '<article class="profile-chart-card' + (primary ? " primary" : "") + '"><h4>' + escapeHtml(title) + '</h4><p>' + escapeHtml(description) + '</p><div class="empty">No numeric observations are available.</div></article>';
+      const width = 760, height = 230, left = 56, right = 18, top = 18, bottom = 38;
+      const plotWidth = width - left - right, plotHeight = height - top - bottom;
+      const maximum = Math.max(...points.map(point => point.value), 1);
+      const roundedMaximum = maximum > 10 ? Math.ceil(maximum / Math.pow(10, Math.floor(Math.log10(maximum)) - 1)) * Math.pow(10, Math.floor(Math.log10(maximum)) - 1) : Math.ceil(maximum * 10) / 10;
+      const axisMaximum = roundedMaximum || 1;
+      const coords = points.map((point, index) => ({ ...point, x: left + (points.length === 1 ? plotWidth / 2 : index * plotWidth / (points.length - 1)), y: top + plotHeight - point.value / axisMaximum * plotHeight }));
+      const actualCoords = coords.slice(0, actualPoints.length);
+      const forecastCoords = coords.slice(actualPoints.length);
+      const line = values => values.map(point => point.x.toFixed(1) + "," + point.y.toFixed(1)).join(" ");
+      const grid = [0, .25, .5, .75, 1].map(ratio => {
+        const y = top + plotHeight - ratio * plotHeight;
+        return '<line class="profile-chart-gridline" x1="' + left + '" y1="' + y + '" x2="' + (width - right) + '" y2="' + y + '"></line><text class="profile-chart-axis" x="' + (left - 8) + '" y="' + (y + 3) + '" text-anchor="end">' + escapeHtml(formatValue(axisMaximum * ratio)) + '</text>';
+      }).join("");
+      const labelIndexes = new Set([0, points.length - 1, Math.max(0, actualPoints.length - 1)]);
+      points.forEach((point, index) => { if (index % 2 === 0) labelIndexes.add(index); });
+      const labels = coords.map((point, index) => labelIndexes.has(index) ? '<text class="profile-chart-axis" x="' + point.x + '" y="' + (height - 12) + '" text-anchor="middle">' + escapeHtml(point.label) + '</text>' : "").join("");
+      const actualLine = actualCoords.length > 1 ? '<polyline class="profile-chart-line" points="' + line(actualCoords) + '"></polyline>' : "";
+      const forecastLinePoints = forecastCoords.length && actualCoords.length ? [actualCoords[actualCoords.length - 1]].concat(forecastCoords) : forecastCoords;
+      const forecastLine = forecastLinePoints.length > 1 ? '<polyline class="profile-chart-line forecast" points="' + line(forecastLinePoints) + '"></polyline>' : "";
+      const dots = coords.map(point => '<circle class="profile-chart-dot' + (point.forecast ? " forecast" : "") + '" cx="' + point.x + '" cy="' + point.y + '" r="4"><title>' + escapeHtml(point.label + ": " + formatValue(point.value)) + '</title></circle>').join("");
+      const divider = forecastCoords.length ? '<line class="profile-forecast-divider" x1="' + forecastCoords[0].x + '" y1="' + top + '" x2="' + forecastCoords[0].x + '" y2="' + (top + plotHeight) + '"></line><text class="profile-forecast-caption" x="' + (forecastCoords[0].x + 6) + '" y="' + (top + 10) + '">Forecast</text>' : "";
+      const latestActual = actualPoints.length ? actualPoints[actualPoints.length - 1] : null;
+      const finalForecast = forecastPoints.length ? forecastPoints[forecastPoints.length - 1] : null;
+      const summary = '<div class="profile-chart-summary">' + (latestActual ? '<span>Latest actual: ' + escapeHtml(formatValue(latestActual.value)) + '</span>' : "") + (finalForecast ? '<span class="forecast">Month 2: ' + escapeHtml(formatValue(finalForecast.value)) + '</span>' : "") + '</div>';
+      return '<article class="profile-chart-card' + (primary ? " primary" : "") + '"><h4>' + escapeHtml(title) + '</h4><p>' + escapeHtml(description) + '</p>' + summary + '<svg class="profile-chart-svg" viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="' + escapeHtml(title + " historical trend and two-month forecast") + '">' + grid + divider + actualLine + forecastLine + dots + labels + '</svg></article>';
+    }
     function renderProductProfile(code) {
       const item = stockData.find(row => row.code === code);
       if (!item) {
@@ -1003,6 +1119,7 @@
       }
       const selected = reportFor(item);
       const selectedMos = mosFor(item);
+      const forecast = profileForecastFor(item);
       const historyRows = reportDates.map((date, index) => {
         const report = reportFor(item, date.key);
         const mos = mosFor(item, date.key);
@@ -1016,9 +1133,17 @@
         }
         return '<tr><td>' + date.label + '</td><td><span class="presence ' + (report.present ? "present" : "absent") + '">' + (report.present ? "Listed" : "Not listed") + '</span></td><td class="num">' + (report.present ? formatValue(report.soh) : "—") + '</td><td class="num">' + (report.present ? formatValue(report.ami) : "—") + '</td><td>' + (report.present ? '<span class="mos-pill mos-' + stockLevel(item, date.key) + '">' + (mos === null ? "TBD" : formatValue(mos)) + '</span>' : "—") + '</td><td>' + escapeHtml(change) + '</td><td>' + escapeHtml(report.comment || "—") + '</td></tr>';
       }).join("");
+      const modelName = String(forecast.method || "historical trend").replaceAll("_", " ");
+      const forecastNote = forecast.unavailableReason
+        ? '<div class="profile-forecast-note warning"><strong>Forecast unavailable.</strong> ' + escapeHtml(forecast.unavailableReason) + '</div>'
+        : '<div class="profile-forecast-note"><strong>Planning forecast.</strong> Projected SOH subtracts forecast monthly demand from the latest reported balance. It assumes no receipts, transfers, expiries or adjustments during the next two months.</div>';
+      const charts = profileChart("Stock on hand (SOH)", "Historical reported balances with projected month-end stock.", forecast.sohHistory, forecast.projections, "soh", true)
+        + profileChart("Average monthly issue (AMI)", "Historical demand signal and the modelled monthly demand.", forecast.amiHistory, forecast.projections, "ami", false)
+        + profileChart("Months of stock (MOS)", "Historical cover and projected cover after forecast consumption.", forecast.mosHistory, forecast.projections, "mos", false);
       document.getElementById("profileContent").innerHTML =
         '<section class="profile-head"><div><span class="profile-code">' + escapeHtml(item.code) + '</span><h2>' + escapeHtml(item.name) + '</h2><p><span class="programme-tag">' + escapeHtml(item.programme) + '</span> · ' + escapeHtml(item.classification) + '</p></div><div class="profile-current"><span>Status on ' + escapeHtml(reportDates.find(date => date.key === state.snapshot)?.label || state.snapshot) + '</span>' + (selected.present ? '<span class="mos-pill mos-' + stockLevel(item) + '">' + (selectedMos === null ? "TBD" : formatValue(selectedMos) + " MOS") + '</span>' : '<span class="presence absent">Not listed</span>') + '</div></section>' +
         '<div class="profile-grid"><div class="profile-stat"><span>Selected report</span><strong>' + escapeHtml(reportDates.find(date => date.key === state.snapshot)?.label || state.snapshot) + '</strong></div><div class="profile-stat"><span>Stock on hand</span><strong>' + (selected.present ? formatValue(selected.soh) : "Not listed") + '</strong></div><div class="profile-stat"><span>Average monthly issue</span><strong>' + (selected.present ? formatValue(selected.ami) : "Not listed") + '</strong></div><div class="profile-stat"><span>Reports containing item</span><strong>' + reportDates.filter(date => reportFor(item, date.key).present).length + ' of ' + reportDates.length + '</strong></div></div>' +
+        '<section class="profile-forecast-section"><div class="profile-forecast-head"><div><h3>Stock trend and two-month forecast</h3><p>Solid green lines are reported values. Dashed amber lines are forecasts based on the commodity’s available history through the selected report.</p></div><span class="profile-model-badge">Model: ' + escapeHtml(modelName) + '</span></div>' + forecastNote + '<div class="profile-chart-grid">' + charts + '</div></section>' +
         '<section class="history-shell"><h3>Biweekly stock history</h3><table><thead><tr><th>Report date</th><th>Status</th><th class="num">SOH</th><th class="num">AMI</th><th>MOS</th><th>Change</th><th>Report comment</th></tr></thead><tbody>' + historyRows + '</tbody></table></section>';
     }
     function renderOverviewPressure() {
