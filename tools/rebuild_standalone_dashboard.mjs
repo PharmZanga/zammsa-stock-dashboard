@@ -9,6 +9,11 @@ const latestRows = stockHistory.filter((row) => row.reportDate === latestReport.
 const latestWeeklyDate = [...new Set(weeklyAvailability.reports.map((report) => report.date))]
   .sort()
   .at(-1);
+const latestWeeklyReports = weeklyAvailability.reports.filter((report) => report.date === latestWeeklyDate);
+const latestWeeklyLabel = latestWeeklyReports[0]?.label || latestWeeklyDate;
+const latestEmmsAvailability = latestWeeklyReports.find((report) => report.programme === "EMMS")?.availability;
+const latestLabAvailability = latestWeeklyReports.find((report) => report.programme === "LAB")?.availability;
+const percent = (value) => Number.isFinite(value) ? `${(value * 100).toFixed(1)}%` : "Not reported";
 
 const programmeByPrefix = {
   ARV: "National ART Programme",
@@ -127,9 +132,31 @@ html = replaceRequired(
   `    const analyticsReport = ${JSON.stringify(analyticsReport).replaceAll("</", "<\\/")};\n    const state =`,
   "embedded analytics report",
 );
-html = replaceRequired(html, /Latest central report: [^<]+/, `Latest central report: ${latestReport.label}`, "sidebar date");
-html = replaceRequired(html, /<span class="freshness">Updated [^<]+<\/span>/, `<span class="freshness">Updated 22 July 2026</span>`, "freshness date");
-html = replaceRequired(html, /Latest report<br><strong>[^<]+<\/strong>/, `Latest report<br><strong>${latestReport.label}</strong>`, "overview date");
+html = replaceRequired(
+  html,
+  /Central stock report: [^<]+<br>Weekly availability: [^<]+/,
+  `Central stock report: ${latestReport.label}<br>Weekly availability: ${latestWeeklyLabel}`,
+  "sidebar dates",
+);
+html = replaceRequired(
+  html,
+  /<span class="freshness">Weekly data through [^<]+<\/span>/,
+  `<span class="freshness">Weekly data through ${latestWeeklyLabel}</span>`,
+  "freshness date",
+);
+html = replaceRequired(html, /Central stock report<br><strong>[^<]+<\/strong>/, `Central stock report<br><strong>${latestReport.label}</strong>`, "overview date");
+html = replaceRequired(
+  html,
+  /<strong>Central stock snapshot · [^<]+<\/strong><span>Commodity SOH, AMI, MOS, stock trends and predictive forecasts<\/span>/,
+  `<strong>Central stock snapshot · ${latestReport.label}</strong><span>Commodity SOH, AMI, MOS, stock trends and predictive forecasts</span>`,
+  "central coverage date",
+);
+html = replaceRequired(
+  html,
+  /<strong>Weekly availability · [^<]+<\/strong><span>EMMS [^·]+ · Laboratory [^<]+<\/span>/,
+  `<strong>Weekly availability · ${latestWeeklyLabel}</strong><span>EMMS ${percent(latestEmmsAvailability)} · Laboratory ${percent(latestLabAvailability)}</span>`,
+  "weekly coverage date",
+);
 html = replaceRequired(html, /<strong>\d+<\/strong><small>Latest central report<\/small>/, `<strong>${latestRows.length}</strong><small>Latest central report</small>`, "row metric");
 html = replaceRequired(html, /<strong>\d+<\/strong><small>MOS at or below 0\.1<\/small>/, `<strong>${zeroOrPointOne}</strong><small>MOS at or below 0.1</small>`, "stockout metric");
 html = replaceRequired(html, /<strong>\d+<\/strong><small>More than 0\.1 and below 1 MOS<\/small>/, `<strong>${near}</strong><small>More than 0.1 and below 1 MOS</small>`, "near-critical metric");
