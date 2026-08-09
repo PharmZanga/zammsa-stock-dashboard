@@ -3459,113 +3459,733 @@ export const weeklyAvailability = {
           0.17
         ]
       ]
+    },
+    {
+      "date": "2026-07-24",
+      "label": "24 July 2026",
+      "programme": "EMMS",
+      "available": 219,
+      "total": 477,
+      "unavailable": 258,
+      "availability": 0.459119,
+      "categories": [
+        [
+          "MEDICINES USED IN DIARRHOEA",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "NUTRITIONAL PRODUCTS",
+          5,
+          5,
+          1.0
+        ],
+        [
+          "ANTIMALARIAL",
+          6,
+          7,
+          0.86
+        ],
+        [
+          "GASTROINTESTINAL MEDICINES",
+          7,
+          9,
+          0.78
+        ],
+        [
+          "RENAL",
+          41,
+          53,
+          0.77
+        ],
+        [
+          "MEDICINES AFFECTING THE BLOOD",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES",
+          15,
+          24,
+          0.63
+        ],
+        [
+          "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS",
+          10,
+          16,
+          0.63
+        ],
+        [
+          "MEDICINES ACTING ON THE RESPIRATORY TRACT",
+          3,
+          5,
+          0.6
+        ],
+        [
+          "MEDICINES FOR PAIN AND PALLIATIVE CARE",
+          7,
+          12,
+          0.58
+        ],
+        [
+          "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "DENTAL",
+          5,
+          9,
+          0.56
+        ],
+        [
+          "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS",
+          6,
+          11,
+          0.55
+        ],
+        [
+          "DIURETICS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "VITAMINS AND MINERALS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE",
+          9,
+          18,
+          0.5
+        ],
+        [
+          "CONDOMS",
+          1,
+          2,
+          0.5
+        ],
+        [
+          "ANTISEPTICS AND DISINFECTANTS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "CARDIOVASCULAR MEDICINES",
+          10,
+          20,
+          0.5
+        ],
+        [
+          "IV CANNULAE & GIVING SETS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE",
+          3,
+          8,
+          0.4
+        ],
+        [
+          "ANTIDOTES AND OTHER SUBSTANCES USED IN POISONINGS",
+          2,
+          5,
+          0.4
+        ],
+        [
+          "SYRINGES AND NEEDLES",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "ANTIRETROVIRAL THERAPY MEDICINES",
+          6,
+          16,
+          0.38
+        ],
+        [
+          "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES",
+          4,
+          8,
+          0.38
+        ],
+        [
+          "MEDICINES FOR DISEASES OF JOINTS & BONES",
+          1,
+          3,
+          0.33
+        ],
+        [
+          "EPIDEMIC SUPPLIES",
+          9,
+          27,
+          0.33
+        ],
+        [
+          "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
+          2,
+          6,
+          0.33
+        ],
+        [
+          "CONSUMABLES",
+          9,
+          28,
+          0.32
+        ],
+        [
+          "GENERAL MED-SURG",
+          4,
+          13,
+          0.31
+        ],
+        [
+          "ANTIINFECTIVE MEDICINES",
+          10,
+          35,
+          0.29
+        ],
+        [
+          "DERMATOLOGICAL/TOPICAL MEDICINES",
+          2,
+          7,
+          0.29
+        ],
+        [
+          "IMAGING",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "ANTINEOPLASTICS AND IMMUNOMODULATORS",
+          6,
+          24,
+          0.25
+        ],
+        [
+          "COTTON WOOL, DRESSING, SWABS & BANDAGES",
+          1,
+          9,
+          0.11
+        ],
+        [
+          "SUTURES",
+          2,
+          20,
+          0.1
+        ],
+        [
+          "GLOVES",
+          0,
+          4,
+          0.0
+        ],
+        [
+          "VACCINES",
+          0,
+          2,
+          0.0
+        ]
+      ]
+    },
+    {
+      "date": "2026-07-31",
+      "label": "31 July 2026",
+      "programme": "EMMS",
+      "available": 216,
+      "total": 477,
+      "unavailable": 261,
+      "availability": 0.45283,
+      "categories": [
+        [
+          "MEDICINES USED IN DIARRHOEA",
+          2,
+          2,
+          1.0
+        ],
+        [
+          "NUTRITIONAL PRODUCTS",
+          5,
+          5,
+          1.0
+        ],
+        [
+          "ANTIMALARIAL",
+          6,
+          7,
+          0.86
+        ],
+        [
+          "GASTROINTESTINAL MEDICINES",
+          7,
+          9,
+          0.78
+        ],
+        [
+          "RENAL",
+          41,
+          53,
+          0.77
+        ],
+        [
+          "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS",
+          5,
+          7,
+          0.71
+        ],
+        [
+          "MEDICINES AFFECTING THE BLOOD",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "ANTITUBERCULOSIS AND ANTILEPROSY MEDICINES",
+          15,
+          24,
+          0.63
+        ],
+        [
+          "MEDICINES ACTING ON THE RESPIRATORY TRACT",
+          3,
+          5,
+          0.6
+        ],
+        [
+          "MEDICINES FOR PAIN AND PALLIATIVE CARE",
+          7,
+          12,
+          0.58
+        ],
+        [
+          "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "DENTAL",
+          5,
+          9,
+          0.56
+        ],
+        [
+          "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS",
+          6,
+          11,
+          0.55
+        ],
+        [
+          "DIURETICS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE",
+          9,
+          18,
+          0.5
+        ],
+        [
+          "CONDOMS",
+          1,
+          2,
+          0.5
+        ],
+        [
+          "ANTISEPTICS AND DISINFECTANTS",
+          3,
+          6,
+          0.5
+        ],
+        [
+          "CARDIOVASCULAR MEDICINES",
+          10,
+          20,
+          0.5
+        ],
+        [
+          "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS",
+          7,
+          16,
+          0.44
+        ],
+        [
+          "IV CANNULAE & GIVING SETS",
+          3,
+          7,
+          0.43
+        ],
+        [
+          "MEDICINES FOR DIABETES/ACTING ON ENDOCRINE",
+          3,
+          8,
+          0.4
+        ],
+        [
+          "ANTIDOTES AND OTHER SUBSTANCES USED IN POISONINGS",
+          2,
+          5,
+          0.4
+        ],
+        [
+          "SYRINGES AND NEEDLES",
+          3,
+          8,
+          0.38
+        ],
+        [
+          "ANTIRETROVIRAL THERAPY MEDICINES",
+          6,
+          16,
+          0.38
+        ],
+        [
+          "ANAESTHETICS, PREOPERATIVE MEDICINES AND MEDICAL GASES",
+          4,
+          8,
+          0.38
+        ],
+        [
+          "VITAMINS AND MINERALS",
+          2,
+          6,
+          0.33
+        ],
+        [
+          "MEDICINES FOR DISEASES OF JOINTS & BONES",
+          1,
+          3,
+          0.33
+        ],
+        [
+          "EPIDEMIC SUPPLIES",
+          9,
+          27,
+          0.33
+        ],
+        [
+          "MUSCLE RELAXANTS (PERIPHERALLY-ACTING) AND CHOLINESTERASE INHIBITORS",
+          2,
+          6,
+          0.33
+        ],
+        [
+          "CONSUMABLES",
+          9,
+          28,
+          0.32
+        ],
+        [
+          "GENERAL MED-SURG",
+          4,
+          13,
+          0.31
+        ],
+        [
+          "ANTIINFECTIVE MEDICINES",
+          10,
+          35,
+          0.29
+        ],
+        [
+          "DERMATOLOGICAL/TOPICAL MEDICINES",
+          2,
+          7,
+          0.29
+        ],
+        [
+          "IMAGING",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "ANTIALLERGICS AND MEDICINES USED IN ANAPHYLAXIS",
+          2,
+          8,
+          0.25
+        ],
+        [
+          "ANTINEOPLASTICS AND IMMUNOMODULATORS",
+          6,
+          24,
+          0.25
+        ],
+        [
+          "COTTON WOOL, DRESSING, SWABS & BANDAGES",
+          1,
+          9,
+          0.11
+        ],
+        [
+          "SUTURES",
+          2,
+          20,
+          0.1
+        ],
+        [
+          "GLOVES",
+          0,
+          4,
+          0.0
+        ],
+        [
+          "VACCINES",
+          0,
+          2,
+          0.0
+        ]
+      ]
+    },
+    {
+      "date": "2026-07-24",
+      "label": "24 July 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.620714,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.89
+        ],
+        [
+          "HIV Test Kits",
+          3,
+          4,
+          0.75
+        ],
+        [
+          "Biochemistry",
+          71,
+          100,
+          0.71
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Specimen Containers",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          26,
+          45,
+          0.58
+        ],
+        [
+          "RDTs",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          1,
+          6,
+          0.17
+        ]
+      ]
+    },
+    {
+      "date": "2026-07-31",
+      "label": "31 July 2026",
+      "programme": "LAB",
+      "available": null,
+      "total": null,
+      "unavailable": null,
+      "availability": 0.605714,
+      "categories": [
+        [
+          "Infection Prevention Products",
+          1,
+          1,
+          1.0
+        ],
+        [
+          "Gene Xpert",
+          null,
+          null,
+          1.0
+        ],
+        [
+          "HIV Test Kits",
+          3,
+          4,
+          0.75
+        ],
+        [
+          "Biochemistry",
+          71,
+          100,
+          0.71
+        ],
+        [
+          "Haematology & Blood Transfusion",
+          null,
+          null,
+          0.68
+        ],
+        [
+          "Microscope Slides & Coverslips",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "CD4 Testing",
+          2,
+          3,
+          0.67
+        ],
+        [
+          "Specimen Containers",
+          4,
+          6,
+          0.67
+        ],
+        [
+          "Microbiology & Parasitology",
+          26,
+          45,
+          0.58
+        ],
+        [
+          "RDTs",
+          4,
+          7,
+          0.57
+        ],
+        [
+          "General Labs",
+          6,
+          15,
+          0.4
+        ],
+        [
+          "Histopthology & Cytology",
+          4,
+          11,
+          0.36
+        ],
+        [
+          "Acids & Alcochols",
+          1,
+          4,
+          0.25
+        ],
+        [
+          "Pipettes & Tips",
+          1,
+          6,
+          0.17
+        ]
+      ]
     }
   ],
   "changes": {
-    "from": "10 July 2026",
-    "to": "17 July 2026",
+    "from": "24 July 2026",
+    "to": "31 July 2026",
     "newlyUnavailable": [
       {
-        "item": "Carbamazepine",
-        "category": "ANTICONVULSANTS/ANTIEPILEPTICS/ANXIOLYTICS"
-      },
-      {
-        "item": "Ciprofloxacin inj",
+        "item": "Ceftriaxone",
         "category": "ANTIINFECTIVE MEDICINES"
       },
       {
-        "item": "Levonogestrel 0.03mg tablet(3)",
-        "category": "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE"
+        "item": "Disulfiram",
+        "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
       },
       {
-        "item": "Metronidazole susp",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Multivitamin",
+        "item": "Hydroxocobalamin Inj",
         "category": "VITAMINS AND MINERALS"
       },
       {
-        "item": "Sodium Chloride 0.9%",
-        "category": "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES"
+        "item": "Imipramine",
+        "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
       },
       {
-        "item": "Syringes 50ml",
-        "category": "SYRINGES AND NEEDLES"
+        "item": "Quetiapine",
+        "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
       }
     ],
     "recovered": [
       {
-        "item": "Atorvastatin",
-        "category": "CARDIOVASCULAR MEDICINES"
-      },
-      {
-        "item": "Azithromycin tab/cap",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Ciprofloxacin tab",
-        "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Cloxacillin Caps",
-        "category": "ANTIINFECTIVE MEDICINES"
+        "item": "Amphotericin B, 50mg Injection Powder",
+        "category": "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS"
       },
       {
         "item": "Cloxacillin Susp",
         "category": "ANTIINFECTIVE MEDICINES"
-      },
-      {
-        "item": "Diclofenac Inj",
-        "category": "MEDICINES FOR PAIN AND PALLIATIVE CARE"
-      },
-      {
-        "item": "Examination gloves latex powder free Large",
-        "category": "GLOVES"
-      },
-      {
-        "item": "Frusemide Inj",
-        "category": "DIURETICS"
-      },
-      {
-        "item": "Frusemide tab",
-        "category": "DIURETICS"
-      },
-      {
-        "item": "Lactulose",
-        "category": "GASTROINTESTINAL MEDICINES"
-      },
-      {
-        "item": "Levonogestrel 0.75mg (Emergency Pill)(2)",
-        "category": "MEDICINES FOR REPRODUCTIVE HEALTH AND PERINATAL CARE"
-      },
-      {
-        "item": "Mannitol",
-        "category": "DIURETICS"
-      },
-      {
-        "item": "Methotrexate inj",
-        "category": "ANTINEOPLASTICS AND IMMUNOMODULATORS"
-      },
-      {
-        "item": "Metochlopromide inj",
-        "category": "GASTROINTESTINAL MEDICINES"
-      },
-      {
-        "item": "Naltrexone",
-        "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
-      },
-      {
-        "item": "Ondansentron inj",
-        "category": "GASTROINTESTINAL MEDICINES"
-      },
-      {
-        "item": "Ringers Lactate",
-        "category": "SOLUTIONS CORRECTING WATER, ELECTROLYTE AND ACID\u2013BASE DISTURBANCES"
-      },
-      {
-        "item": "Tetracycline eye ointment",
-        "category": "CONSUMABLES"
       }
     ]
   },
@@ -4158,6 +4778,42 @@ export const weeklyAvailability = {
             "category": "CONSUMABLES"
           }
         ]
+      },
+      {
+        "from": "24 July 2026",
+        "to": "31 July 2026",
+        "newlyUnavailable": [
+          {
+            "item": "Ceftriaxone",
+            "category": "ANTIINFECTIVE MEDICINES"
+          },
+          {
+            "item": "Disulfiram",
+            "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
+          },
+          {
+            "item": "Hydroxocobalamin Inj",
+            "category": "VITAMINS AND MINERALS"
+          },
+          {
+            "item": "Imipramine",
+            "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
+          },
+          {
+            "item": "Quetiapine",
+            "category": "MEDICINES FOR MENTAL AND BEHAVIOURAL DISORDERS"
+          }
+        ],
+        "recovered": [
+          {
+            "item": "Amphotericin B, 50mg Injection Powder",
+            "category": "MEDICINES FOR TREATMENT OF OPPORTUNISTIC INFECTIONS"
+          },
+          {
+            "item": "Cloxacillin Susp",
+            "category": "ANTIINFECTIVE MEDICINES"
+          }
+        ]
       }
     ],
     "LAB": [
@@ -4504,6 +5160,29 @@ export const weeklyAvailability = {
           {
             "item": "Safety Lancet 28Gx1.8mm",
             "category": "General Labs"
+          }
+        ],
+        "recovered": []
+      },
+      {
+        "from": "24 July 2026",
+        "to": "31 July 2026",
+        "newlyUnavailable": [
+          {
+            "item": "ABX mini clean 1L",
+            "category": "Haematology"
+          },
+          {
+            "item": "ABX minidil LMG 20L",
+            "category": "Haematology"
+          },
+          {
+            "item": "Sysmex 1000i/1800i/2000i: Cell Clean, 50ml",
+            "category": "Haematology"
+          },
+          {
+            "item": "Yumizen: ABX Minoclair 0.5L",
+            "category": "Haematology"
           }
         ],
         "recovered": []
