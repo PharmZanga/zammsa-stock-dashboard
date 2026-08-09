@@ -6,14 +6,14 @@ import openpyxl
 
 
 NEW_WORKBOOK = Path(
-    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\july\EMMS and LAB Stock Position.xlsx"
+    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\july\Stock position 24-31 july.xlsx"
 )
 
 NEW_SHEETS = [
-    ("EMMS JULY10", "EMMS", "2026-07-10", "10 July 2026"),
-    ("EMMS JULY17", "EMMS", "2026-07-17", "17 July 2026"),
-    ("LAB JULY 10", "LAB", "2026-07-10", "10 July 2026"),
-    ("LAB JULY17", "LAB", "2026-07-17", "17 July 2026"),
+    ("EMMS 24 JULY", "EMMS", "2026-07-24", "24 July 2026"),
+    ("31 July", "EMMS", "2026-07-31", "31 July 2026"),
+    ("LAB- July 24", "LAB", "2026-07-24", "24 July 2026"),
+    ("LAB July31", "LAB", "2026-07-31", "31 July 2026"),
 ]
 
 OUTPUT_PATH = Path("src/weeklyAvailability.js")
@@ -128,6 +128,8 @@ def extract_items(ws, summary_name_col, category_names):
                     }
                 )
                 break
+            if not has_item_marker and is_availability(value):
+                current_category = name
     return items
 
 
@@ -214,21 +216,36 @@ def main():
     workbook = openpyxl.load_workbook(NEW_WORKBOOK, data_only=True, read_only=True)
     reports = [extract_sheet(workbook[sheet_name], programme, date, label) for sheet_name, programme, date, label in NEW_SHEETS]
 
-    existing_keys = {(report["programme"], report["date"]) for report in output["reports"]}
-    public_new_reports = [
+    public_reports = [
         {key: value for key, value in report.items() if key != "_items"}
         for report in reports
-        if (report["programme"], report["date"]) not in existing_keys
     ]
-    output["reports"].extend(public_new_reports)
+    report_positions = {
+        (report["programme"], report["date"]): index
+        for index, report in enumerate(output["reports"])
+    }
+    for report in public_reports:
+        key = (report["programme"], report["date"])
+        if key in report_positions:
+            output["reports"][report_positions[key]] = report
+        else:
+            output["reports"].append(report)
 
     changes_by_programme = {
         programme: calculate_changes(reports, programme) for programme in ("EMMS", "LAB")
     }
     for programme, changes in changes_by_programme.items():
         existing_changes = output["changesByProgramme"].setdefault(programme, [])
-        existing_change_keys = {(change["from"], change["to"]) for change in existing_changes}
-        existing_changes.extend(change for change in changes if (change["from"], change["to"]) not in existing_change_keys)
+        change_positions = {
+            (change["from"], change["to"]): index
+            for index, change in enumerate(existing_changes)
+        }
+        for change in changes:
+            key = (change["from"], change["to"])
+            if key in change_positions:
+                existing_changes[change_positions[key]] = change
+            else:
+                existing_changes.append(change)
     output["changes"] = output["changesByProgramme"]["EMMS"][-1]
 
     OUTPUT_PATH.write_text(
