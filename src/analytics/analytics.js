@@ -1,5 +1,5 @@
 import { mergeAnalyticsConfig } from "./config.js";
-import { backtestForecast, holtWintersForecaster, reorderRecommendation } from "./forecasting.js";
+import { backtestForecast, holtWintersForecaster, projectInventoryBalance, reorderRecommendation } from "./forecasting.js";
 
 const round = (value, digits = 1) => value === null || value === undefined || !Number.isFinite(value)
   ? null
@@ -137,7 +137,8 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
     const reorderPoint = reorder?.reorderPoint ?? null;
     const recommendedOrderQuantity = reorder?.recommendedOrderQty ?? null;
     const expectedStockoutDate = Number.isFinite(daysOfSupply) ? addDays(asOfDate, Math.max(0, Math.floor(daysOfSupply))) : null;
-    const stockoutObservations = history.filter((row) => (Number.isFinite(row.stockOnHand) && row.stockOnHand <= 0) || (Number.isFinite(row.mos) && row.mos <= 0)).length;
+    const balanceProjection = projectInventoryBalance(history, forecast.forecast, { daysPerMonth: config.daysPerMonth, horizon: config.forecastHorizonMonths });
+    const stockoutObservations = history.filter((row) => Number.isFinite(row.stockOnHand) && row.stockOnHand <= 0).length;
     const averageStock = average(history.map((row) => row.stockOnHand));
     const annualDemand = Number.isFinite(monthlyDemand) ? monthlyDemand * 12 : null;
     const turnover = annualDemand !== null && averageStock > 0 ? annualDemand / averageStock : null;
@@ -155,6 +156,8 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
     if (!Number.isFinite(latest.mos) && Number.isFinite(calculatedMos)) dataQualityFlags.push("estimated_mos");
     if (Number.isFinite(latest.mos) && Number.isFinite(calculatedMos) && Math.abs(latest.mos - calculatedMos) > 0.15) dataQualityFlags.push("mos_reconciliation");
     if (forecast.status !== "ok") dataQualityFlags.push(forecast.status);
+    const repeatedTail = history.slice(-3);
+    if (repeatedTail.length === 3 && repeatedTail.every((row) => row.stockOnHand === repeatedTail[0].stockOnHand && row.ami === repeatedTail[0].ami)) dataQualityFlags.push("repeated_report_values");
     const status = classifyMos(mos, config.policy);
     const action = status === "understocked"
       ? "Expedite replenishment and verify pipeline or redistribution options."
@@ -186,7 +189,9 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       },
       forecastRange: forecast.points[0] ? { lower: round(forecast.points[0].lower, 2), upper: round(forecast.points[0].upper, 2) } : null,
       forecast,
+      balanceProjection,
       expectedStockoutDate,
+      expectedStockoutBasis: "no_receipts",
       safetyStock: round(safetyStock, 0),
       reorderPoint: round(reorderPoint, 0),
       recommendedOrderQuantity: round(recommendedOrderQuantity, 0),
@@ -213,7 +218,7 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
   items.sort((a, b) => b.priorityScore - a.priorityScore || (a.mos ?? 99999) - (b.mos ?? 99999) || a.sku.localeCompare(b.sku));
   const summary = portfolioSummary(items, asOfDate);
   const demandProxyCount = items.filter((item) => item.demandSource === "ami_proxy").length;
-  const humanSummary = `${summary.understocked} Central commodities are below 2 MOS, ${summary.overstocked} are above 4 MOS, and ${summary.excess} are above 12 MOS. ${summary.stockouts90Days} commodities are projected to run out within 90 days where a demand signal is available. Forecasts currently use AMI as a proxy for ${demandProxyCount} commodities; ${summary.demandUnavailable} commodities still lack enough demand data.`;
+  const humanSummary = `${summary.understocked} Central commodities are below 2 MOS, ${summary.overstocked} are above 4 MOS, and ${summary.excess} are above 12 MOS. ${summary.stockouts90Days} commodities would deplete within 90 days only if no stock arrives. Forecasts currently use AMI as a proxy for ${demandProxyCount} commodities; ${summary.demandUnavailable} commodities still lack enough demand data.`;
   return {
     generatedAt: new Date().toISOString(),
     asOfDate,
@@ -228,7 +233,7 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       seasonalPeriod: config.forecastSeasonalPeriod,
       reorderSafetyFactor: config.reorderSafetyFactor,
       annualCarryingCostRate: config.annualCarryingCostRate,
-      note: "AMI-based forecasts are planning proxies and should be replaced by transaction-level consumption when available.",
+      note: "Demand forecasts use issue movements when available and AMI otherwise. Balance projections infer replenishment from observed SOH changes; no-receipts depletion dates are stress scenarios, not unconditional stockout predictions.",
     },
     summary,
     humanSummary,

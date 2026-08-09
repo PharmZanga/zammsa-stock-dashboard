@@ -2,6 +2,13 @@ function mean(values) {
   return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
 }
 
+function median(values) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((left, right) => left - right);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
 function cleanValues(series) {
   return series.map((point) => Number(point?.value ?? point)).filter((value) => Number.isFinite(value) && value >= 0);
 }
@@ -119,6 +126,52 @@ export function reorderRecommendation(forecastResult, currentSoh, leadTimePeriod
     recommendedOrderQty: Math.max(0, reorderPoint - Number(currentSoh || 0)),
     demandDuringLeadTime,
     currentSoh: Number(currentSoh || 0),
+  };
+}
+
+export function projectInventoryBalance(history, demandForecast, { daysPerMonth = 30.4375, horizon = 2 } = {}) {
+  const observations = history
+    .map((row) => ({
+      date: String(row.date || ""),
+      stockOnHand: Number(row.stockOnHand ?? row.soh),
+      demand: Number(row.demand ?? row.ami),
+    }))
+    .filter((row) => /^\d{4}-\d{2}-\d{2}$/.test(row.date) && Number.isFinite(row.stockOnHand) && row.stockOnHand >= 0 && Number.isFinite(row.demand) && row.demand >= 0)
+    .sort((left, right) => left.date.localeCompare(right.date));
+  const projectedDemand = Array.from({ length: horizon }, (_, index) => {
+    const value = Number(demandForecast[index] ?? demandForecast.at(-1));
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  });
+  if (observations.length < 2 || projectedDemand.some((value) => value === null)) {
+    return { status: "insufficient_history", method: "balance_aware_inferred_receipts", observations: observations.length, inferredMonthlyReceipts: null, points: [] };
+  }
+  const receiptRates = [];
+  for (let index = 1; index < observations.length; index += 1) {
+    const previous = observations[index - 1];
+    const current = observations[index];
+    const elapsedDays = (new Date(`${current.date}T00:00:00Z`) - new Date(`${previous.date}T00:00:00Z`)) / 86400000;
+    const elapsedMonths = elapsedDays / daysPerMonth;
+    if (!(elapsedMonths > 0)) continue;
+    const estimatedIssues = ((previous.demand + current.demand) / 2) * elapsedMonths;
+    const inferredReceipts = Math.max(0, current.stockOnHand - previous.stockOnHand + estimatedIssues);
+    receiptRates.push(inferredReceipts / elapsedMonths);
+  }
+  if (!receiptRates.length) {
+    return { status: "insufficient_history", method: "balance_aware_inferred_receipts", observations: observations.length, inferredMonthlyReceipts: null, points: [] };
+  }
+  const recentRates = receiptRates.slice(-6);
+  const inferredMonthlyReceipts = median(recentRates);
+  let stockOnHand = observations.at(-1).stockOnHand;
+  const points = projectedDemand.map((demand, index) => {
+    stockOnHand = Math.max(0, stockOnHand + inferredMonthlyReceipts - demand);
+    return { period: index + 1, stockOnHand, demand, inferredReceipts: inferredMonthlyReceipts, mos: demand > 0 ? stockOnHand / demand : null };
+  });
+  return {
+    status: observations.length >= 4 ? "estimated" : "limited_history",
+    method: "balance_aware_inferred_receipts",
+    observations: observations.length,
+    inferredMonthlyReceipts,
+    points,
   };
 }
 

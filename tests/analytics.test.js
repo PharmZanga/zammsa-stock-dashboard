@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { buildAnalyticsReport, classifyMos } from "../src/analytics/analytics.js";
 import { DEFAULT_POLICY } from "../src/analytics/config.js";
 import { ingestSnapshotsCsv, normalizeDate } from "../src/analytics/ingestion.js";
-import { fitForecast, reorderRecommendation } from "../src/analytics/forecasting.js";
+import { fitForecast, projectInventoryBalance, reorderRecommendation } from "../src/analytics/forecasting.js";
 
 test("CSV ingestion handles quoted commas, missing values, dates, and duplicates", () => {
   const csv = `SKU,Description,Snapshot Date,Location,Stock on Hand,Average Monthly Issue,Months of Stock\nEM001,"Medicine, 5mg",15/07/2026,Central,"1,200",600,2\nEM001,"Medicine, 5mg",15/07/2026,Central,900,,1.5\nEM002,Other,2026-07-15,Central,-,100,TBD`;
@@ -57,6 +57,19 @@ test("optimized Holt-Winters forecast returns diagnostics and widening 95% inter
   assert.ok(reorder.recommendedOrderQty > 0);
 });
 
+test("balance-aware projection does not invent a stockout for a stable replenished balance", () => {
+  const history = [
+    { date: "2026-03-31", stockOnHand: 55, ami: 1250 },
+    { date: "2026-04-15", stockOnHand: 55, ami: 1250 },
+    { date: "2026-05-15", stockOnHand: 55, ami: 1250 },
+    { date: "2026-05-31", stockOnHand: 55, ami: 1250 },
+  ];
+  const result = projectInventoryBalance(history, [1250, 1250], { horizon: 2 });
+  assert.equal(result.status, "estimated");
+  assert.deepEqual(result.points.map((point) => Math.round(point.stockOnHand)), [55, 55]);
+  assert.ok(Math.abs(result.inferredMonthlyReceipts - 1250) < 0.001);
+});
+
 test("management analytics exposes stream, programme and historical date controls", () => {
   const dashboard = readFileSync("index.html", "utf8");
   assert.match(dashboard, /id="analyticsStream"/);
@@ -105,16 +118,18 @@ test("predictive landing page clearly exposes the active forecast engine", () =>
   assert.match(html, /data-open-top-forecast/);
 });
 
-test("commodity profile charts history and an honest two-month forecast", () => {
+test("commodity profile charts history and a balance-aware two-month estimate", () => {
   const dashboard = readFileSync("index.html", "utf8");
-  assert.match(dashboard, /Stock trend and two-month forecast/);
+  assert.match(dashboard, /Stock trend and two-month balance estimate/);
   assert.match(dashboard, /function profileForecastFor\(item\)/);
   assert.match(dashboard, /function profileChart\(title, description, actual, forecast, valueKey, primary\)/);
   assert.match(dashboard, /Stock on hand \(SOH\)/);
   assert.match(dashboard, /Average monthly issue \(AMI\)/);
   assert.match(dashboard, /Months of stock \(MOS\)/);
   assert.match(dashboard, /not listed in the selected report/);
-  assert.match(dashboard, /assumes no receipts, transfers, expiries or adjustments/);
+  assert.match(dashboard, /Balance-aware estimate/);
+  assert.match(dashboard, /replenishment rate inferred from changes between reported balances/);
+  assert.match(dashboard, /No-receipts depletion/);
 });
 
 test("Stock Navigator filters EMMS and LAB and the global ticker carries commodity MOS", () => {
