@@ -104,3 +104,15 @@ test("predictive landing page clearly exposes the active forecast engine", () =>
   assert.match(html, /Open highest-priority forecast/);
   assert.match(html, /data-open-top-forecast/);
 });
+
+test("commodity profile charts history and an honest two-month forecast", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /Stock trend and two-month forecast/);
+  assert.match(dashboard, /function profileForecastFor\(item\)/);
+  assert.match(dashboard, /function profileChart\(title, description, actual, forecast, valueKey, primary\)/);
+  assert.match(dashboard, /Stock on hand \(SOH\)/);
+  assert.match(dashboard, /Average monthly issue \(AMI\)/);
+  assert.match(dashboard, /Months of stock \(MOS\)/);
+  assert.match(dashboard, /not listed in the selected report/);
+  assert.match(dashboard, /assumes no receipts, transfers, expiries or adjustments/);
+});
