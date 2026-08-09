@@ -116,3 +116,18 @@ test("commodity profile charts history and an honest two-month forecast", () => 
   assert.match(dashboard, /not listed in the selected report/);
   assert.match(dashboard, /assumes no receipts, transfers, expiries or adjustments/);
 });
+
+test("Stock Navigator filters EMMS and LAB and the global ticker carries commodity MOS", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  assert.match(dashboard, /id="navigatorStream"/);
+  assert.match(dashboard, /EMMS commodities/);
+  assert.match(dashboard, /LAB commodities/);
+  assert.match(dashboard, /function navigatorStreamFor\(item\)/);
+  assert.match(dashboard, /state\.navigatorStream === "all"/);
+  assert.match(dashboard, /Low availability · /);
+  assert.match(dashboard, /Available · /);
+  assert.match(dashboard, /ticker-status/);
+  const tickerRenderer = dashboard.match(/function renderTicker\(\) \{[\s\S]*?function programmeSummary\(programme\)/)?.[0] || "";
+  assert.match(tickerRenderer, /const latestReport = reportDates\[reportDates\.length - 1\]/);
+  assert.doesNotMatch(tickerRenderer, /15 July 2026/);
+});
