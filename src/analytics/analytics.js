@@ -52,6 +52,17 @@ function addDays(dateString, days) {
   return date.toISOString().slice(0, 10);
 }
 
+function daysBetween(earlier, later) {
+  return Math.max(0, Math.floor((new Date(`${later}T00:00:00Z`) - new Date(`${earlier}T00:00:00Z`)) / 86400000));
+}
+
+function median(values) {
+  const clean = values.filter(Number.isFinite).sort((left, right) => left - right);
+  if (!clean.length) return null;
+  const middle = Math.floor(clean.length / 2);
+  return clean.length % 2 ? clean[middle] : (clean[middle - 1] + clean[middle]) / 2;
+}
+
 function monthKey(date) {
   return date.slice(0, 7);
 }
@@ -69,7 +80,7 @@ function amiDemandSeries(snapshots) {
 }
 
 function portfolioSummary(items, asOfDate) {
-  const counts = { understocked: 0, adequate: 0, overstocked: 0, excess: 0, data_gap: 0 };
+  const counts = { reported_stockout: 0, understocked: 0, adequate: 0, overstocked: 0, excess: 0, data_gap: 0 };
   items.forEach((item) => { counts[item.status] += 1; });
   const stockouts90Days = items.filter((item) => item.expectedStockoutDate && item.expectedStockoutDate <= addDays(asOfDate, 90)).length;
   const forecastableItems = items.filter((item) => Number.isFinite(item.forecastMonthlyDemand)).length;
@@ -79,6 +90,11 @@ function portfolioSummary(items, asOfDate) {
   const carryingCost = costedItems.reduce((sum, item) => sum + (item.annualCarryingCost || 0), 0);
   return {
     ...counts,
+    activeCommodities: items.length,
+    validForecasts: items.filter((item) => item.forecastStatus === "valid").length,
+    insufficientHistory: items.filter((item) => item.forecastStatus === "insufficient_data").length,
+    staleData: items.filter((item) => item.dataQualityFlags.includes("stale_data")).length,
+    missingReports: items.filter((item) => !item.selectedReportPresent).length,
     stockouts90Days,
     forecastableItems,
     demandUnavailable: items.length - forecastableItems,
@@ -90,7 +106,7 @@ function portfolioSummary(items, asOfDate) {
 }
 
 function priorityScore(item, asOfDate) {
-  let score = item.status === "understocked" ? 100 : item.status === "excess" ? 55 : item.status === "overstocked" ? 35 : 0;
+  let score = item.status === "reported_stockout" ? 180 : item.status === "understocked" ? 100 : item.status === "excess" ? 55 : item.status === "overstocked" ? 35 : item.status === "data_gap" ? 30 : 0;
   if (item.expectedStockoutDate) {
     const days = Math.ceil((new Date(`${item.expectedStockoutDate}T00:00:00Z`) - new Date(`${asOfDate}T00:00:00Z`)) / 86400000);
     if (days <= 30) score += 80;
@@ -98,33 +114,39 @@ function priorityScore(item, asOfDate) {
     else if (days <= 90) score += 25;
   }
   if (item.dataQualityFlags.length) score += 10;
+  if (item.dataQualityFlags.includes("stale_data")) score += 30;
   return score;
 }
 
-export function buildAnalyticsReport({ snapshots, movements = [], config: overrides = {}, forecaster = holtWintersForecaster }) {
+export function buildAnalyticsReport({ snapshots, movements = [], config: overrides = {}, forecaster = holtWintersForecaster, asOfDate: requestedAsOfDate = null }) {
   const config = mergeAnalyticsConfig(overrides);
-  const centralSnapshots = snapshots.filter((row) => row.location === config.location).sort((a, b) => a.date.localeCompare(b.date));
+  const availableDates = snapshots.filter((row) => row.location === config.location).map((row) => row.date).sort();
+  const asOfDate = requestedAsOfDate || availableDates.at(-1);
+  const centralSnapshots = snapshots.filter((row) => row.location === config.location && row.date <= asOfDate).sort((a, b) => a.date.localeCompare(b.date));
   if (!centralSnapshots.length) throw new Error(`No snapshots found for ${config.location}.`);
-  const asOfDate = centralSnapshots.at(-1).date;
   const grouped = new Map();
   centralSnapshots.forEach((row) => {
     if (!grouped.has(row.sku)) grouped.set(row.sku, []);
     grouped.get(row.sku).push(row);
   });
 
-  const items = [...grouped.entries()].filter(([, history]) => history.at(-1).date === asOfDate).map(([sku, history]) => {
+  const items = [...grouped.entries()].map(([sku, history]) => {
     const latest = history.at(-1);
+    const selectedReportPresent = latest.date === asOfDate;
+    const recordAgeDays = daysBetween(latest.date, asOfDate);
     const skuMovements = movements.filter((row) => row.sku === sku && row.location === config.location);
     const movementSeries = movementDemandSeries(skuMovements);
     const demandSeries = movementSeries.length ? movementSeries : amiDemandSeries(history);
     const demandSource = movementSeries.length ? "outbound_movements" : demandSeries.length ? "ami_proxy" : "unavailable";
-    const forecast = forecaster.forecast(demandSeries, {
+    const stockHistory = history.filter((row) => Number.isFinite(row.stockOnHand));
+    const forecastEligible = demandSeries.length >= 3 && stockHistory.length >= 2 && Number.isFinite(latest.stockOnHand) && latest.stockOnHand >= 0;
+    const forecast = forecaster.forecast(forecastEligible ? demandSeries : [], {
       horizon: config.forecastHorizonMonths,
       seasonalPeriod: config.forecastSeasonalPeriod,
       confidenceZ: config.confidenceZ,
     });
-    const accuracy = backtestForecast(demandSeries, forecaster, { seasonalPeriod: config.forecastSeasonalPeriod, confidenceZ: config.confidenceZ });
-    const monthlyDemand = forecast.points[0]?.value ?? latest.ami ?? null;
+    const accuracy = forecastEligible ? backtestForecast(demandSeries, forecaster, { seasonalPeriod: config.forecastSeasonalPeriod, confidenceZ: config.confidenceZ }) : { status: "insufficient_history", mae: null, wape: null, observations: 0 };
+    const monthlyDemand = forecastEligible ? (forecast.points[0]?.value ?? latest.ami ?? null) : null;
     const dailyDemand = Number.isFinite(monthlyDemand) ? monthlyDemand / config.daysPerMonth : null;
     const calculatedMos = Number.isFinite(latest.stockOnHand) && Number.isFinite(monthlyDemand) && monthlyDemand > 0 ? latest.stockOnHand / monthlyDemand : null;
     const mos = Number.isFinite(latest.mos) ? latest.mos : calculatedMos;
@@ -136,7 +158,7 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
     const safetyStock = reorder ? Math.max(0, reorder.reorderPoint - reorder.demandDuringLeadTime) : null;
     const reorderPoint = reorder?.reorderPoint ?? null;
     const recommendedOrderQuantity = reorder?.recommendedOrderQty ?? null;
-    const expectedStockoutDate = Number.isFinite(daysOfSupply) ? addDays(asOfDate, Math.max(0, Math.floor(daysOfSupply))) : null;
+    const expectedStockoutDate = Number.isFinite(daysOfSupply) ? addDays(latest.date, Math.max(0, Math.floor(daysOfSupply))) : null;
     const balanceProjection = projectInventoryBalance(history, forecast.forecast, { daysPerMonth: config.daysPerMonth, horizon: config.forecastHorizonMonths });
     const stockoutObservations = history.filter((row) => Number.isFinite(row.stockOnHand) && row.stockOnHand <= 0).length;
     const averageStock = average(history.map((row) => row.stockOnHand));
@@ -152,21 +174,31 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       : demandSeries.length >= 3 && demandSeries.slice(-3).every((point) => point.value === 0) && latest.stockOnHand > 0;
     const dataQualityFlags = [];
     if (!Number.isFinite(latest.stockOnHand)) dataQualityFlags.push("missing_stock_on_hand");
+    if (!selectedReportPresent) dataQualityFlags.push("missing_report");
+    if (recordAgeDays > 31) dataQualityFlags.push("stale_data");
+    if (Number.isFinite(latest.stockOnHand) && latest.stockOnHand < 0) dataQualityFlags.push("negative_balance");
     if (!demandSeries.length) dataQualityFlags.push("missing_demand_signal");
+    if (!forecastEligible) dataQualityFlags.push("insufficient_historical_observations");
     if (!Number.isFinite(latest.mos) && Number.isFinite(calculatedMos)) dataQualityFlags.push("estimated_mos");
     if (Number.isFinite(latest.mos) && Number.isFinite(calculatedMos) && Math.abs(latest.mos - calculatedMos) > 0.15) dataQualityFlags.push("mos_reconciliation");
     if (forecast.status !== "ok") dataQualityFlags.push(forecast.status);
+    const historicalDemandMedian = median(demandSeries.slice(0, -1).map((point) => Number(point.value)));
+    const latestDemand = demandSeries.at(-1)?.value;
+    if (Number.isFinite(historicalDemandMedian) && historicalDemandMedian > 0 && Number.isFinite(latestDemand) && (latestDemand > historicalDemandMedian * 3 || latestDemand < historicalDemandMedian / 3)) dataQualityFlags.push("unusual_consumption");
     const repeatedTail = history.slice(-3);
     if (repeatedTail.length === 3 && repeatedTail.every((row) => row.stockOnHand === repeatedTail[0].stockOnHand && row.ami === repeatedTail[0].ami)) dataQualityFlags.push("repeated_report_values");
-    const status = classifyMos(mos, config.policy);
-    const action = status === "understocked"
+    const latestStockStatus = Number.isFinite(latest.stockOnHand) && latest.stockOnHand === 0 && Number.isFinite(mos) && mos === 0 ? "reported_stockout" : classifyMos(mos, config.policy);
+    const status = selectedReportPresent ? latestStockStatus : "data_gap";
+    const action = status === "reported_stockout"
+      ? "Confirm the reported stock-out, expedite supply and review redistribution immediately."
+      : status === "understocked"
       ? "Expedite replenishment and verify pipeline or redistribution options."
       : status === "excess"
         ? "Stop or defer replenishment; review expiry exposure and redistribution."
         : status === "overstocked"
           ? "Review incoming orders and redistribute before stock becomes excess."
           : status === "data_gap"
-            ? "Resolve AMI/MOS data gaps before a procurement decision."
+            ? `Obtain the missing ${asOfDate} report; latest valid record is ${latest.date} and must not be treated as current stock.`
             : "Maintain routine monitoring within the 2–4 MOS policy band.";
 
     return {
@@ -175,10 +207,19 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       programme: latest.programme,
       location: latest.location,
       asOfDate,
+      selectedReportPresent,
+      latestRecordDate: latest.date,
+      recordAgeDays,
+      dataFreshness: recordAgeDays > 31 ? "stale" : selectedReportPresent ? "current" : "latest_prior_record",
+      catalogueStatus: "active",
       stockOnHand: round(latest.stockOnHand, 2),
       ami: round(latest.ami, 2),
       mos: round(mos, 2),
       status,
+      latestStockStatus,
+      reportedStockout: latestStockStatus === "reported_stockout",
+      forecastStatus: forecastEligible ? "valid" : "insufficient_data",
+      forecastConfidence: !forecastEligible ? "insufficient" : recordAgeDays > 31 || accuracy.status !== "ok" ? "low" : (accuracy.wape ?? 1) <= 0.2 ? "high" : (accuracy.wape ?? 1) <= 0.5 ? "medium" : "low",
       daysOfSupply: round(daysOfSupply, 0),
       demandSource,
       forecastMonthlyDemand: round(monthlyDemand, 2),
@@ -211,6 +252,14 @@ export function buildAnalyticsReport({ snapshots, movements = [], config: overri
       observations: history.length,
       dataQualityFlags,
       action,
+      modelBasis: {
+        cutOffDate: asOfDate,
+        historyStartDate: history[0].date,
+        historyEndDate: latest.date,
+        stockObservations: stockHistory.length,
+        demandObservations: demandSeries.length,
+        variables: movementSeries.length ? ["outbound issues", "stock on hand", "MOS"] : ["AMI proxy", "stock on hand", "MOS"],
+      },
     };
   });
 
