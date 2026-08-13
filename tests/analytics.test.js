@@ -76,7 +76,45 @@ test("management analytics exposes stream, programme and historical date control
   assert.match(dashboard, /id="analyticsProgramme"/);
   assert.match(dashboard, /id="analyticsDate"/);
   assert.match(dashboard, /function analyticsItemsForDate\(date\)/);
-  assert.match(dashboard, /Compared with/);
+  assert.match(dashboard, /Catalogue-first analysis/);
+  assert.match(dashboard, /Missing report ≠ zero stock/);
+  assert.match(dashboard, /Insufficient data for reliable forecast/);
+});
+
+test("catalogue-first analytics distinguishes a missing report from a confirmed reported stock-out", () => {
+  const snapshots = [
+    { sku: "EM-GAP", description: "Ringer's Lactate 1000ml", programme: "EMMS", location: "Central", date: "2026-06-15", stockOnHand: 120, ami: 40, mos: 3 },
+    { sku: "EM-GAP", description: "Ringer's Lactate 1000ml", programme: "EMMS", location: "Central", date: "2026-06-30", stockOnHand: 100, ami: 40, mos: 2.5 },
+    { sku: "EM-GAP", description: "Ringer's Lactate 1000ml", programme: "EMMS", location: "Central", date: "2026-07-15", stockOnHand: 80, ami: 40, mos: 2 },
+    { sku: "EM-ZERO", description: "Reported zero medicine", programme: "EMMS", location: "Central", date: "2026-07-31", stockOnHand: 0, ami: 50, mos: 0 },
+  ];
+  const report = buildAnalyticsReport({ snapshots, asOfDate: "2026-07-31", config: { location: "Central" } });
+  const gap = report.items.find((item) => item.sku === "EM-GAP");
+  const zero = report.items.find((item) => item.sku === "EM-ZERO");
+  assert.equal(gap.selectedReportPresent, false);
+  assert.equal(gap.status, "data_gap");
+  assert.equal(gap.latestRecordDate, "2026-07-15");
+  assert.equal(gap.stockOnHand, 80);
+  assert.equal(zero.selectedReportPresent, true);
+  assert.equal(zero.status, "reported_stockout");
+});
+
+test("forecast cut-off excludes future records and inadequate history is withheld", () => {
+  const snapshots = [
+    { sku: "EM-CUT", description: "Cut-off medicine", programme: "EMMS", location: "Central", date: "2026-06-15", stockOnHand: 300, ami: 100, mos: 3 },
+    { sku: "EM-CUT", description: "Cut-off medicine", programme: "EMMS", location: "Central", date: "2026-06-30", stockOnHand: 250, ami: 100, mos: 2.5 },
+    { sku: "EM-CUT", description: "Cut-off medicine", programme: "EMMS", location: "Central", date: "2026-07-15", stockOnHand: 200, ami: 100, mos: 2 },
+    { sku: "EM-CUT", description: "Cut-off medicine", programme: "EMMS", location: "Central", date: "2026-08-15", stockOnHand: 9999, ami: 1, mos: 9999 },
+    { sku: "EM-ONE", description: "One-record medicine", programme: "EMMS", location: "Central", date: "2026-07-15", stockOnHand: 20, ami: 10, mos: 2 },
+  ];
+  const report = buildAnalyticsReport({ snapshots, asOfDate: "2026-07-31", config: { location: "Central" } });
+  const cut = report.items.find((item) => item.sku === "EM-CUT");
+  const one = report.items.find((item) => item.sku === "EM-ONE");
+  assert.equal(cut.latestRecordDate, "2026-07-15");
+  assert.equal(cut.stockOnHand, 200);
+  assert.equal(cut.forecastStatus, "valid");
+  assert.equal(one.forecastStatus, "insufficient_data");
+  assert.equal(one.forecastMonthlyDemand, null);
 });
 
 test("predictive warning center includes the Stage 2 scenario simulator", () => {
@@ -113,9 +151,25 @@ test("warning detail exposes optimized Holt model diagnostics", () => {
 test("predictive landing page clearly exposes the active forecast engine", () => {
   const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   assert.match(html, /id="forecastModelBanner"/);
-  assert.match(html, /Optimized forecasting is active on this view/);
+  assert.match(html, /CATALOGUE-FIRST FORECAST ENGINE/);
+  assert.match(html, /Complete active commodity catalogue/);
   assert.match(html, /Open highest-priority forecast/);
   assert.match(html, /data-open-top-forecast/);
+});
+
+test("Stock Trend searches the master catalogue and renders actual gaps without zero-filling", () => {
+  const dashboard = readFileSync("index.html", "utf8");
+  const options = dashboard.match(/function trendOptions\(\) \{[\s\S]*?function latestTrendRecord/)?.[0] || "";
+  assert.match(options, /stockData\.filter/);
+  assert.doesNotMatch(options, /reportFor\(item, state\.trendDate\)\.present/);
+  assert.match(dashboard, /No report was submitted for this commodity during the selected period/);
+  assert.match(dashboard, /function renderMosTrendChart\(rows\)/);
+  assert.match(dashboard, /if \(mos === 0\) return \{ label: "Understocked"/);
+  assert.match(dashboard, /row\.soh === 0 && row\.mos === 0/);
+  assert.match(dashboard, /Inferred receipt/);
+  assert.match(dashboard, /id="trendPeriod"/);
+  assert.match(dashboard, /id="trendMeasure"/);
+  assert.match(dashboard, /Ringers Lactate/);
 });
 
 test("commodity profile charts history and a balance-aware two-month estimate", () => {
