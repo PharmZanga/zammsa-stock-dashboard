@@ -206,6 +206,10 @@ html = html.replace(
   /weeklyReport\("LAB", "\d{4}-\d{2}-\d{2}"\)/,
   `weeklyReport("LAB", "${latestWeeklyDate}")`,
 );
+html = html.replace(
+  /weeklyDateLabel\("\d{4}-\d{2}-\d{2}"\)/,
+  `weeklyDateLabel("${latestWeeklyDate}")`,
+);
 
 writeFileSync("index.html", html, "utf8");
 console.log(JSON.stringify({ output: "index.html", reports: reports.length, uniqueCodes: data.length, latestRows: latestRows.length, analyticsItems: analyticsReport.items.length, latestWeeklyDate }, null, 2));

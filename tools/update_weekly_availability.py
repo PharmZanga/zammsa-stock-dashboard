@@ -6,14 +6,14 @@ import openpyxl
 
 
 NEW_WORKBOOK = Path(
-    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\august\Stock position 07-14 August.xlsx"
+    r"C:\Users\Zanga Musakuzi\Desktop\zammsa folder\weekly inventory emms stock status\august\Stock Position 21 &28 August.xlsx"
 )
 
 NEW_SHEETS = [
-    ("EMMS 07 JULY", "EMMS", "2026-08-07", "7 August 2026"),
-    ("EMMS 14JULY", "EMMS", "2026-08-14", "14 August 2026"),
-    ("LAB 7 JULY", "LAB", "2026-08-07", "7 August 2026"),
-    ("LAB14 JULY", "LAB", "2026-08-14", "14 August 2026"),
+    ("EMMS 21 August", "EMMS", "2026-08-21", "21 August 2026"),
+    ("EMMS 28 August", "EMMS", "2026-08-28", "28 August 2026"),
+    ("LAB 21 August", "LAB", "2026-08-21", "21 August 2026"),
+    ("LAB 28 August", "LAB", "2026-08-28", "28 August 2026"),
 ]
 
 OUTPUT_PATH = Path("src/weeklyAvailability.js")
